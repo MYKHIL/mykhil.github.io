@@ -28,61 +28,6 @@
 
         <section class="projects">
             <div class="project-grid">
-                <!-- Project Card Template -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <h3>Project One</h3>
-                        <span class="version">v1.0.0</span>
-                    </div>
-                    <p class="project-description">A comprehensive project showcasing C# development skills.</p>
-                    <div class="project-stats">
-                        <span class="downloads"><i class="fas fa-download"></i> <span class="download-count" data-project="project-one">0</span> downloads</span>
-                        <span class="last-updated"><i class="fas fa-clock"></i> Updated: Dec 21, 2024</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="#" class="btn download-btn" data-project="project-one" onclick="trackDownload('project-one')">
-                            <i class="fas fa-download"></i> Download
-                        </a>
-                        <a href="#" class="btn"><i class="fas fa-book"></i> Documentation</a>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-header">
-                        <h3>Project Two</h3>
-                        <span class="version">v1.0.0</span>
-                    </div>
-                    <p class="project-description">An innovative solution using modern C# features.</p>
-                    <div class="project-stats">
-                        <span class="downloads"><i class="fas fa-download"></i> <span class="download-count" data-project="project-two">0</span> downloads</span>
-                        <span class="last-updated"><i class="fas fa-clock"></i> Updated: Dec 21, 2024</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="#" class="btn download-btn" data-project="project-two" onclick="trackDownload('project-two')">
-                            <i class="fas fa-download"></i> Download
-                        </a>
-                        <a href="#" class="btn"><i class="fas fa-book"></i> Documentation</a>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-header">
-                        <h3>Project Three</h3>
-                        <span class="version">v1.0.0</span>
-                    </div>
-                    <p class="project-description">A backend service built with ASP.NET Core.</p>
-                    <div class="project-stats">
-                        <span class="downloads"><i class="fas fa-download"></i> <span class="download-count" data-project="project-three">0</span> downloads</span>
-                        <span class="last-updated"><i class="fas fa-clock"></i> Updated: Dec 21, 2024</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="#" class="btn download-btn" data-project="project-three" onclick="trackDownload('project-three')">
-                            <i class="fas fa-download"></i> Download
-                        </a>
-                        <a href="#" class="btn"><i class="fas fa-book"></i> Documentation</a>
-                    </div>
-                </div>
-
                 <div class="project-card">
                     <div class="project-header">
                         <h3>SBA Pro Master</h3>
@@ -96,11 +41,13 @@
                         <li>Multi-process management for improved stability</li>
                     </ul>
                     <div class="project-stats">
-                        <span class="downloads"><i class="fas fa-download"></i> <span class="download-count" data-project="sba-pro-master">0</span> downloads</span>
+                        <span class="downloads"><i class="fas fa-download"></i> <span id="sba-downloads">0</span> downloads</span>
                         <span class="last-updated"><i class="fas fa-clock"></i> Updated: Dec 21, 2024</span>
                     </div>
                     <div class="project-links">
-                        <a href="#" class="btn download-btn" data-project="sba-pro-master" onclick="trackDownload('sba-pro-master')">
+                        <a href="https://github.com/MYKHIL/mykhilcreations.github.io/releases/download/sba-pro-master-v4.6.0/SBAProMaster-v4.6.0.zip" 
+                           class="btn download-btn" 
+                           onclick="trackDownload(event, 'sba-pro-master')">
                             <i class="fas fa-download"></i> Download SBA Pro Master
                         </a>
                         <a href="#" class="btn"><i class="fas fa-book"></i> User Guide</a>
@@ -115,55 +62,49 @@
     </footer>
 
     <script>
-        // Function to track downloads
-        async function trackDownload(projectId) {
+        // Function to track downloads using GitHub API
+        async function trackDownload(event, projectId) {
+            // Don't prevent the download
+            const downloadCount = document.getElementById('sba-downloads');
+            
             try {
-                // Track the download
-                const response = await fetch('https://your-azure-function-url/api/trackDownload', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ projectId })
-                });
+                // Get download count from GitHub API
+                const response = await fetch('https://api.github.com/repos/MYKHIL/mykhilcreations.github.io/releases');
+                const releases = await response.json();
                 
-                if (response.ok) {
-                    const data = await response.json();
-                    // Update the download count on the page
-                    const countElement = document.querySelector(`.download-count[data-project="${projectId}"]`);
-                    if (countElement) {
-                        countElement.textContent = data.downloads;
-                    }
-                    
-                    // Redirect to the actual download
-                    window.location.href = `https://github.com/MYKHIL/mykhilcreations.github.io/releases/download/${projectId}/setup.exe`;
+                // Find the SBA Pro Master release
+                const sbaRelease = releases.find(release => release.tag_name === 'sba-pro-master-v4.6.0');
+                if (sbaRelease) {
+                    // Sum up downloads from all assets
+                    const totalDownloads = sbaRelease.assets.reduce((sum, asset) => sum + asset.download_count, 0);
+                    // Update the download count (add 1 for the current download)
+                    downloadCount.textContent = totalDownloads + 1;
                 }
             } catch (error) {
                 console.error('Error tracking download:', error);
             }
         }
 
-        // Function to load download counts
-        async function loadDownloadCounts() {
+        // Load initial download count when page loads
+        async function loadDownloadCount() {
+            const downloadCount = document.getElementById('sba-downloads');
+            
             try {
-                const response = await fetch('https://your-azure-function-url/api/getDownloads');
-                if (response.ok) {
-                    const data = await response.json();
-                    // Update all download counts
-                    Object.entries(data).forEach(([projectId, count]) => {
-                        const countElement = document.querySelector(`.download-count[data-project="${projectId}"]`);
-                        if (countElement) {
-                            countElement.textContent = count;
-                        }
-                    });
+                const response = await fetch('https://api.github.com/repos/MYKHIL/mykhilcreations.github.io/releases');
+                const releases = await response.json();
+                
+                const sbaRelease = releases.find(release => release.tag_name === 'sba-pro-master-v4.6.0');
+                if (sbaRelease) {
+                    const totalDownloads = sbaRelease.assets.reduce((sum, asset) => sum + asset.download_count, 0);
+                    downloadCount.textContent = totalDownloads;
                 }
             } catch (error) {
-                console.error('Error loading download counts:', error);
+                console.error('Error loading download count:', error);
             }
         }
 
-        // Load download counts when page loads
-        document.addEventListener('DOMContentLoaded', loadDownloadCounts);
+        // Load download count when page loads
+        document.addEventListener('DOMContentLoaded', loadDownloadCount);
     </script>
 </body>
 </html>
