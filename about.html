@@ -3,9 +3,399 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Mykhil Creations</title>
+    <title>About Michael Darko - Mykhil Creations</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .about-hero {
+            position: relative;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #6366f1 0%, #3b82f6 50%, #2dd4bf 100%);
+            overflow: hidden;
+        }
+
+        .dot-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: movePattern 20s linear infinite;
+        }
+
+        @keyframes movePattern {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(20px) translateY(20px); }
+        }
+
+        .profile-container {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 2rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-image {
+            width: 300px;
+            height: auto;
+            object-fit: contain;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .profile-info {
+            flex: 1;
+            padding: 2rem;
+            color: white;
+        }
+
+        .profile-info h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #ffffff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: slideIn 1s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            animation: fadeIn 1s ease 0.3s forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .quick-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            animation: slideUp 1s ease 0.6s forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .quick-info p {
+            color: rgba(255, 255, 255, 0.9);
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .quick-info i {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            margin-right: 15px;
+            color: white;
+        }
+
+        .about-content {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .expertise {
+            margin: 2rem 0;
+        }
+
+        .skill-bar {
+            margin: 1.5rem 0;
+        }
+
+        .skill-name {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            color: #e0e7ff;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #3b82f6);
+            width: 0;
+            transition: width 1s ease;
+            border-radius: 4px;
+        }
+
+        .interests, .achievements {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin: 2rem 0;
+            transition: transform 0.3s ease;
+        }
+
+        .interests:hover, .achievements:hover {
+            transform: translateY(-5px);
+        }
+
+        .achievements li {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            transition: transform 0.3s ease;
+        }
+
+        .achievements li:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .comments-section {
+            position: fixed;
+            top: 80px;
+            right: 0;
+            width: 350px;
+            height: calc(100vh - 80px);
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-left: 1px solid #ddd;
+            overflow-y: auto;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .comments-section .container {
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .comments-section .section-title {
+            font-size: 1.5rem;
+            margin: 0 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #007bff;
+            text-align: center;
+            color: #000;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.3rem;
+            color: #333;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            color: #333;
+            transition: border-color 0.3s;
+            background: white;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0,123,255,0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #007bff;
+            color: white;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #0056b3;
+        }
+
+        .guide-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .guide-modal.show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .guide-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .guide-content h3 {
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .guide-steps {
+            margin-bottom: 1.5rem;
+        }
+
+        .guide-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .step-number {
+            background: #007bff;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+
+        .step-text {
+            color: #444;
+            line-height: 1.4;
+            font-size: 1rem;
+        }
+
+        .guide-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .guide-btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .guide-btn.cancel {
+            background: #f8f9fa;
+            color: #444;
+        }
+
+        .guide-btn.cancel:hover {
+            background: #e2e6ea;
+        }
+
+        .guide-btn.proceed {
+            background: #007bff;
+            color: white;
+        }
+
+        .guide-btn.proceed:hover {
+            background: #0056b3;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .comments-section {
+                position: static;
+                width: 100%;
+                height: auto;
+                margin-top: 2rem;
+                border-left: none;
+                border-top: 1px solid #ddd;
+                box-shadow: none;
+            }
+            .about-content {
+                margin-right: 0;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -21,69 +411,222 @@
     </header>
 
     <main>
-        <section class="hero">
-            <h1>About Me</h1>
-            <p>Software Developer & Technical Writer</p>
-        </section>
-
-        <section class="about-content">
-            <div class="about-grid">
-                <div class="about-card">
-                    <h2><i class="fas fa-user-circle"></i> Who I Am</h2>
-                    <p>I'm a passionate software developer specializing in C# and .NET development. With a strong foundation in software engineering principles and best practices, I create efficient and scalable solutions for complex problems.</p>
-                </div>
-
-                <div class="about-card">
-                    <h2><i class="fas fa-laptop-code"></i> What I Do</h2>
-                    <p>I develop modern web applications, APIs, and software solutions using C# and related technologies. My focus is on writing clean, maintainable code that follows industry best practices.</p>
-                </div>
-
-                <div class="about-card">
-                    <h2><i class="fas fa-tools"></i> Skills</h2>
-                    <ul class="skills-list">
-                        <li>C# / .NET Core</li>
-                        <li>ASP.NET Core</li>
-                        <li>Entity Framework</li>
-                        <li>SQL Server</li>
-                        <li>Azure Cloud Services</li>
-                        <li>Git / GitHub</li>
-                    </ul>
+        <section class="about-hero">
+            <div class="dot-pattern"></div>
+            <div class="profile-container">
+                <img src="images/profile.jpg" alt="Michael Darko - Software Developer" class="profile-image">
+                <div class="profile-info">
+                    <h1>Michael Darko</h1>
+                    <p class="tagline">Education Professional & Software Developer</p>
+                    <div class="quick-info">
+                        <p><i class="fas fa-graduation-cap"></i> Degree in Education</p>
+                        <p><i class="fas fa-briefcase"></i> 10+ Years Teaching Experience | 9+ Years Software Development</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Based in Ghana</p>
+                        <p><i class="fas fa-envelope"></i> darkmic50@gmail.com</p>
+                        <p><i class="fas fa-phone"></i> +233 54 241 0613</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="contact-section">
-            <h2>Get in Touch</h2>
-            <form class="contact-form">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" rows="5" required></textarea>
-                </div>
-                <button type="submit" class="btn">Send Message</button>
-            </form>
-        </section>
+        <section class="about-content">
+            <div class="bio">
+                <h2>About Me</h2>
+                <p>I am a dedicated education professional with a unique blend of teaching expertise and software development skills. Since 2013, I've been shaping young minds through mathematics and computing education, while simultaneously pursuing my passion for creating innovative software solutions since 2014.</p>
+                
+                <h2>Professional Journey</h2>
+                <p>My career began in education in 2013, where I've established myself as a respected mathematics and computing teacher. Alongside my teaching career, I've developed a thriving software development practice, creating solutions that bridge the gap between technology and education.</p>
+            </div>
 
-        <section class="social-links">
-            <h2>Connect With Me</h2>
-            <div class="social-icons">
-                <a href="#" class="btn"><i class="fab fa-github"></i> GitHub</a>
-                <a href="#" class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                <a href="#" class="btn"><i class="fab fa-twitter"></i> Twitter</a>
+            <div class="expertise">
+                <h2>Technical Expertise</h2>
+                <div class="skill-bar">
+                    <div class="skill-name">
+                        <span>Web Development</span>
+                        <span>95%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 95%"></div>
+                    </div>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-name">
+                        <span>Mobile App Development</span>
+                        <span>85%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 85%"></div>
+                    </div>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-name">
+                        <span>UI/UX Design</span>
+                        <span>90%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 90%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="achievements">
+                <h2>Achievements</h2>
+                <ul>
+                    <li>Best Male Staff Award 2022</li>
+                    <li>Best Male Staff Award 2021</li>
+                    <li>Best Male Staff Award 2020</li>
+                </ul>
+            </div>
+
+            <div class="interests">
+                <h2>Personal Interests</h2>
+                <p>Outside of my professional life, I enjoy:</p>
+                <ul>
+                    <li>Software Development and Programming</li>
+                    <li>Watching Wildlife Documentaries</li>
+                    <li>Listening to Music</li>
+                    <li>Spending Quality Time with Family</li>
+                </ul>
             </div>
         </section>
     </main>
 
+    <!-- Comments and Reviews Section -->
+    <aside class="comments-section">
+        <div class="container">
+            <h2 class="section-title">Quick Feedback</h2>
+            <form id="commentForm" onsubmit="return sendEmail(event)">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required placeholder="Your name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required placeholder="Your email">
+                </div>
+                <div class="form-group">
+                    <label for="subject">Type:</label>
+                    <select id="subject" name="subject" required>
+                        <option value="">Select type</option>
+                        <option value="Comment">Comment</option>
+                        <option value="Review">Review</option>
+                        <option value="Bug Report">Bug Report</option>
+                        <option value="Suggestion">Suggestion</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" rows="4" required placeholder="Your message here..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- Guide Modal -->
+    <div class="guide-modal" id="guideModal">
+        <div class="guide-content">
+            <h3>Send Your Message</h3>
+            <div class="guide-steps">
+                <div class="guide-step">
+                    <div class="step-number">1</div>
+                    <div class="step-text">Your default email client will open with your message pre-filled.</div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-number">2</div>
+                    <div class="step-text">Review your message in your email client to make any final adjustments.</div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-number">3</div>
+                    <div class="step-text">Click the Send button in your email client to send your message.</div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-number">4</div>
+                    <div class="step-text">You'll receive a confirmation once your message is sent successfully.</div>
+                </div>
+            </div>
+            <div class="guide-buttons">
+                <button class="guide-btn cancel" onclick="closeGuideModal()">Cancel</button>
+                <button class="guide-btn proceed" onclick="proceedWithEmail()">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let pendingMailtoLink = '';
+
+        function sendEmail(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // Format the email body
+            const emailBody = `
+Name: ${name}
+Email: ${email}
+Subject: ${subject}
+
+Message:
+${message}
+            `.trim();
+            
+            // Create mailto link but don't open it yet
+            pendingMailtoLink = `mailto:darkmic50@gmail.com?subject=${encodeURIComponent(subject)} from ${encodeURIComponent(name)}&body=${encodeURIComponent(emailBody)}`;
+            
+            // Show the guide modal
+            document.getElementById('guideModal').classList.add('show');
+            
+            return false;
+        }
+
+        function closeGuideModal() {
+            document.getElementById('guideModal').classList.remove('show');
+            pendingMailtoLink = '';
+        }
+
+        function proceedWithEmail() {
+            if (pendingMailtoLink) {
+                // Open email client
+                window.location.href = pendingMailtoLink;
+                
+                // Clear the form
+                document.getElementById('commentForm').reset();
+                
+                // Close the modal
+                closeGuideModal();
+            }
+        }
+
+        // Animate skill bars on scroll
+        function animateSkillBars() {
+            const skillBars = document.querySelectorAll('.progress');
+            skillBars.forEach(bar => {
+                const targetWidth = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = targetWidth;
+                }, 200);
+            });
+        }
+
+        // Trigger animation when content is in view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateSkillBars();
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+
+        observer.observe(document.querySelector('.expertise'));
+    </script>
+
     <footer>
         <p>&copy; 2024 Mykhil Creations. All rights reserved.</p>
     </footer>
-    <script src="script.js"></script>
 </body>
 </html>

@@ -6,6 +6,408 @@
     <title>Blog - Mykhil Creations</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Hero Section Styles */
+        .hero {
+            position: relative;
+            background: linear-gradient(135deg, #1a1a1a 0%, #373737 100%);
+            padding: 6rem 2rem;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            z-index: 1;
+        }
+
+        .dot-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: fadeIn 2s ease-out;
+            z-index: 1;
+        }
+
+        .hero h1, .hero p {
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: slideDown 0.8s ease-out forwards;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            animation: slideDown 0.8s ease-out 0.2s forwards;
+            color: #e0e0e0;
+        }
+
+        /* Blog Section Styles */
+        .blog-section {
+            padding: 4rem 2rem;
+            margin-right: 350px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .blog-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+            border: 1px solid rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .blog-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #007bff, #00ff88);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .blog-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .blog-content {
+            padding: 1.5rem;
+        }
+
+        .blog-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin: 0 0 1rem 0;
+            line-height: 1.3;
+        }
+
+        .blog-excerpt {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .blog-date {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .blog-category {
+            background: linear-gradient(45deg, #007bff, #00ff88);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .read-more:hover {
+            color: #0056b3;
+        }
+
+        /* Comments Section Styles */
+        .comments-section {
+            position: fixed;
+            top: 80px;
+            right: 0;
+            width: 350px;
+            height: calc(100vh - 80px);
+            background: white;
+            padding: 1.5rem;
+            border-left: 1px solid rgba(0,0,0,0.1);
+            overflow-y: auto;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .comments-section .container {
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .comments-section .section-title {
+            font-size: 1.5rem;
+            margin: 0 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #007bff;
+            text-align: center;
+            color: #000;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+            background: white;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #007bff, #00ff88);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,123,255,0.2);
+        }
+
+        /* Guide Modal Styles */
+        .guide-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .guide-modal.show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .guide-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 500px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .guide-content h3 {
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .guide-steps {
+            margin-bottom: 1.5rem;
+        }
+
+        .guide-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .step-number {
+            background: #007bff;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+
+        .step-text {
+            color: #444;
+            line-height: 1.4;
+            font-size: 1rem;
+        }
+
+        .guide-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .guide-btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .guide-btn.cancel {
+            background: #f8f9fa;
+            color: #444;
+        }
+
+        .guide-btn.cancel:hover {
+            background: #e2e6ea;
+        }
+
+        .guide-btn.proceed {
+            background: #007bff;
+            color: white;
+        }
+
+        .guide-btn.proceed:hover {
+            background: #0056b3;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .blog-section {
+                margin-right: 0;
+                padding: 2rem 1rem;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+            .comments-section {
+                position: static;
+                width: 100%;
+                height: auto;
+                margin-top: 2rem;
+                border-left: none;
+                border-top: 1px solid #ddd;
+                box-shadow: none;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -22,72 +424,248 @@
 
     <main>
         <section class="hero">
-            <h1>Blog & Articles</h1>
-            <p>Thoughts, tutorials, and insights about software development</p>
+            <div class="dot-pattern"></div>
+            <h1>Ghana Today</h1>
+            <p>Your trusted source for education, politics, and healthcare news in Ghana</p>
         </section>
 
-        <section class="blog-posts">
-            <div class="blog-post">
-                <h2>Getting Started with C# Development</h2>
-                <div class="post-meta">
-                    <span><i class="far fa-calendar"></i> December 21, 2024</span>
-                    <span><i class="fas fa-tags"></i> C#, Programming</span>
-                </div>
-                <p>Learn the fundamentals of C# programming and start building your first application. This comprehensive guide covers everything you need to know to get started.</p>
-                <div class="code-snippet">
-                    <pre><code>// Your first C# program
-class Program {
-    static void Main(string[] args) {
-        Console.WriteLine("Hello, World!");
-    }
-}</code></pre>
-                </div>
-                <a href="#" class="btn">Read More</a>
-            </div>
+        <section class="blog-section">
+            <div class="blog-grid">
+                <!-- Education News -->
+                <article class="blog-card">
+                    <img src="https://cdn.ghanaweb.com/imagelib/pics/215/21555661.jpg" alt="Education Reform in Ghana" class="blog-image">
+                    <div class="blog-content">
+                        <span class="blog-category">Education</span>
+                        <h3 class="blog-title">Major Education Reform: Ghana Introduces New Curriculum</h3>
+                        <p class="blog-excerpt">The Ghana Education Service (GES) has announced a comprehensive overhaul of the national curriculum, marking the most significant education reform in the country's recent history.</p>
+                        <div class="blog-meta">
+                            <div class="blog-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>December 20, 2023</span>
+                            </div>
+                            <a href="#" class="read-more">
+                                <i class="fas fa-arrow-right"></i>
+                                <span>Read More</span>
+                            </a>
+                        </div>
+                    </div>
+                </article>
 
-            <div class="blog-post">
-                <h2>Advanced C# Features You Should Know</h2>
-                <div class="post-meta">
-                    <span><i class="far fa-calendar"></i> December 20, 2024</span>
-                    <span><i class="fas fa-tags"></i> C#, Advanced</span>
-                </div>
-                <p>Explore advanced C# features that can help you write more efficient and maintainable code. Learn about records, pattern matching, and more.</p>
-                <div class="code-snippet">
-                    <pre><code>// Example of C# records
-public record Person(
-    string FirstName,
-    string LastName,
-    int Age
-);</code></pre>
-                </div>
-                <a href="#" class="btn">Read More</a>
-            </div>
+                <!-- Political News -->
+                <article class="blog-card">
+                    <img src="https://cdn.ghanaweb.com/imagelib/pics/934/93441086.jpg" alt="Economic Policy Update" class="blog-image">
+                    <div class="blog-content">
+                        <span class="blog-category">Politics</span>
+                        <h3 class="blog-title">Ghana's New Economic Direction: IMF Program Shows Positive Signs</h3>
+                        <p class="blog-excerpt">Recent economic data from the Bank of Ghana and the International Monetary Fund (IMF) indicates positive trends in Ghana's economic recovery program.</p>
+                        <div class="blog-meta">
+                            <div class="blog-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>December 19, 2023</span>
+                            </div>
+                            <a href="#" class="read-more">
+                                <i class="fas fa-arrow-right"></i>
+                                <span>Read More</span>
+                            </a>
+                        </div>
+                    </div>
+                </article>
 
-            <div class="blog-post">
-                <h2>Best Practices for C# Development</h2>
-                <div class="post-meta">
-                    <span><i class="far fa-calendar"></i> December 19, 2024</span>
-                    <span><i class="fas fa-tags"></i> C#, Best Practices</span>
-                </div>
-                <p>Learn about the best practices and patterns that will help you write clean, maintainable C# code.</p>
-                <div class="code-snippet">
-                    <pre><code>// Example of dependency injection
-public class UserService {
-    private readonly IRepository _repository;
-    
-    public UserService(IRepository repository) {
-        _repository = repository;
-    }
-}</code></pre>
-                </div>
-                <a href="#" class="btn">Read More</a>
+                <!-- Health News -->
+                <article class="blog-card">
+                    <img src="https://cdn.ghanaweb.com/imagelib/pics/486/48683965.jpg" alt="Healthcare Initiative" class="blog-image">
+                    <div class="blog-content">
+                        <span class="blog-category">Healthcare</span>
+                        <h3 class="blog-title">Revolutionary Healthcare App Launched in Ghana</h3>
+                        <p class="blog-excerpt">Ghana's Ministry of Health, in collaboration with the National Health Insurance Authority (NHIA), has launched a groundbreaking digital health platform named "GhanaCare Digital."</p>
+                        <div class="blog-meta">
+                            <div class="blog-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>December 18, 2023</span>
+                            </div>
+                            <a href="#" class="read-more">
+                                <i class="fas fa-arrow-right"></i>
+                                <span>Read More</span>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="blog-section">
+            <h2 class="section-title">Latest News</h2>
+            <div class="blog-grid">
+                <!-- EC Court Case News -->
+                <article class="blog-card">
+                    <img src="images/court.jpg" alt="EC Court Case" class="blog-image">
+                    <div class="blog-content">
+                        <span class="blog-category">Politics</span>
+                        <h3 class="blog-title">High Court Orders EC to Recollate Results in Six Constituencies</h3>
+                        <p class="blog-excerpt">The High Court in Accra has ordered the Electoral Commission (EC) to conduct a recollation of the 2020 parliamentary election results in six constituencies following allegations of irregularities and discrepancies in the original count.</p>
+                        <div class="blog-meta">
+                            <div class="blog-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>December 20, 2023</span>
+                            </div>
+                            <a href="#" class="read-more">
+                                <i class="fas fa-arrow-right"></i>
+                                <span>Read More</span>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Mining Case -->
+                <article class="blog-card">
+                    <img src="images/mining.jpg" alt="Mining Case" class="blog-image">
+                    <div class="blog-content">
+                        <span class="blog-category">Legal</span>
+                        <h3 class="blog-title">Supreme Court Rules on Controversial Mining License Case</h3>
+                        <p class="blog-excerpt">Ghana's Supreme Court has delivered a landmark ruling in the case between small-scale miners and the Minerals Commission, addressing the contentious issue of mining license allocations and environmental protection measures.</p>
+                        <div class="blog-meta">
+                            <div class="blog-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>December 19, 2023</span>
+                            </div>
+                            <a href="#" class="read-more">
+                                <i class="fas fa-arrow-right"></i>
+                                <span>Read More</span>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- AFCON News -->
+                <article class="blog-card">
+                    <img src="images/black-stars.jpg" alt="Black Stars AFCON" class="blog-image">
+                    <div class="blog-content">
+                        <span class="blog-category">Sports</span>
+                        <h3 class="blog-title">Black Stars Announce Final Squad for AFCON 2024</h3>
+                        <p class="blog-excerpt">The Ghana Football Association has announced the final 26-man squad for the upcoming Africa Cup of Nations (AFCON) 2024 in Ivory Coast, with some surprising inclusions and omissions that have sparked nationwide discussion.</p>
+                        <div class="blog-meta">
+                            <div class="blog-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>December 18, 2023</span>
+                            </div>
+                            <a href="#" class="read-more">
+                                <i class="fas fa-arrow-right"></i>
+                                <span>Read More</span>
+                            </a>
+                        </div>
+                    </div>
+                </article>
             </div>
         </section>
     </main>
 
+    <!-- Comments and Reviews Section -->
+    <aside class="comments-section">
+        <div class="container">
+            <h2 class="section-title">Quick Feedback</h2>
+            <form id="commentForm" onsubmit="return sendEmail(event)">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required placeholder="Your name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required placeholder="Your email">
+                </div>
+                <div class="form-group">
+                    <label for="subject">Type:</label>
+                    <select id="subject" name="subject" required>
+                        <option value="">Select type</option>
+                        <option value="Comment">Comment</option>
+                        <option value="Review">Review</option>
+                        <option value="Bug Report">Bug Report</option>
+                        <option value="Suggestion">Suggestion</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" rows="4" required placeholder="Your message here..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- Guide Modal -->
+    <div class="guide-modal" id="guideModal">
+        <div class="guide-content">
+            <h3>Send Your Message</h3>
+            <div class="guide-steps">
+                <div class="guide-step">
+                    <div class="step-number">1</div>
+                    <div class="step-text">Your default email client will open with your message pre-filled.</div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-number">2</div>
+                    <div class="step-text">Review your message in your email client to make any final adjustments.</div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-number">3</div>
+                    <div class="step-text">Click the Send button in your email client to send your message.</div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-number">4</div>
+                    <div class="step-text">You'll receive a confirmation once your message is sent successfully.</div>
+                </div>
+            </div>
+            <div class="guide-buttons">
+                <button class="guide-btn cancel" onclick="closeGuideModal()">Cancel</button>
+                <button class="guide-btn proceed" onclick="proceedWithEmail()">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleArticle(articleId) {
+            const article = document.getElementById(articleId);
+            const content = article.querySelector('.blog-content');
+            const button = article.querySelector('.read-more');
+            
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                button.textContent = 'Read More';
+            } else {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                button.textContent = 'Read Less';
+            }
+        }
+
+        let pendingMailtoLink = '';
+
+        function sendEmail(event) {
+            event.preventDefault();
+            const form = event.target;
+            const name = form.querySelector('[name="name"]').value;
+            const email = form.querySelector('[name="email"]').value;
+            const subject = form.querySelector('[name="subject"]').value;
+            const message = form.querySelector('[name="message"]').value;
+
+            pendingMailtoLink = `mailto:mykhilcreations@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`)}`;
+            
+            document.getElementById('guideModal').classList.add('show');
+        }
+
+        function closeGuideModal() {
+            document.getElementById('guideModal').classList.remove('show');
+            pendingMailtoLink = '';
+        }
+
+        function proceedWithEmail() {
+            if (pendingMailtoLink) {
+                window.location.href = pendingMailtoLink;
+                document.getElementById('commentForm').reset();
+                closeGuideModal();
+            }
+        }
+    </script>
+
     <footer>
         <p>&copy; 2024 Mykhil Creations. All rights reserved.</p>
     </footer>
-    <script src="script.js"></script>
 </body>
 </html>

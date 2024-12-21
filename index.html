@@ -3,9 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mykhil Creations - Portfolio & Blog</title>
+    <title>Mykhil Creations - Professional Software Solutions</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --gradient-1: linear-gradient(45deg, #2193b0, #6dd5ed);
+            --gradient-2: linear-gradient(135deg, #667eea, #764ba2);
+            --gradient-3: linear-gradient(45deg, #11998e, #38ef7d);
+        }
+
+        .hero {
+            background: var(--gradient-1);
+            padding: 6rem 2rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: moveBackground 20s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            from { background-position: 0 0; }
+            to { background-position: 100px 100px; }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            animation: slideDown 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.5s forwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: white;
+            color: #2193b0;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1s forwards;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .featured {
+            padding: 5rem 2rem;
+            background: #f8f9fa;
+        }
+
+        .featured h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #333;
+            font-size: 2.5rem;
+            opacity: 0;
+            animation: slideUp 1s ease-out forwards;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .featured-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .featured-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .featured-item i {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: #2193b0;
+            background: linear-gradient(45deg, #2193b0, #6dd5ed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .featured-item h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .featured-item ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .featured-item ul li {
+            padding: 0.5rem 0;
+            color: #666;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .featured-item ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #2193b0;
+        }
+
+        .why-choose {
+            padding: 5rem 2rem;
+            background: var(--gradient-2);
+            color: white;
+        }
+
+        .why-choose h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .benefit {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s;
+        }
+
+        .benefit:hover {
+            transform: translateY(-5px);
+        }
+
+        .benefit i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-cta {
+            padding: 5rem 2rem;
+            text-align: center;
+            background: var(--gradient-3);
+            color: white;
+        }
+
+        .contact-cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info {
+            margin: 2rem 0;
+        }
+
+        .contact-info p {
+            margin: 0.5rem 0;
+            font-size: 1.2rem;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Floating animation for icons */
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Add responsive design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1.2rem;
+            }
+            .featured-grid, .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -22,51 +254,70 @@
 
     <main>
         <section class="hero">
-            <h1>Welcome to My Digital Space</h1>
-            <p>Software Developer | Technical Writer | Open Source Enthusiast</p>
-            <div class="hero-buttons">
-                <a href="projects.html" class="btn">View Projects</a>
-                <a href="blog.html" class="btn">Read Blog</a>
-            </div>
+            <h1>Welcome to Mykhil Creations</h1>
+            <p>Innovative Software Solutions for Education and Sports Management</p>
+            <a href="projects.html" class="cta-button">Explore Our Software</a>
         </section>
 
-        <section class="featured-projects">
-            <h2>Featured Projects</h2>
-            <div class="project-grid">
-                <div class="project-card">
-                    <h3>Project One</h3>
-                    <p>A brief description of the project and its key features.</p>
-                    <div class="code-snippet">
-                        <pre><code>// Example code snippet
-public class Program {
-    public static void Main() {
-        Console.WriteLine("Hello World!");
-    }
-}</code></pre>
-                    </div>
-                    <a href="#" class="btn">View Project</a>
+        <section class="featured">
+            <h2>Featured Solutions</h2>
+            <div class="featured-grid">
+                <div class="featured-item">
+                    <i class="fas fa-school floating"></i>
+                    <h3>Education Management</h3>
+                    <p>Comprehensive solutions for schools and educational institutions</p>
+                    <ul>
+                        <li>SBA Pro Master v5.4.6c</li>
+                    </ul>
                 </div>
-                <div class="project-card">
-                    <h3>Project Two</h3>
-                    <p>Another exciting project with its unique features.</p>
-                    <div class="code-snippet">
-                        <pre><code>// Another code example
-public async Task<string> GetData() {
-    return await _service.FetchData();
-}</code></pre>
-                    </div>
-                    <a href="#" class="btn">View Project</a>
+                <div class="featured-item">
+                    <i class="fas fa-vote-yea floating"></i>
+                    <h3>Election Management</h3>
+                    <p>Secure and efficient election result management system</p>
+                    <ul>
+                        <li>eCollation Center v2.0</li>
+                    </ul>
+                </div>
+                <div class="featured-item">
+                    <i class="fas fa-whistle floating"></i>
+                    <h3>Sports Management</h3>
+                    <p>Professional tools for sports officials and organizations</p>
+                    <ul>
+                        <li>Referee Connect v1.1.0.5</li>
+                    </ul>
                 </div>
             </div>
         </section>
 
-        <section class="latest-posts">
-            <h2>Latest Blog Posts</h2>
-            <div class="blog-post">
-                <h3>Getting Started with C# Development</h3>
-                <p>Learn the basics of C# programming and get started with your first project.</p>
-                <a href="#" class="btn">Read More</a>
+        <section class="why-choose">
+            <h2>Why Choose Our Software?</h2>
+            <div class="benefits-grid">
+                <div class="benefit">
+                    <i class="fas fa-shield-alt floating"></i>
+                    <h3>Secure & Reliable</h3>
+                    <p>Built with industry-standard security practices</p>
+                </div>
+                <div class="benefit">
+                    <i class="fas fa-sync floating"></i>
+                    <h3>Regular Updates</h3>
+                    <p>Continuous improvements and new features</p>
+                </div>
+                <div class="benefit">
+                    <i class="fas fa-headset floating"></i>
+                    <h3>Professional Support</h3>
+                    <p>Dedicated technical assistance when you need it</p>
+                </div>
             </div>
+        </section>
+
+        <section class="contact-cta">
+            <h2>Get in Touch</h2>
+            <p>Have questions about our software solutions?</p>
+            <div class="contact-info">
+                <p><i class="fas fa-phone floating"></i> +233 54 241 0613</p>
+                <p><i class="fas fa-envelope floating"></i> darkmic50@gmail.com</p>
+            </div>
+            <a href="about.html" class="cta-button">Contact Us</a>
         </section>
     </main>
 
