@@ -6,6 +6,7 @@
     <title>Software Projects - Mykhil Creations</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/feedback.css">
     <style>
         /* Hero Section Styles */
         .hero {
@@ -395,6 +396,85 @@
         .guide-btn.proceed:hover {
             background: #0056b3;
         }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .form-group:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: white;
+            color: #2c3e50;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #3498db, #2ecc71);
+            color: white;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn i {
+            font-size: 1.1rem;
+        }
     </style>
 </head>
 <body>
@@ -568,28 +648,31 @@
             <h2 class="section-title">Quick Feedback</h2>
             <form id="commentForm" onsubmit="return sendEmail(event)">
                 <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required placeholder="Your name">
+                    <label for="name"><i class="fas fa-user"></i> Name</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your name">
                 </div>
                 <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required placeholder="Your email">
+                    <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email">
                 </div>
                 <div class="form-group">
-                    <label for="subject">Type:</label>
+                    <label for="subject"><i class="fas fa-tag"></i> Type</label>
                     <select id="subject" name="subject" required>
-                        <option value="">Select type</option>
-                        <option value="Comment">Comment</option>
-                        <option value="Review">Review</option>
-                        <option value="Bug Report">Bug Report</option>
-                        <option value="Suggestion">Suggestion</option>
+                        <option value="">Select feedback type</option>
+                        <option value="Comment">💬 Comment</option>
+                        <option value="Review">⭐ Review</option>
+                        <option value="Bug Report">🐛 Bug Report</option>
+                        <option value="Suggestion">💡 Suggestion</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="message">Message:</label>
-                    <textarea id="message" name="message" rows="4" required placeholder="Your message here..."></textarea>
+                    <label for="message"><i class="fas fa-comment"></i> Message</label>
+                    <textarea id="message" name="message" rows="4" required placeholder="Type your message here..."></textarea>
                 </div>
-                <button type="submit" class="submit-btn">Send Message</button>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    Send Feedback
+                </button>
             </form>
         </div>
     </aside>
