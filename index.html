@@ -241,6 +241,51 @@
             .featured-grid, .benefits-grid {
                 grid-template-columns: 1fr;
             }
+            .menu-toggle {
+                display: block;
+            }
+            .menu-toggle span {
+                display: block;
+                width: 20px;
+                height: 2px;
+                background: #333;
+                margin: 5px 0;
+            }
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -5px);
+            }
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #f8f9fa;
+                padding: 1rem;
+                border-radius: 10px;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            }
+            nav ul.active {
+                display: block;
+            }
+            nav ul li {
+                margin-bottom: 1rem;
+            }
+            nav ul li a {
+                display: block;
+                padding: 0.5rem;
+                border-radius: 5px;
+            }
+            nav ul li a:hover {
+                background: #2193b0;
+                color: white;
+            }
         }
 
         .contact-info a {
@@ -284,8 +329,13 @@
     <header>
         <nav>
             <div class="logo">Mykhil Creations</div>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <ul>
-                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
                 <li><a href="projects.html"><i class="fas fa-code"></i> Projects</a></li>
                 <li><a href="blog.html"><i class="fas fa-blog"></i> Blog</a></li>
                 <li><a href="about.html"><i class="fas fa-user"></i> About</a></li>
@@ -395,6 +445,26 @@
                     sessionStorage.removeItem('focusNameInput');
                 }
             }
+        });
+
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.querySelector('nav ul');
+            
+            menuToggle.addEventListener('click', function() {
+                menuToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            // Close menu when clicking a link
+            const navLinks = document.querySelectorAll('nav ul li a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
         });
     </script>
 </body>

@@ -430,9 +430,14 @@
     <header>
         <nav>
             <div class="logo">Mykhil Creations</div>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <ul>
                 <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="projects.html"><i class="fas fa-code"></i> Projects</a></li>
+                <li><a href="projects.html" class="active"><i class="fas fa-code"></i> Projects</a></li>
                 <li><a href="blog.html"><i class="fas fa-blog"></i> Blog</a></li>
                 <li><a href="about.html"><i class="fas fa-user"></i> About</a></li>
             </ul>
@@ -724,6 +729,26 @@
                 closeGuideModal();
             }
         }
+
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.querySelector('nav ul');
+            
+            menuToggle.addEventListener('click', function() {
+                menuToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            // Close menu when clicking a link
+            const navLinks = document.querySelectorAll('nav ul li a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+        });
     </script>
 </body>
 </html>
