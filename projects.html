@@ -68,8 +68,13 @@
         /* Projects Section Styles */
         .projects {
             padding: 4rem 2rem;
-            margin-right: 350px;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        @media screen and (min-width: 769px) {
+            .projects {
+                margin-right: 350px;
+            }
         }
 
         .project-grid {
@@ -230,7 +235,6 @@
         /* Responsive Design */
         @media (max-width: 768px) {
             .projects {
-                margin-right: 0;
                 padding: 2rem 1rem;
             }
             .hero h1 {
@@ -259,6 +263,24 @@
             z-index: 100;
         }
 
+        @media screen and (max-width: 768px) {
+            .comments-section {
+                position: relative;
+                top: 0;
+                width: 100%;
+                height: auto;
+                border-left: none;
+                border-top: 1px solid rgba(0,0,0,0.1);
+                box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+                margin-top: 2rem;
+            }
+
+            .projects {
+                margin-right: 0;
+                padding: 2rem 1rem;
+            }
+        }
+
         .comments-section .container {
             max-width: 100%;
             margin: 0;
@@ -269,59 +291,8 @@
             font-size: 1.5rem;
             margin: 0 0 1.5rem;
             padding-bottom: 0.5rem;
-            border-bottom: 2px solid #007bff;
-            text-align: center;
-            color: #000;
-            font-weight: 600;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #333;
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            background: #f8f9fa;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
-            background: white;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 1rem;
-            border: none;
-            border-radius: 8px;
-            background: linear-gradient(45deg, #007bff, #00ff88);
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,123,255,0.2);
+            border-bottom: 2px solid var(--secondary-color);
+            color: var(--primary-color);
         }
 
         /* Guide Modal Styles */
