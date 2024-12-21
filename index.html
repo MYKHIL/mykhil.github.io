@@ -199,6 +199,11 @@
             font-size: 1.2rem;
         }
 
+        .contact-info .phone-number {
+            font-weight: 500;
+            margin-right: 10px;
+        }
+
         @keyframes slideDown {
             from { transform: translateY(-50px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
@@ -236,6 +241,42 @@
             .featured-grid, .benefits-grid {
                 grid-template-columns: 1fr;
             }
+        }
+
+        .contact-info a {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-info a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        .contact-links {
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .contact-links a {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background: #f8f9fa;
+            margin: 0 5px;
+            transition: all 0.3s;
+        }
+
+        .contact-links a:hover {
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+
+        .contact-links i {
+            margin-right: 5px;
         }
     </style>
 </head>
@@ -314,16 +355,47 @@
             <h2>Get in Touch</h2>
             <p>Have questions about our software solutions?</p>
             <div class="contact-info">
-                <p><i class="fas fa-phone floating"></i> +233 54 241 0613</p>
-                <p><i class="fas fa-envelope floating"></i> darkmic50@gmail.com</p>
+                <p>
+                    <i class="fas fa-phone floating"></i> 
+                    <span class="phone-number">+233 54 241 0613</span>
+                    <span class="contact-links">
+                        <a href="tel:+233542410613" title="Call us"><i class="fas fa-phone-alt"></i> Call</a> | 
+                        <a href="https://wa.me/233542410613" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                    </span>
+                </p>
+                <p>
+                    <i class="fas fa-envelope floating"></i> 
+                    darkmic50@gmail.com
+                    <a href="about.html#contact-form" onclick="focusNameInput()" title="Send us an email" class="contact-links">
+                        <i class="fas fa-paper-plane"></i> Send Email
+                    </a>
+                </p>
             </div>
-            <a href="about.html" class="cta-button">Contact Us</a>
+            <a href="about.html#contact-form" class="cta-button">Contact Us</a>
         </section>
     </main>
 
     <footer>
         <p>&copy; 2024 Mykhil Creations. All rights reserved.</p>
     </footer>
-    <script src="script.js"></script>
+    <script>
+        // Function to focus the name input when redirected from email link
+        function focusNameInput() {
+            // Store a flag in sessionStorage to indicate we should focus the name input
+            sessionStorage.setItem('focusNameInput', 'true');
+        }
+
+        // Check if we should focus the name input (when page loads)
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.location.pathname.endsWith('about.html') && sessionStorage.getItem('focusNameInput')) {
+                const nameInput = document.querySelector('#name');
+                if (nameInput) {
+                    nameInput.focus();
+                    // Clear the flag
+                    sessionStorage.removeItem('focusNameInput');
+                }
+            }
+        });
+    </script>
 </body>
 </html>
