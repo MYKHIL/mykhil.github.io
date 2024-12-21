@@ -3,409 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - Mykhil Creations</title>
+    <title>Tech Insights - Mykhil Creations</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/feedback.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Hero Section Styles */
-        .hero {
-            position: relative;
-            background: linear-gradient(135deg, #1a1a1a 0%, #373737 100%);
-            padding: 6rem 2rem;
-            text-align: center;
+        /* Table of Contents Styles */
+        .toc {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            width: 300px;
+            height: calc(100vh - 80px);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            transition: transform 0.3s ease;
+            transform: translateX(-100%);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .toc.active {
+            transform: translateX(0);
+        }
+
+        .toc-toggle {
+            position: fixed;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            background: var(--secondary-color);
             color: white;
-            overflow: hidden;
+            border: none;
+            padding: 1rem 0.5rem;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            z-index: 101;
+            transition: all 0.3s ease;
+            writing-mode: vertical-lr;
+            text-orientation: mixed;
+            letter-spacing: 2px;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
-            z-index: 1;
+        .toc-toggle:hover {
+            background: var(--hover-color);
+            padding-left: 1rem;
         }
 
-        .dot-pattern {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            animation: fadeIn 2s ease-out;
-            z-index: 1;
+        .toc h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-color);
         }
 
-        .hero h1, .hero p {
-            position: relative;
-            z-index: 2;
-            opacity: 0;
-            transform: translateY(20px);
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
 
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            animation: slideDown 0.8s ease-out forwards;
-            background: linear-gradient(45deg, #fff, #f0f0f0);
-            -webkit-background-clip: text;
-            background-clip: text;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        .toc li {
+            margin: 0;
         }
 
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            animation: slideDown 0.8s ease-out 0.2s forwards;
-            color: #e0e0e0;
+        .toc a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem;
+            border-radius: 4px;
+            border-right: 3px solid transparent;
         }
 
-        /* Blog Section Styles */
+        .toc a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .toc a:hover {
+            background: rgba(52, 152, 219, 0.1);
+            border-right-color: var(--secondary-color);
+            padding-left: 1.2rem;
+        }
+
+        .toc a.active {
+            background: var(--secondary-color);
+            color: white;
+            border-right-color: var(--primary-color);
+        }
+
+        /* Blog Content Styles */
         .blog-section {
             padding: 4rem 2rem;
-            margin-right: 350px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
         }
 
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
+        .blog-section.shifted {
+            margin-left: 300px;
         }
 
         .blog-card {
+            margin-bottom: 4rem;
             background: white;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease-out forwards;
-            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .blog-image-container {
             position: relative;
-        }
-
-        .blog-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #007bff, #00ff88);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease;
-        }
-
-        .blog-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-        }
-
-        .blog-card:hover::before {
-            transform: scaleX(1);
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
         }
 
         .blog-image {
             width: 100%;
-            height: 200px;
+            height: 100%;
             object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .blog-card:hover .blog-image {
+            transform: scale(1.05);
         }
 
         .blog-content {
-            padding: 1.5rem;
-        }
-
-        .blog-title {
-            font-size: 1.5rem;
-            color: #2c3e50;
-            margin: 0 0 1rem 0;
-            line-height: 1.3;
-        }
-
-        .blog-excerpt {
-            color: #666;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
+            padding: 2rem;
         }
 
         .blog-meta {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
             color: #666;
             font-size: 0.9rem;
         }
 
-        .blog-date {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .blog-category {
-            background: linear-gradient(45deg, #007bff, #00ff88);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .read-more {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #007bff;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .read-more:hover {
-            color: #0056b3;
-        }
-
-        /* Comments Section Styles */
-        .comments-section {
-            position: fixed;
-            top: 80px;
-            right: 0;
-            width: 350px;
-            height: calc(100vh - 80px);
-            background: white;
-            padding: 1.5rem;
-            border-left: 1px solid rgba(0,0,0,0.1);
-            overflow-y: auto;
-            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-            z-index: 100;
-        }
-
-        .comments-section .container {
-            max-width: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        .comments-section .section-title {
-            font-size: 1.5rem;
-            margin: 0 0 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #007bff;
-            text-align: center;
-            color: #000;
-            font-weight: 600;
-        }
-
-        .form-group {
+        .blog-title {
+            font-size: 2rem;
             margin-bottom: 1rem;
+            color: var(--primary-color);
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #333;
-            font-weight: 500;
+        .blog-excerpt {
+            color: #444;
+            line-height: 1.8;
+            margin-bottom: 2rem;
         }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            background: #f8f9fa;
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            margin: 2rem 0;
         }
 
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
-            background: white;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 1rem;
-            border: none;
-            border-radius: 8px;
-            background: linear-gradient(45deg, #007bff, #00ff88);
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,123,255,0.2);
-        }
-
-        /* Guide Modal Styles */
-        .guide-modal {
-            display: none;
-            position: fixed;
+        .video-container iframe {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .guide-modal.show {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .guide-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            max-width: 500px;
-            position: relative;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .guide-content h3 {
-            color: #1a1a1a;
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-        }
-
-        .guide-steps {
-            margin-bottom: 1.5rem;
-        }
-
-        .guide-step {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-            padding: 0.8rem;
-            background: #f8f9fa;
-            border-radius: 5px;
-        }
-
-        .step-number {
-            background: #007bff;
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1rem;
-            flex-shrink: 0;
-            font-size: 0.9rem;
-        }
-
-        .step-text {
-            color: #444;
-            line-height: 1.4;
-            font-size: 1rem;
-        }
-
-        .guide-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .guide-btn {
-            padding: 0.8rem 1.5rem;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
             border: none;
+            border-radius: 8px;
         }
 
-        .guide-btn.cancel {
-            background: #f8f9fa;
-            color: #444;
+        .source-link {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--secondary-color);
+            text-decoration: none;
         }
 
-        .guide-btn.cancel:hover {
-            background: #e2e6ea;
+        .source-link:hover {
+            text-decoration: underline;
         }
 
-        .guide-btn.proceed {
-            background: #007bff;
-            color: white;
-        }
-
-        .guide-btn.proceed:hover {
-            background: #0056b3;
-        }
-
-        /* Responsive Design */
         @media (max-width: 768px) {
-            .blog-section {
-                margin-right: 0;
-                padding: 2rem 1rem;
-            }
-            .hero h1 {
-                font-size: 2rem;
-            }
-            .hero p {
-                font-size: 1rem;
-            }
-            .blog-grid {
-                grid-template-columns: 1fr;
-            }
-            .comments-section {
-                position: static;
+            .toc {
                 width: 100%;
-                height: auto;
-                margin-top: 2rem;
-                border-left: none;
-                border-top: 1px solid #ddd;
-                box-shadow: none;
+                transform: translateY(100%);
+                top: auto;
+                bottom: 0;
+                height: 70vh;
+                border-radius: 20px 20px 0 0;
             }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
+            
+            .toc.active {
                 transform: translateY(0);
             }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+            
+            .toc-toggle {
+                top: auto;
+                bottom: 20px;
+                left: 20px;
+                writing-mode: horizontal-tb;
+                border-radius: 30px;
+                padding: 0.8rem 1.5rem;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            
+            .toc-toggle:hover {
+                padding-left: 1.5rem;
+            }
+            
+            .blog-section.shifted {
+                margin-left: 0;
+                margin-bottom: 70vh;
             }
         }
     </style>
@@ -420,179 +235,349 @@
                 <span></span>
             </div>
             <ul>
-                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="projects.html"><i class="fas fa-code"></i> Projects</a></li>
-                <li><a href="blog.html" class="active"><i class="fas fa-blog"></i> Blog</a></li>
-                <li><a href="about.html"><i class="fas fa-user"></i> About</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="blog.html" class="active">Blog</a></li>
             </ul>
         </nav>
     </header>
 
+    <button class="toc-toggle">
+        <i class="fas fa-list"></i> Contents
+    </button>
+
+    <nav class="toc">
+        <h2>Table of Contents</h2>
+        <ul>
+            <li><a href="#ai-revolution"><i class="fas fa-robot"></i> AI Revolution in Africa</a></li>
+            <li><a href="#blockchain"><i class="fas fa-link"></i> Blockchain's Impact</a></li>
+            <li><a href="#cybersecurity"><i class="fas fa-shield-alt"></i> Cybersecurity Trends</a></li>
+            <li><a href="#future-tech"><i class="fas fa-microchip"></i> Future of Technology</a></li>
+            <li><a href="#digital-transformation"><i class="fas fa-sync"></i> Digital Transformation</a></li>
+            <li><a href="#fintech-innovation"><i class="fas fa-money-bill-wave"></i> Fintech Innovation</a></li>
+            <li><a href="#renewable-tech"><i class="fas fa-solar-panel"></i> Renewable Energy Tech</a></li>
+            <li><a href="#edtech-revolution"><i class="fas fa-graduation-cap"></i> EdTech Revolution</a></li>
+            <li><a href="#health-tech"><i class="fas fa-heartbeat"></i> Healthcare Technology</a></li>
+        </ul>
+    </nav>
+
     <main>
-        <section class="hero">
-            <div class="dot-pattern"></div>
-            <h1>Ghana Today</h1>
-            <p>Your trusted source for education, politics, and healthcare news in Ghana</p>
-        </section>
-
         <section class="blog-section">
-            <div class="blog-grid">
-                <!-- Education News -->
-                <article class="blog-card">
-                    <img src="https://cdn.ghanaweb.com/imagelib/pics/215/21555661.jpg" alt="Education Reform in Ghana" class="blog-image">
-                    <div class="blog-content">
-                        <span class="blog-category">Education</span>
-                        <h3 class="blog-title">Major Education Reform: Ghana Introduces New Curriculum</h3>
-                        <div class="blog-excerpt">
-                            <div class="short-content">
-                                The Ghana Education Service (GES) has announced a comprehensive overhaul of the national curriculum, marking the most significant education reform in the country's recent history.
-                            </div>
-                            <div class="full-content" style="display: none;">
-                                The Ghana Education Service (GES) has announced a comprehensive overhaul of the national curriculum, marking the most significant education reform in the country's recent history. The new curriculum emphasizes practical skills, digital literacy, and critical thinking. Teachers across the country are receiving specialized training to effectively deliver the updated content.
-                            </div>
-                        </div>
-                        <div class="blog-meta">
-                            <span class="blog-date"><i class="far fa-calendar"></i> Dec 20, 2023</span>
-                            <span class="blog-category">Education</span>
-                        </div>
-                        <a href="#" class="read-more" onclick="toggleContent(this); return false;">
-                            <span class="read-more-text">Read More</span>
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
+            <!-- AI Revolution Article -->
+            <article id="ai-revolution" class="blog-card">
+                <div class="blog-image-container">
+                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995" alt="AI Revolution in Africa" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> December 21, 2023</span>
+                        <span><i class="fas fa-user"></i> Michael Darko</span>
+                        <span><i class="fas fa-tag"></i> Technology</span>
                     </div>
-                </article>
+                    <h2 class="blog-title">The AI Revolution: Africa's Tech Renaissance</h2>
+                    <div class="blog-excerpt">
+                        <p>Africa is experiencing a remarkable transformation through artificial intelligence, with innovations spanning healthcare, agriculture, and education. This technological renaissance is reshaping the continent's future and creating unprecedented opportunities for its youth.</p>
+                        
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/9yO2qNkiLz4" allowfullscreen></iframe>
+                        </div>
 
-                <!-- Political News -->
-                <article class="blog-card">
-                    <img src="https://cdn.ghanaweb.com/imagelib/pics/934/93441086.jpg" alt="Economic Policy Update" class="blog-image">
-                    <div class="blog-content">
-                        <span class="blog-category">Politics</span>
-                        <h3 class="blog-title">Ghana's New Economic Direction: IMF Program Shows Positive Signs</h3>
-                        <div class="blog-excerpt">
-                            <div class="short-content">
-                                Recent economic data from the Bank of Ghana and the International Monetary Fund (IMF) indicates positive trends in Ghana's economic recovery program.
-                            </div>
-                            <div class="full-content" style="display: none;">
-                                Recent economic data from the Bank of Ghana and the International Monetary Fund (IMF) indicates positive trends in Ghana's economic recovery program. The data shows a significant reduction in inflation rates and an increase in economic growth. The IMF has expressed optimism about Ghana's economic prospects, citing the country's commitment to fiscal discipline and structural reforms.
-                            </div>
-                        </div>
-                        <div class="blog-meta">
-                            <span class="blog-date"><i class="far fa-calendar"></i> Dec 19, 2023</span>
-                            <span class="blog-category">Politics</span>
-                        </div>
-                        <a href="#" class="read-more" onclick="toggleContent(this); return false;">
-                            <span class="read-more-text">Read More</span>
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
-                    </div>
-                </article>
+                        <p>Key developments include:</p>
+                        <ul>
+                            <li>AI-powered healthcare diagnostics reaching remote areas</li>
+                            <li>Smart farming solutions increasing agricultural yields</li>
+                            <li>Educational platforms providing personalized learning</li>
+                            <li>Financial inclusion through AI-driven mobile banking</li>
+                        </ul>
 
-                <!-- Health News -->
-                <article class="blog-card">
-                    <img src="https://cdn.ghanaweb.com/imagelib/pics/486/48683965.jpg" alt="Healthcare Initiative" class="blog-image">
-                    <div class="blog-content">
-                        <span class="blog-category">Healthcare</span>
-                        <h3 class="blog-title">Revolutionary Healthcare App Launched in Ghana</h3>
-                        <div class="blog-excerpt">
-                            <div class="short-content">
-                                Ghana's Ministry of Health, in collaboration with the National Health Insurance Authority (NHIA), has launched a groundbreaking digital health platform named "GhanaCare Digital."
-                            </div>
-                            <div class="full-content" style="display: none;">
-                                Ghana's Ministry of Health, in collaboration with the National Health Insurance Authority (NHIA), has launched a groundbreaking digital health platform named "GhanaCare Digital." The platform aims to improve healthcare delivery and patient outcomes by providing a centralized system for healthcare providers to access patient records, prescribe medication, and track treatment plans.
-                            </div>
-                        </div>
-                        <div class="blog-meta">
-                            <span class="blog-date"><i class="far fa-calendar"></i> Dec 18, 2023</span>
-                            <span class="blog-category">Healthcare</span>
-                        </div>
-                        <a href="#" class="read-more" onclick="toggleContent(this); return false;">
-                            <span class="read-more-text">Read More</span>
-                            <i class="fas fa-chevron-right"></i>
+                        <a href="https://www.brookings.edu/articles/artificial-intelligence-in-africa-opportunities-and-challenges/" class="source-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Read the full research
                         </a>
                     </div>
-                </article>
-            </div>
-        </section>
+                </div>
+            </article>
 
-        <section class="blog-section">
-            <h2 class="section-title">Latest News</h2>
-            <div class="blog-grid">
-                <!-- EC Court Case News -->
-                <article class="blog-card">
-                    <img src="images/court.jpg" alt="Supreme Court Building" class="blog-image">
-                    <div class="blog-content">
-                        <h3 class="blog-title">EC's Legal Battle: Supreme Court Showdown</h3>
-                        <div class="blog-excerpt">
-                            <div class="short-content">
-                                The Electoral Commission faces a crucial Supreme Court case challenging recent decisions...
-                            </div>
-                            <div class="full-content" style="display: none;">
-                                The Electoral Commission faces a crucial Supreme Court case challenging recent decisions. The case, brought forward by concerned citizens, questions the constitutional validity of recent electoral reforms. Legal experts suggest this could have far-reaching implications for Ghana's democratic process. The hearing, scheduled for next week, has drawn significant public interest.
-                            </div>
-                        </div>
-                        <div class="blog-meta">
-                            <span class="blog-date"><i class="far fa-calendar"></i> Dec 20, 2023</span>
-                            <span class="blog-category">Politics</span>
-                        </div>
-                        <a href="#" class="read-more" onclick="toggleContent(this); return false;">
-                            <span class="read-more-text">Read More</span>
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
+            <!-- Blockchain Article -->
+            <article id="blockchain" class="blog-card">
+                <div class="blog-image-container">
+                    <img src="https://images.unsplash.com/photo-1644143379190-08a5f055de1d" alt="Blockchain Technology" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> December 20, 2023</span>
+                        <span><i class="fas fa-user"></i> Michael Darko</span>
+                        <span><i class="fas fa-tag"></i> Blockchain</span>
                     </div>
-                </article>
+                    <h2 class="blog-title">Blockchain: Revolutionizing African Elections</h2>
+                    <div class="blog-excerpt">
+                        <p>Blockchain technology is transforming electoral systems across Africa, offering unprecedented levels of transparency and security. From voter registration to result verification, this revolutionary technology is addressing long-standing challenges in electoral processes.</p>
 
-                <!-- Education Reform News -->
-                <article class="blog-card">
-                    <img src="images/education.jpg" alt="Students in Classroom" class="blog-image">
-                    <div class="blog-content">
-                        <h3 class="blog-title">Education Reform: New Curriculum Implementation</h3>
-                        <div class="blog-excerpt">
-                            <div class="short-content">
-                                Ghana's education sector sees major changes with the implementation of a new curriculum...
-                            </div>
-                            <div class="full-content" style="display: none;">
-                                Ghana's education sector sees major changes with the implementation of a new curriculum. The Ministry of Education has announced comprehensive reforms aimed at modernizing the education system. The new curriculum emphasizes practical skills, digital literacy, and critical thinking. Teachers across the country are receiving specialized training to effectively deliver the updated content.
-                            </div>
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/SSo_EIwHSd4" allowfullscreen></iframe>
                         </div>
-                        <div class="blog-meta">
-                            <span class="blog-date"><i class="far fa-calendar"></i> Dec 19, 2023</span>
-                            <span class="blog-category">Education</span>
-                        </div>
-                        <a href="#" class="read-more" onclick="toggleContent(this); return false;">
-                            <span class="read-more-text">Read More</span>
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
-                    </div>
-                </article>
 
-                <!-- Healthcare Initiative News -->
-                <article class="blog-card">
-                    <img src="images/healthcare.jpg" alt="Hospital Ward" class="blog-image">
-                    <div class="blog-content">
-                        <h3 class="blog-title">Healthcare Revolution: Digital Health Records</h3>
-                        <div class="blog-excerpt">
-                            <div class="short-content">
-                                Ghana's healthcare system embraces digital transformation with new electronic health records...
-                            </div>
-                            <div class="full-content" style="display: none;">
-                                Ghana's healthcare system embraces digital transformation with new electronic health records. The initiative aims to streamline patient care and improve healthcare delivery across the nation. The digital system will connect hospitals and clinics, enabling better coordination of patient care. Healthcare professionals are optimistic about the potential impact on patient outcomes.
-                            </div>
-                        </div>
-                        <div class="blog-meta">
-                            <span class="blog-date"><i class="far fa-calendar"></i> Dec 18, 2023</span>
-                            <span class="blog-category">Healthcare</span>
-                        </div>
-                        <a href="#" class="read-more" onclick="toggleContent(this); return false;">
-                            <span class="read-more-text">Read More</span>
-                            <i class="fas fa-chevron-right"></i>
+                        <p>Impact areas include:</p>
+                        <ul>
+                            <li>Tamper-proof voter registration systems</li>
+                            <li>Real-time result verification</li>
+                            <li>Reduced electoral fraud</li>
+                            <li>Enhanced voter confidence</li>
+                        </ul>
+
+                        <a href="https://www.weforum.org/agenda/2023/blockchain-technology-in-elections/" class="source-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Explore the research
                         </a>
                     </div>
-                </article>
-            </div>
+                </div>
+            </article>
+
+            <!-- Cybersecurity Article -->
+            <article id="cybersecurity" class="blog-card">
+                <div class="blog-image-container">
+                    <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7" alt="Cybersecurity" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> December 19, 2023</span>
+                        <span><i class="fas fa-user"></i> Michael Darko</span>
+                        <span><i class="fas fa-tag"></i> Security</span>
+                    </div>
+                    <h2 class="blog-title">2024 Cybersecurity Trends: Protecting Digital Africa</h2>
+                    <div class="blog-excerpt">
+                        <p>As Africa's digital landscape expands, cybersecurity becomes increasingly crucial. From mobile money protection to securing national infrastructure, the continent is adopting cutting-edge security measures to safeguard its digital future.</p>
+
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/sdpxddDzXfE" allowfullscreen></iframe>
+                        </div>
+
+                        <p>Key focus areas:</p>
+                        <ul>
+                            <li>Advanced threat detection systems</li>
+                            <li>AI-powered security solutions</li>
+                            <li>Mobile payment protection</li>
+                            <li>Critical infrastructure security</li>
+                        </ul>
+
+                        <a href="https://www.itnewsafrica.com/2023/cybersecurity-trends/" class="source-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Read the full analysis
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Future of Technology Article -->
+            <article id="future-tech" class="blog-card">
+                <div class="blog-image-container">
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa" alt="Future Technology" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> December 18, 2023</span>
+                        <span><i class="fas fa-user"></i> Michael Darko</span>
+                        <span><i class="fas fa-tag"></i> Innovation</span>
+                    </div>
+                    <h2 class="blog-title">The Future of Technology in Africa: 2024 and Beyond</h2>
+                    <div class="blog-excerpt">
+                        <p>Africa is poised for a technological leap forward, with innovations in quantum computing, green tech, and digital infrastructure reshaping the continent's future. This comprehensive analysis explores the trends and technologies that will define Africa's next decade.</p>
+
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/JhHMJCUmq28" allowfullscreen></iframe>
+                        </div>
+
+                        <p>Emerging trends:</p>
+                        <ul>
+                            <li>Quantum computing applications</li>
+                            <li>Sustainable technology solutions</li>
+                            <li>5G and 6G infrastructure</li>
+                            <li>Smart city initiatives</li>
+                        </ul>
+
+                        <a href="https://africanews.space/african-tech-trends-2024/" class="source-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Explore the future
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Digital Transformation Article -->
+            <article id="digital-transformation" class="blog-card">
+                <div class="blog-image-container">
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa" alt="Digital Transformation" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> December 17, 2023</span>
+                        <span><i class="fas fa-user"></i> Michael Darko</span>
+                        <span><i class="fas fa-tag"></i> Digital</span>
+                    </div>
+                    <h2 class="blog-title">Digital Transformation: Reshaping African Business</h2>
+                    <div class="blog-excerpt">
+                        <p>Africa's business landscape is undergoing a radical transformation through digitalization. From small enterprises to large corporations, digital tools and platforms are revolutionizing how business is conducted across the continent.</p>
+
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/kq6BqfXvzJc" allowfullscreen></iframe>
+                        </div>
+
+                        <p>Key transformations include:</p>
+                        <ul>
+                            <li>Cloud-based business solutions</li>
+                            <li>Digital payment integration</li>
+                            <li>E-commerce platforms</li>
+                            <li>Remote work infrastructure</li>
+                            <li>Digital marketing strategies</li>
+                        </ul>
+
+                        <a href="https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/the-future-of-digital-transformation-in-africa" class="source-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Read McKinsey's analysis
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Fintech Innovation Article -->
+            <article id="fintech-innovation" class="blog-card">
+                <div class="blog-image-container">
+                    <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44" alt="Fintech Innovation" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> December 16, 2023</span>
+                        <span><i class="fas fa-user"></i> Michael Darko</span>
+                        <span><i class="fas fa-tag"></i> Fintech</span>
+                    </div>
+                    <h2 class="blog-title">African Fintech: Leading Global Innovation</h2>
+                    <div class="blog-excerpt">
+                        <p>Africa's fintech sector is experiencing unprecedented growth, with innovations in mobile money, digital banking, and financial inclusion leading the way. The continent's unique challenges have sparked creative solutions that are now being adopted globally.</p>
+
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/qZEfJ-6-dX8" allowfullscreen></iframe>
+                        </div>
+
+                        <p>Revolutionary developments:</p>
+                        <ul>
+                            <li>Mobile money ecosystems</li>
+                            <li>Cross-border payment solutions</li>
+                            <li>Digital lending platforms</li>
+                            <li>Blockchain-based remittances</li>
+                            <li>AI-powered credit scoring</li>
+                        </ul>
+
+                        <a href="https://www.ifc.org/wps/wcm/connect/NEWS_EXT_CONTENT/IFC_External_Corporate_Site/News+and+Events/News/Africa-Fintech" class="source-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Explore IFC's report
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Renewable Energy Tech Article -->
+            <article id="renewable-tech" class="blog-card">
+                <div class="blog-image-container">
+                    <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276" alt="Renewable Energy" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> December 15, 2023</span>
+                        <span><i class="fas fa-user"></i> Michael Darko</span>
+                        <span><i class="fas fa-tag"></i> Energy</span>
+                    </div>
+                    <h2 class="blog-title">Green Tech Revolution: Africa's Sustainable Future</h2>
+                    <div class="blog-excerpt">
+                        <p>Africa is leading the charge in renewable energy innovation, with groundbreaking projects in solar, wind, and sustainable power solutions. These technologies are not just addressing energy needs but are creating new economic opportunities.</p>
+
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/AfDFRnhM7zA" allowfullscreen></iframe>
+                        </div>
+
+                        <p>Innovative solutions:</p>
+                        <ul>
+                            <li>Solar-powered microgrids</li>
+                            <li>Smart energy management systems</li>
+                            <li>Wind farm technologies</li>
+                            <li>Sustainable battery storage</li>
+                            <li>Green hydrogen initiatives</li>
+                        </ul>
+
+                        <a href="https://www.irena.org/Publications/2023/Africa-Renewable-Energy" class="source-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> View IRENA's full report
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- EdTech Revolution Article -->
+            <article id="edtech-revolution" class="blog-card">
+                <div class="blog-image-container">
+                    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7" alt="EdTech Revolution" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> December 14, 2023</span>
+                        <span><i class="fas fa-user"></i> Michael Darko</span>
+                        <span><i class="fas fa-tag"></i> Education</span>
+                    </div>
+                    <h2 class="blog-title">EdTech in Africa: Democratizing Education</h2>
+                    <div class="blog-excerpt">
+                        <p>Educational technology is transforming learning across Africa, making quality education accessible to millions. From mobile learning platforms to virtual classrooms, EdTech is bridging the educational divide.</p>
+
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/y9UXxQwYoB8" allowfullscreen></iframe>
+                        </div>
+
+                        <p>Transformative initiatives:</p>
+                        <ul>
+                            <li>Mobile learning applications</li>
+                            <li>Virtual reality classrooms</li>
+                            <li>AI-powered tutoring systems</li>
+                            <li>Digital content libraries</li>
+                            <li>Remote learning platforms</li>
+                        </ul>
+
+                        <a href="https://www.worldbank.org/en/topic/edutech/publication/reimagining-human-connections-technology-and-innovation-in-education" class="source-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Read World Bank's study
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Healthcare Technology Article -->
+            <article id="health-tech" class="blog-card">
+                <div class="blog-image-container">
+                    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef" alt="Healthcare Technology" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> December 13, 2023</span>
+                        <span><i class="fas fa-user"></i> Michael Darko</span>
+                        <span><i class="fas fa-tag"></i> Healthcare</span>
+                    </div>
+                    <h2 class="blog-title">Digital Health: Transforming African Healthcare</h2>
+                    <div class="blog-excerpt">
+                        <p>Digital health technologies are revolutionizing healthcare delivery in Africa, from telemedicine platforms to AI-powered diagnostics. These innovations are making healthcare more accessible, efficient, and affordable.</p>
+
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/8Zqj3JgZ6Qg" allowfullscreen></iframe>
+                        </div>
+
+                        <p>Healthcare innovations:</p>
+                        <ul>
+                            <li>Telemedicine platforms</li>
+                            <li>AI diagnostic tools</li>
+                            <li>Digital health records</li>
+                            <li>Mobile health apps</li>
+                            <li>Remote patient monitoring</li>
+                        </ul>
+
+                        <a href="https://www.who.int/publications/digital-health-strategy-for-africa" class="source-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Explore WHO's digital health strategy
+                        </a>
+                    </div>
+                </div>
+            </article>
         </section>
     </main>
 
-    <!-- Comments and Reviews Section -->
+    <!-- Comments Section -->
     <aside class="comments-section">
         <div class="container">
             <h2 class="section-title">Quick Feedback</h2>
@@ -627,85 +612,40 @@
         </div>
     </aside>
 
-    <!-- Guide Modal -->
-    <div class="guide-modal" id="guideModal">
-        <div class="guide-content">
-            <h3>Send Your Message</h3>
-            <div class="guide-steps">
-                <div class="guide-step">
-                    <div class="step-number">1</div>
-                    <div class="step-text">Your default email client will open with your message pre-filled.</div>
-                </div>
-                <div class="guide-step">
-                    <div class="step-number">2</div>
-                    <div class="step-text">Review your message in your email client to make any final adjustments.</div>
-                </div>
-                <div class="guide-step">
-                    <div class="step-number">3</div>
-                    <div class="step-text">Click the Send button in your email client to send your message.</div>
-                </div>
-                <div class="guide-step">
-                    <div class="step-number">4</div>
-                    <div class="step-text">You'll receive a confirmation once your message is sent successfully.</div>
-                </div>
-            </div>
-            <div class="guide-buttons">
-                <button class="guide-btn cancel" onclick="closeGuideModal()">Cancel</button>
-                <button class="guide-btn proceed" onclick="proceedWithEmail()">Continue</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        function toggleContent(button) {
-            const blogContent = button.closest('.blog-content');
-            const shortContent = blogContent.querySelector('.short-content');
-            const fullContent = blogContent.querySelector('.full-content');
-            const readMoreText = button.querySelector('.read-more-text');
-            const icon = button.querySelector('.fas');
-
-            if (fullContent.style.display === 'none') {
-                shortContent.style.display = 'none';
-                fullContent.style.display = 'block';
-                readMoreText.textContent = 'Read Less';
-                icon.classList.remove('fa-chevron-right');
-                icon.classList.add('fa-chevron-up');
-            } else {
-                shortContent.style.display = 'block';
-                fullContent.style.display = 'none';
-                readMoreText.textContent = 'Read More';
-                icon.classList.remove('fa-chevron-up');
-                icon.classList.add('fa-chevron-right');
-            }
-        }
-
-        let pendingMailtoLink = '';
-
-        function sendEmail(event) {
-            event.preventDefault();
-            const form = event.target;
-            const name = form.querySelector('[name="name"]').value;
-            const email = form.querySelector('[name="email"]').value;
-            const subject = form.querySelector('[name="subject"]').value;
-            const message = form.querySelector('[name="message"]').value;
-
-            pendingMailtoLink = `mailto:mykhilcreations@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`)}`;
+        // Table of Contents Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocToggle = document.querySelector('.toc-toggle');
+            const toc = document.querySelector('.toc');
+            const blogSection = document.querySelector('.blog-section');
             
-            document.getElementById('guideModal').classList.add('show');
-        }
+            tocToggle.addEventListener('click', function() {
+                toc.classList.toggle('active');
+                blogSection.classList.toggle('shifted');
+            });
 
-        function closeGuideModal() {
-            document.getElementById('guideModal').classList.remove('show');
-            pendingMailtoLink = '';
-        }
+            // Highlight current section in TOC
+            const observerCallback = (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        document.querySelectorAll('.toc a').forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').slice(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            };
 
-        function proceedWithEmail() {
-            if (pendingMailtoLink) {
-                window.location.href = pendingMailtoLink;
-                document.getElementById('commentForm').reset();
-                closeGuideModal();
-            }
-        }
+            const observer = new IntersectionObserver(observerCallback, {
+                threshold: 0.2
+            });
+
+            document.querySelectorAll('.blog-card').forEach(section => {
+                observer.observe(section);
+            });
+        });
 
         // Mobile menu toggle
         document.addEventListener('DOMContentLoaded', function() {
@@ -713,23 +653,24 @@
             const navMenu = document.querySelector('nav ul');
             
             menuToggle.addEventListener('click', function() {
-                menuToggle.classList.toggle('active');
+                this.classList.toggle('active');
                 navMenu.classList.toggle('active');
             });
-
-            // Close menu when clicking a link
-            const navLinks = document.querySelectorAll('nav ul li a');
-            navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    menuToggle.classList.remove('active');
-                    navMenu.classList.remove('active');
-                });
-            });
         });
-    </script>
 
-    <footer>
-        <p>&copy; 2024 Mykhil Creations. All rights reserved.</p>
-    </footer>
+        // Email handling function
+        function sendEmail(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            const mailtoLink = `mailto:contact@mykhilcreations.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`)}`;
+            window.location.href = mailtoLink;
+            
+            return false;
+        }
+    </script>
 </body>
 </html>
