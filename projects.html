@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Mykhil Creations</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Mykhil Creations</div>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="projects.html"><i class="fas fa-code"></i> Projects</a></li>
+                <li><a href="blog.html"><i class="fas fa-blog"></i> Blog</a></li>
+                <li><a href="about.html"><i class="fas fa-user"></i> About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>My Projects</h1>
+            <p>A collection of my software development projects</p>
+        </section>
+
+        <section class="projects">
+            <div class="project-grid">
+                <div class="project-card">
+                    <h3>Project One</h3>
+                    <p>A comprehensive project showcasing C# development skills.</p>
+                    <div class="code-snippet">
+                        <pre><code>public class ProjectManager {
+    private readonly ILogger _logger;
+    
+    public async Task<Result> Execute() {
+        // Implementation
+    }
+}</code></pre>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="btn"><i class="fab fa-github"></i> View Source</a>
+                        <a href="#" class="btn"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3>Project Two</h3>
+                    <p>An innovative solution using modern C# features.</p>
+                    <div class="code-snippet">
+                        <pre><code>public record DataModel(
+    string Id,
+    string Name,
+    DateTime Created
+);</code></pre>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="btn"><i class="fab fa-github"></i> View Source</a>
+                        <a href="#" class="btn"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3>Project Three</h3>
+                    <p>A backend service built with ASP.NET Core.</p>
+                    <div class="code-snippet">
+                        <pre><code>public interface IService {
+    Task<T> GetAsync<T>(string id);
+    Task<bool> SaveAsync<T>(T entity);
+}</code></pre>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="btn"><i class="fab fa-github"></i> View Source</a>
+                        <a href="#" class="btn"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Mykhil Creations. All rights reserved.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
