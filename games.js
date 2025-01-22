@@ -4,41 +4,55 @@ let food = { x: 0, y: 0 };
 let dx = 10;
 let dy = 0;
 let score = 0;
-let gameLoop;
+let snakeGameLoop;
 let isPaused = false;
 
-const snakeCanvas = document.getElementById('snakeCanvas');
-const snakeCtx = snakeCanvas.getContext('2d');
-const snakeSize = 10;
-
 function initSnake() {
+    const snakeCanvas = document.getElementById('snakeCanvas');
+    if (!snakeCanvas) return;
+
+    const snakeCtx = snakeCanvas.getContext('2d');
     snakeCanvas.width = 400;
     snakeCanvas.height = 400;
+    
     snake = [
         { x: 200, y: 200 },
         { x: 190, y: 200 },
         { x: 180, y: 200 },
     ];
+    dx = 10;
+    dy = 0;
     generateFood();
     score = 0;
     document.getElementById('snakeScore').textContent = score;
 }
 
 function generateFood() {
-    food.x = Math.floor(Math.random() * (snakeCanvas.width / snakeSize)) * snakeSize;
-    food.y = Math.floor(Math.random() * (snakeCanvas.height / snakeSize)) * snakeSize;
+    const snakeCanvas = document.getElementById('snakeCanvas');
+    if (!snakeCanvas) return;
+
+    food.x = Math.floor(Math.random() * (snakeCanvas.width / 10)) * 10;
+    food.y = Math.floor(Math.random() * (snakeCanvas.height / 10)) * 10;
 }
 
 function drawSnake() {
+    const snakeCanvas = document.getElementById('snakeCanvas');
+    if (!snakeCanvas) return;
+
+    const snakeCtx = snakeCanvas.getContext('2d');
     snake.forEach((segment) => {
         snakeCtx.fillStyle = '#4CAF50';
-        snakeCtx.fillRect(segment.x, segment.y, snakeSize, snakeSize);
+        snakeCtx.fillRect(segment.x, segment.y, 10, 10);
     });
 }
 
 function drawFood() {
+    const snakeCanvas = document.getElementById('snakeCanvas');
+    if (!snakeCanvas) return;
+
+    const snakeCtx = snakeCanvas.getContext('2d');
     snakeCtx.fillStyle = '#FF5252';
-    snakeCtx.fillRect(food.x, food.y, snakeSize, snakeSize);
+    snakeCtx.fillRect(food.x, food.y, 10, 10);
 }
 
 function moveSnake() {
@@ -54,6 +68,9 @@ function moveSnake() {
 }
 
 function checkCollision() {
+    const snakeCanvas = document.getElementById('snakeCanvas');
+    if (!snakeCanvas) return true;
+
     const head = snake[0];
     return (
         head.x < 0 ||
@@ -64,56 +81,47 @@ function checkCollision() {
     );
 }
 
-function gameLoop() {
+function updateSnakeGame() {
     if (isPaused) return;
+    
+    const snakeCanvas = document.getElementById('snakeCanvas');
+    if (!snakeCanvas) return;
+
+    const snakeCtx = snakeCanvas.getContext('2d');
     snakeCtx.clearRect(0, 0, snakeCanvas.width, snakeCanvas.height);
     moveSnake();
+    
     if (checkCollision()) {
         alert('Game Over! Score: ' + score);
         startSnakeGame();
         return;
     }
+    
     drawFood();
     drawSnake();
 }
 
 function startSnakeGame() {
-    clearInterval(gameLoop);
+    clearInterval(snakeGameLoop);
     initSnake();
     isPaused = false;
-    gameLoop = setInterval(gameLoop, 100);
+    snakeGameLoop = setInterval(updateSnakeGame, 100);
 }
 
 function pauseSnakeGame() {
     isPaused = !isPaused;
 }
 
-document.addEventListener('keydown', (e) => {
-    switch (e.key) {
-        case 'ArrowUp':
-            if (dy === 0) { dx = 0; dy = -snakeSize; }
-            break;
-        case 'ArrowDown':
-            if (dy === 0) { dx = 0; dy = snakeSize; }
-            break;
-        case 'ArrowLeft':
-            if (dx === 0) { dx = -snakeSize; dy = 0; }
-            break;
-        case 'ArrowRight':
-            if (dx === 0) { dx = snakeSize; dy = 0; }
-            break;
-    }
-});
-
 // Checkers Game Implementation
-const checkersCanvas = document.getElementById('checkersCanvas');
-const checkersCtx = checkersCanvas.getContext('2d');
 let board = [];
 let selectedPiece = null;
 let currentPlayer = 1;
-let moves = [];
+let moveHistory = [];
 
 function initCheckers() {
+    const checkersCanvas = document.getElementById('checkersCanvas');
+    if (!checkersCanvas) return;
+
     checkersCanvas.width = 400;
     checkersCanvas.height = 400;
     board = Array(8).fill().map(() => Array(8).fill(0));
@@ -129,12 +137,16 @@ function initCheckers() {
 }
 
 function drawCheckersBoard() {
+    const checkersCanvas = document.getElementById('checkersCanvas');
+    if (!checkersCanvas) return;
+
+    const checkersCtx = checkersCanvas.getContext('2d');
     const squareSize = checkersCanvas.width / 8;
     
     // Draw board
     for (let i = 0; i < 8; i++) {
         for (let j = 0; j < 8; j++) {
-            checkersCtx.fillStyle = (i + j) % 2 === 0 ? '#fff' : '#000';
+            checkersCtx.fillStyle = (i + j) % 2 === 0 ? '#fff' : '#2a2a2a';
             checkersCtx.fillRect(j * squareSize, i * squareSize, squareSize, squareSize);
             
             // Draw pieces
@@ -147,7 +159,7 @@ function drawCheckersBoard() {
                     0,
                     2 * Math.PI
                 );
-                checkersCtx.fillStyle = board[i][j] === 1 ? '#f00' : '#00f';
+                checkersCtx.fillStyle = board[i][j] === 1 ? '#ff4444' : '#4444ff';
                 checkersCtx.fill();
             }
         }
@@ -159,49 +171,15 @@ function startCheckersGame() {
 }
 
 function undoMove() {
-    if (moves.length > 0) {
-        const lastMove = moves.pop();
-        board = lastMove.boardState;
+    if (moveHistory.length > 0) {
+        const lastMove = moveHistory.pop();
+        board = lastMove.boardState.map(row => [...row]);
         currentPlayer = lastMove.player;
         drawCheckersBoard();
     }
 }
 
-checkersCanvas.addEventListener('click', (e) => {
-    const rect = checkersCanvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const squareSize = checkersCanvas.width / 8;
-    const row = Math.floor(y / squareSize);
-    const col = Math.floor(x / squareSize);
-    
-    if (!selectedPiece) {
-        if (board[row][col] === currentPlayer) {
-            selectedPiece = { row, col };
-            // Highlight selected piece
-            checkersCtx.strokeStyle = '#yellow';
-            checkersCtx.strokeRect(col * squareSize, row * squareSize, squareSize, squareSize);
-        }
-    } else {
-        // Handle move logic here
-        if (isValidMove(selectedPiece, { row, col })) {
-            moves.push({
-                boardState: board.map(row => [...row]),
-                player: currentPlayer
-            });
-            makeMove(selectedPiece, { row, col });
-            selectedPiece = null;
-            currentPlayer = currentPlayer === 1 ? 2 : 1;
-            drawCheckersBoard();
-        } else {
-            selectedPiece = null;
-            drawCheckersBoard();
-        }
-    }
-});
-
 function isValidMove(from, to) {
-    // Implement move validation logic
     const rowDiff = Math.abs(to.row - from.row);
     const colDiff = Math.abs(to.col - from.col);
     
@@ -220,6 +198,11 @@ function isValidMove(from, to) {
 }
 
 function makeMove(from, to) {
+    moveHistory.push({
+        boardState: board.map(row => [...row]),
+        player: currentPlayer
+    });
+
     board[to.row][to.col] = board[from.row][from.col];
     board[from.row][from.col] = 0;
     
@@ -231,16 +214,15 @@ function makeMove(from, to) {
 }
 
 // Memory Card Game Implementation
-const memoryGame = document.getElementById('memoryGame');
-let cards = [];
+let memoryCards = [];
 let flippedCards = [];
 let matchedPairs = 0;
-let moves = 0;
+let memoryMoves = 0;
 let canFlip = true;
 
 const cardSymbols = ['♠', '♣', '♥', '♦', '★', '♪', '♫', '☀'];
 
-function createCard(symbol) {
+function createMemoryCard(symbol) {
     const card = document.createElement('div');
     card.className = 'memory-card';
     card.innerHTML = `
@@ -258,19 +240,22 @@ function shuffleCards() {
 }
 
 function startMemoryGame() {
+    const memoryGame = document.getElementById('memoryGame');
+    if (!memoryGame) return;
+
     memoryGame.innerHTML = '';
-    cards = [];
+    memoryCards = [];
     flippedCards = [];
     matchedPairs = 0;
-    moves = 0;
+    memoryMoves = 0;
     canFlip = true;
-    document.getElementById('memoryMoves').textContent = moves;
+    document.getElementById('memoryMoves').textContent = memoryMoves;
     
     const shuffledSymbols = shuffleCards();
     
     shuffledSymbols.forEach((symbol) => {
-        const card = createCard(symbol);
-        cards.push(card);
+        const card = createMemoryCard(symbol);
+        memoryCards.push(card);
         memoryGame.appendChild(card);
         
         card.addEventListener('click', () => flipCard(card, symbol));
@@ -284,8 +269,8 @@ function flipCard(card, symbol) {
     flippedCards.push({ card, symbol });
     
     if (flippedCards.length === 2) {
-        moves++;
-        document.getElementById('memoryMoves').textContent = moves;
+        memoryMoves++;
+        document.getElementById('memoryMoves').textContent = memoryMoves;
         canFlip = false;
         
         if (flippedCards[0].symbol === flippedCards[1].symbol) {
@@ -296,7 +281,7 @@ function flipCard(card, symbol) {
             
             if (matchedPairs === cardSymbols.length) {
                 setTimeout(() => {
-                    alert('Congratulations! You won in ' + moves + ' moves!');
+                    alert('Congratulations! You won in ' + memoryMoves + ' moves!');
                     startMemoryGame();
                 }, 500);
             }
@@ -312,7 +297,50 @@ function flipCard(card, symbol) {
 
 // Initialize games when the page loads
 document.addEventListener('DOMContentLoaded', () => {
-    if (snakeCanvas) initSnake();
-    if (checkersCanvas) initCheckers();
-    if (memoryGame) startMemoryGame();
+    // Initialize Snake Game
+    if (document.getElementById('snakeCanvas')) {
+        initSnake();
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp' && dy === 0) { dx = 0; dy = -10; }
+            else if (e.key === 'ArrowDown' && dy === 0) { dx = 0; dy = 10; }
+            else if (e.key === 'ArrowLeft' && dx === 0) { dx = -10; dy = 0; }
+            else if (e.key === 'ArrowRight' && dx === 0) { dx = 10; dy = 0; }
+        });
+    }
+
+    // Initialize Checkers Game
+    if (document.getElementById('checkersCanvas')) {
+        initCheckers();
+        const checkersCanvas = document.getElementById('checkersCanvas');
+        checkersCanvas.addEventListener('click', (e) => {
+            const rect = checkersCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const squareSize = checkersCanvas.width / 8;
+            const row = Math.floor(y / squareSize);
+            const col = Math.floor(x / squareSize);
+            
+            if (!selectedPiece) {
+                if (board[row][col] === currentPlayer) {
+                    selectedPiece = { row, col };
+                    const ctx = checkersCanvas.getContext('2d');
+                    ctx.strokeStyle = '#FFD700';
+                    ctx.lineWidth = 3;
+                    ctx.strokeRect(col * squareSize, row * squareSize, squareSize, squareSize);
+                }
+            } else {
+                if (isValidMove(selectedPiece, { row, col })) {
+                    makeMove(selectedPiece, { row, col });
+                    currentPlayer = currentPlayer === 1 ? 2 : 1;
+                }
+                selectedPiece = null;
+                drawCheckersBoard();
+            }
+        });
+    }
+
+    // Initialize Memory Game
+    if (document.getElementById('memoryGame')) {
+        startMemoryGame();
+    }
 });
