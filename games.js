@@ -197,13 +197,15 @@ function handleCheckersClick(event) {
             makeMove(selectedPiece, move, move.captures);
             
             // Check for additional jumps
-            const additionalJumps = getValidMoves(move.row, move.col);
-            if (additionalJumps.length > 0 && additionalJumps[0].captures.length > 0) {
-                // More jumps available, keep the same player's turn
-                mustJumpFrom = { row: move.row, col: move.col };
-                selectedPiece = mustJumpFrom;
-                drawCheckersBoard();
-                return;
+            if (move.captures.length > 0) {
+                const additionalJumps = getValidMoves(move.row, move.col);
+                if (additionalJumps.length > 0 && additionalJumps[0].captures.length > 0) {
+                    // More jumps available, keep the same player's turn
+                    mustJumpFrom = { row: move.row, col: move.col };
+                    selectedPiece = mustJumpFrom;
+                    drawCheckersBoard();
+                    return;
+                }
             }
             
             // End turn
@@ -324,7 +326,7 @@ function isKing(piece) {
     return piece === PLAYER_KING || piece === AI_KING;
 }
 
-function getValidMoves(row, col) {
+function getValidMoves(row, col, captureOnly = false) {
     const moves = [];
     const piece = board[row][col];
     
@@ -335,99 +337,88 @@ function getValidMoves(row, col) {
         return moves;
     }
     
-    // Kings can move in all directions, regular pieces only in their direction
-    const directions = isKing(piece) ? [-1, 1] : [piece === PLAYER_PIECE ? -1 : 1];
-    const jumpMoves = [];
+    // Kings can move in all directions, regular pieces can capture backwards
+    const directions = isKing(piece) ? [-1, 1] : (captureOnly ? [-1, 1] : [piece === PLAYER_PIECE ? -1 : 1]);
     
-    // Function to check for jumps in a direction
-    function checkJumpsInDirection(currentRow, currentCol, dRow, dCol, captures) {
-        const jumpRow = currentRow + dRow * 2;
-        const jumpCol = currentCol + dCol * 2;
-        const captureRow = currentRow + dRow;
-        const captureCol = currentCol + dCol;
-        
-        // Check if jump position is on board
-        if (jumpRow < 0 || jumpRow >= 8 || jumpCol < 0 || jumpCol >= 8) return;
-        
-        // Check if jump position is empty
-        if (board[jumpRow][jumpCol] !== EMPTY) return;
-        
-        // Check if we're jumping over an opponent's piece
-        if (!((isPlayerPiece(piece) && isAIPiece(board[captureRow][captureCol])) ||
-              (isAIPiece(piece) && isPlayerPiece(board[captureRow][captureCol])))) return;
-        
-        // Check if we've already captured this piece
-        if (captures.some(c => c.row === captureRow && c.col === captureCol)) return;
-        
-        // Valid jump found, add it and recursively check for more jumps
-        const newCaptures = [...captures, {row: captureRow, col: captureCol}];
-        const move = { row: jumpRow, col: jumpCol, captures: newCaptures };
-        jumpMoves.push(move);
-        
-        // Check for additional jumps from the new position
-        const jumpDirections = isKing(piece) ? [-1, 1] : [piece === PLAYER_PIECE ? -1 : 1];
-        for (let nextDRow of jumpDirections) {
-            for (let nextDCol of [-1, 1]) {
-                checkJumpsInDirection(jumpRow, jumpCol, nextDRow, nextDCol, newCaptures);
-            }
-        }
-    }
+    // First, check for all possible jumps (these are mandatory)
+    const jumpMoves = findAllJumpSequences(row, col, [], piece);
     
-    // Check all possible directions for jumps first
-    for (let dRow of [-1, 1]) { // Check both directions for jumps regardless of piece type
-        for (let dCol of [-1, 1]) {
-            checkJumpsInDirection(row, col, dRow, dCol, []);
-        }
-    }
-    
-    // If no jumps are available and we're not in a must-jump situation, add regular moves
-    if (jumpMoves.length === 0 && !mustJumpFrom) {
-        // Regular moves (including backwards for kings)
+    // If not looking for captures only and no jumps available, check regular moves
+    if (!captureOnly && jumpMoves.length === 0) {
         for (let dRow of directions) {
             for (let dCol of [-1, 1]) {
                 const newRow = row + dRow;
                 const newCol = col + dCol;
                 
-                if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
-                    if (board[newRow][newCol] === EMPTY) {
-                        moves.push({ row: newRow, col: newCol, captures: [] });
+                if (isValidPosition(newRow, newCol) && board[newRow][newCol] === EMPTY) {
+                    moves.push({ row: newRow, col: newCol, captures: [] });
+                }
+            }
+        }
+    }
+    
+    return jumpMoves.length > 0 ? jumpMoves : moves;
+}
+
+function isValidPosition(row, col) {
+    return row >= 0 && row < 8 && col >= 0 && col < 8;
+}
+
+function findAllJumpSequences(row, col, capturedPieces = [], piece) {
+    const sequences = [];
+    const directions = [-1, 1]; // All pieces can jump in all directions
+    
+    for (let dRow of directions) {
+        for (let dCol of [-1, 1]) {
+            const jumpRow = row + dRow * 2;
+            const jumpCol = col + dCol * 2;
+            const captureRow = row + dRow;
+            const captureCol = col + dCol;
+            
+            if (isValidPosition(jumpRow, jumpCol) && board[jumpRow][jumpCol] === EMPTY) {
+                const capturedPiece = board[captureRow][captureCol];
+                
+                // Check if we can capture an opponent's piece
+                if ((isPlayerPiece(piece) && isAIPiece(capturedPiece)) ||
+                    (isAIPiece(piece) && isPlayerPiece(capturedPiece))) {
+                    
+                    // Make sure we haven't already captured this piece in this sequence
+                    const alreadyCaptured = capturedPieces.some(pos => 
+                        pos.row === captureRow && pos.col === captureCol);
+                    
+                    if (!alreadyCaptured) {
+                        // Try the capture
+                        const newCaptured = [...capturedPieces, {row: captureRow, col: captureCol}];
+                        
+                        // Add this jump as a valid move
+                        sequences.push({
+                            row: jumpRow,
+                            col: jumpCol,
+                            captures: newCaptured
+                        });
+                        
+                        // Recursively find additional jumps from the new position
+                        const subsequences = findAllJumpSequences(jumpRow, jumpCol, newCaptured, piece);
+                        
+                        // If there are longer sequences possible, add them
+                        subsequences.forEach(subseq => {
+                            if (subseq.captures.length > sequences[sequences.length - 1].captures.length) {
+                                sequences.push(subseq);
+                            }
+                        });
                     }
                 }
             }
         }
     }
     
-    // Return jump moves if available, otherwise regular moves
-    return jumpMoves.length > 0 ? jumpMoves : moves;
-}
-
-function getAllValidMoves(player) {
-    const moves = [];
-    const jumpMoves = [];
-    
-    for (let row = 0; row < 8; row++) {
-        for (let col = 0; col < 8; col++) {
-            if ((player === 1 && isPlayerPiece(board[row][col])) ||
-                (player === 2 && isAIPiece(board[row][col]))) {
-                const pieceMoves = getValidMoves(row, col);
-                pieceMoves.forEach(move => {
-                    if (move.captures.length > 0) {
-                        jumpMoves.push({
-                            from: { row, col },
-                            to: move,
-                        });
-                    } else {
-                        moves.push({
-                            from: { row, col },
-                            to: move,
-                        });
-                    }
-                });
-            }
-        }
+    // Return only the sequences with the maximum number of captures
+    if (sequences.length > 0) {
+        const maxCaptures = Math.max(...sequences.map(seq => seq.captures.length));
+        return sequences.filter(seq => seq.captures.length === maxCaptures);
     }
     
-    return jumpMoves.length > 0 ? jumpMoves : moves;
+    return sequences;
 }
 
 function makeMove(from, to, captures) {
@@ -587,13 +578,80 @@ function evaluateBoard() {
     for (let row = 0; row < 8; row++) {
         for (let col = 0; col < 8; col++) {
             if (isPlayerPiece(board[row][col])) {
-                score -= (board[row][col] === PLAYER_KING ? 3 : 1);
+                // Base score for pieces
+                score -= (board[row][col] === PLAYER_KING ? 5 : 1);
+                
+                // Position bonus for regular pieces (encourage forward movement)
+                if (board[row][col] === PLAYER_PIECE) {
+                    score -= (7 - row) * 0.1; // More points for being closer to king row
+                }
+                
+                // Center control bonus
+                if (col >= 2 && col <= 5) {
+                    score -= 0.2;
+                }
+                
+                // Protected piece bonus (against back row or another piece)
+                if (row === 7 || (row < 7 && (
+                    (col > 0 && isPlayerPiece(board[row+1][col-1])) ||
+                    (col < 7 && isPlayerPiece(board[row+1][col+1]))
+                ))) {
+                    score -= 0.3;
+                }
             } else if (isAIPiece(board[row][col])) {
-                score += (board[row][col] === AI_KING ? 3 : 1);
+                // Base score for pieces
+                score += (board[row][col] === AI_KING ? 5 : 1);
+                
+                // Position bonus for regular pieces
+                if (board[row][col] === AI_PIECE) {
+                    score += row * 0.1; // More points for being closer to king row
+                }
+                
+                // Center control bonus
+                if (col >= 2 && col <= 5) {
+                    score += 0.2;
+                }
+                
+                // Protected piece bonus
+                if (row === 0 || (row > 0 && (
+                    (col > 0 && isAIPiece(board[row-1][col-1])) ||
+                    (col < 7 && isAIPiece(board[row-1][col+1]))
+                ))) {
+                    score += 0.3;
+                }
             }
         }
     }
     return score;
+}
+
+function getAllValidMoves(player) {
+    const moves = [];
+    const jumpMoves = [];
+    
+    for (let row = 0; row < 8; row++) {
+        for (let col = 0; col < 8; col++) {
+            if ((player === 1 && isPlayerPiece(board[row][col])) ||
+                (player === 2 && isAIPiece(board[row][col]))) {
+                const pieceMoves = getValidMoves(row, col);
+                pieceMoves.forEach(move => {
+                    if (move.captures.length > 0) {
+                        jumpMoves.push({
+                            from: { row, col },
+                            to: move,
+                        });
+                    } else {
+                        moves.push({
+                            from: { row, col },
+                            to: move,
+                        });
+                    }
+                });
+            }
+        }
+    }
+    
+    return jumpMoves.length > 0 ? jumpMoves : moves;
 }
 
 function startCheckersGame() {
