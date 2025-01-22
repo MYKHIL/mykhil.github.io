@@ -125,8 +125,7 @@ let selectedPiece = null;
 let currentPlayer = 1; // 1 = human (red), 2 = AI (blue)
 let moveHistory = [];
 let isThinking = false;
-let inMultiJump = false;
-let multiJumpPiece = null;
+let mustJumpFrom = null; // Track piece that must continue jumping
 
 const EMPTY = 0;
 const PLAYER_PIECE = 1;
@@ -157,9 +156,8 @@ function initCheckers() {
     currentPlayer = 1;
     moveHistory = [];
     selectedPiece = null;
-    inMultiJump = false;
-    multiJumpPiece = null;
     isThinking = false;
+    mustJumpFrom = null;
     drawCheckersBoard();
 
     // Add click event listener
@@ -179,8 +177,8 @@ function handleCheckersClick(event) {
 
     console.log('Click at row:', row, 'col:', col);
 
-    if (!selectedPiece && !inMultiJump) {
-        // Selecting a piece (only if not in middle of multi-jump)
+    if (!selectedPiece) {
+        // Selecting a piece
         if (isPlayerPiece(board[row][col])) {
             const moves = getValidMoves(row, col);
             if (moves.length > 0) {
@@ -191,36 +189,39 @@ function handleCheckersClick(event) {
         }
     } else {
         // Moving a piece
-        const pieceToMove = inMultiJump ? multiJumpPiece : selectedPiece;
-        const validMoves = getValidMoves(pieceToMove.row, pieceToMove.col);
+        const validMoves = getValidMoves(selectedPiece.row, selectedPiece.col);
         const move = validMoves.find(m => m.row === row && m.col === col);
         
         if (move) {
             console.log('Moving piece to:', row, col);
-            makeMove(pieceToMove, move, move.captures);
+            makeMove(selectedPiece, move, move.captures);
             
             // Check for additional jumps
-            if (move.captures.length > 0 && hasMoreJumps(move.row, move.col)) {
-                inMultiJump = true;
-                multiJumpPiece = { row: move.row, col: move.col };
-                selectedPiece = null;
-                console.log('Additional jumps available');
-                drawCheckersBoard();
-            } else {
-                // End turn
-                selectedPiece = null;
-                inMultiJump = false;
-                multiJumpPiece = null;
-                currentPlayer = 2;
-                drawCheckersBoard();
-                
-                // AI's turn
-                setTimeout(makeAIMove, 500);
+            if (move.captures.length > 0) {
+                const additionalJumps = getValidMoves(move.row, move.col);
+                if (additionalJumps.length > 0 && additionalJumps[0].captures.length > 0) {
+                    // More jumps available, keep the same player's turn
+                    mustJumpFrom = { row: move.row, col: move.col };
+                    selectedPiece = mustJumpFrom;
+                    drawCheckersBoard();
+                    return;
+                }
             }
-        } else if (!inMultiJump) {
-            // Invalid move, deselect piece (only if not in multi-jump)
+            
+            // End turn
             selectedPiece = null;
+            mustJumpFrom = null;
+            currentPlayer = 2;
             drawCheckersBoard();
+            
+            // AI's turn
+            setTimeout(makeAIMove, 500);
+        } else {
+            // Invalid move, deselect piece if not in middle of multiple jumps
+            if (!mustJumpFrom) {
+                selectedPiece = null;
+                drawCheckersBoard();
+            }
         }
     }
 }
@@ -275,20 +276,19 @@ function drawCheckersBoard() {
         }
     }
     
-    // Highlight selected piece or piece in multi-jump
-    const highlightPiece = inMultiJump ? multiJumpPiece : selectedPiece;
-    if (highlightPiece) {
-        ctx.strokeStyle = inMultiJump ? '#ff0000' : '#FFD700';
+    // Highlight selected piece and must-jump piece
+    if (selectedPiece) {
+        ctx.strokeStyle = '#FFD700';
         ctx.lineWidth = 3;
         ctx.strokeRect(
-            highlightPiece.col * squareSize,
-            highlightPiece.row * squareSize,
+            selectedPiece.col * squareSize,
+            selectedPiece.row * squareSize,
             squareSize,
             squareSize
         );
         
         // Highlight valid moves
-        const validMoves = getValidMoves(highlightPiece.row, highlightPiece.col);
+        const validMoves = getValidMoves(selectedPiece.row, selectedPiece.col);
         validMoves.forEach(move => {
             ctx.beginPath();
             ctx.arc(
@@ -298,9 +298,19 @@ function drawCheckersBoard() {
                 0,
                 2 * Math.PI
             );
-            ctx.fillStyle = inMultiJump ? 'rgba(255, 0, 0, 0.5)' : 'rgba(255, 215, 0, 0.5)';
+            ctx.fillStyle = move.captures.length > 0 ? 'rgba(255, 0, 0, 0.5)' : 'rgba(255, 215, 0, 0.5)';
             ctx.fill();
         });
+    }
+    
+    // Show "thinking" indicator
+    if (isThinking) {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        ctx.fillRect(0, 0, checkersCanvas.width, checkersCanvas.height);
+        ctx.fillStyle = '#fff';
+        ctx.font = '24px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('AI is thinking...', checkersCanvas.width/2, checkersCanvas.height/2);
     }
 }
 
@@ -316,11 +326,16 @@ function isKing(piece) {
     return piece === PLAYER_KING || piece === AI_KING;
 }
 
-function getValidMoves(row, col, checkingMultiJump = false) {
+function getValidMoves(row, col) {
     const moves = [];
     const piece = board[row][col];
     
     if (piece === EMPTY) return moves;
+    
+    // If we must jump from a specific piece, only return moves for that piece
+    if (mustJumpFrom && (row !== mustJumpFrom.row || col !== mustJumpFrom.col)) {
+        return moves;
+    }
     
     const directions = isKing(piece) ? [-1, 1] : [piece === PLAYER_PIECE ? -1 : 1];
     const jumpMoves = [];
@@ -328,8 +343,8 @@ function getValidMoves(row, col, checkingMultiJump = false) {
     // Check all possible directions
     for (let dRow of directions) {
         for (let dCol of [-1, 1]) {
-            // Single move (only if not in middle of multi-jump)
-            if (!inMultiJump && !checkingMultiJump) {
+            // Single move (only if not in middle of multiple jumps)
+            if (!mustJumpFrom) {
                 const newRow = row + dRow;
                 const newCol = col + dCol;
                 
@@ -343,17 +358,17 @@ function getValidMoves(row, col, checkingMultiJump = false) {
             // Jump move
             const jumpRow = row + dRow * 2;
             const jumpCol = col + dCol * 2;
-            const middleRow = row + dRow;
-            const middleCol = col + dCol;
+            const captureRow = row + dRow;
+            const captureCol = col + dCol;
             
             if (jumpRow >= 0 && jumpRow < 8 && jumpCol >= 0 && jumpCol < 8 &&
                 board[jumpRow][jumpCol] === EMPTY) {
-                if ((isPlayerPiece(piece) && isAIPiece(board[middleRow][middleCol])) ||
-                    (isAIPiece(piece) && isPlayerPiece(board[middleRow][middleCol]))) {
+                if ((isPlayerPiece(piece) && isAIPiece(board[captureRow][captureCol])) ||
+                    (isAIPiece(piece) && isPlayerPiece(board[captureRow][captureCol]))) {
                     jumpMoves.push({
                         row: jumpRow,
                         col: jumpCol,
-                        captures: [{row: middleRow, col: middleCol}]
+                        captures: [{row: captureRow, col: captureCol}]
                     });
                 }
             }
@@ -361,12 +376,36 @@ function getValidMoves(row, col, checkingMultiJump = false) {
     }
     
     // If there are jump moves available, they are mandatory
-    return jumpMoves.length > 0 ? jumpMoves : (!checkingMultiJump ? moves : []);
+    return jumpMoves.length > 0 ? jumpMoves : (!mustJumpFrom ? moves : []);
 }
 
-function hasMoreJumps(row, col) {
-    const moves = getValidMoves(row, col, true);
-    return moves.length > 0;
+function getAllValidMoves(player) {
+    const moves = [];
+    const jumpMoves = [];
+    
+    for (let row = 0; row < 8; row++) {
+        for (let col = 0; col < 8; col++) {
+            if ((player === 1 && isPlayerPiece(board[row][col])) ||
+                (player === 2 && isAIPiece(board[row][col]))) {
+                const pieceMoves = getValidMoves(row, col);
+                pieceMoves.forEach(move => {
+                    if (move.captures.length > 0) {
+                        jumpMoves.push({
+                            from: { row, col },
+                            to: move,
+                        });
+                    } else {
+                        moves.push({
+                            from: { row, col },
+                            to: move,
+                        });
+                    }
+                });
+            }
+        }
+    }
+    
+    return jumpMoves.length > 0 ? jumpMoves : moves;
 }
 
 function makeMove(from, to, captures) {
@@ -472,9 +511,29 @@ async function makeAIMove() {
     // Add a small delay to show "thinking" state
     await new Promise(resolve => setTimeout(resolve, 500));
     
-    const move = findBestMove();
-    if (move) {
+    let move = findBestMove();
+    let madeMove = false;
+    
+    while (move) {
         makeMove(move.from, move.to, move.to.captures);
+        madeMove = true;
+        
+        // Check for additional jumps
+        if (move.to.captures.length > 0) {
+            const additionalJumps = getValidMoves(move.to.row, move.to.col);
+            if (additionalJumps.length > 0 && additionalJumps[0].captures.length > 0) {
+                // Simulate finding best move from this position only
+                move = {
+                    from: { row: move.to.row, col: move.to.col },
+                    to: additionalJumps[0]
+                };
+                continue;
+            }
+        }
+        break;
+    }
+    
+    if (madeMove) {
         currentPlayer = 1;
     } else {
         alert('Game Over! You win!');
@@ -482,6 +541,7 @@ async function makeAIMove() {
     }
     
     isThinking = false;
+    mustJumpFrom = null;
     drawCheckersBoard();
 }
 
@@ -502,8 +562,6 @@ function undoMove() {
         board = lastState.boardState.map(row => [...row]);
         currentPlayer = lastState.player;
         selectedPiece = null;
-        inMultiJump = false;
-        multiJumpPiece = null;
         drawCheckersBoard();
     }
 }
