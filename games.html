@@ -30,22 +30,25 @@
         }
 
         .game-canvas {
-            width: 100%;
-            max-width: 400px;
+            width: 400px;
             height: 400px;
             margin: 1rem auto;
             border: 2px solid var(--border-color);
             border-radius: 8px;
             background: #1a1a1a;
             display: block;
+            touch-action: none;
         }
 
         #memoryGame {
+            width: 400px;
+            height: 400px;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
             padding: 10px;
             background: #1a1a1a;
+            margin: 1rem auto;
         }
 
         .memory-card {
