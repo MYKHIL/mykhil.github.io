@@ -157,6 +157,54 @@ function initCheckers() {
     selectedPiece = null;
     isThinking = false;
     drawCheckersBoard();
+
+    // Add click event listener
+    checkersCanvas.addEventListener('click', handleCheckersClick);
+}
+
+function handleCheckersClick(event) {
+    if (currentPlayer !== 1 || isThinking) return; // Only allow clicks during player's turn
+
+    const canvas = event.target;
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    const squareSize = canvas.width / 8;
+    const row = Math.floor(y / squareSize);
+    const col = Math.floor(x / squareSize);
+
+    console.log('Click at row:', row, 'col:', col);
+
+    if (!selectedPiece) {
+        // Selecting a piece
+        if (isPlayerPiece(board[row][col])) {
+            const moves = getValidMoves(row, col);
+            if (moves.length > 0) {
+                selectedPiece = { row, col };
+                console.log('Selected piece at:', row, col);
+                drawCheckersBoard();
+            }
+        }
+    } else {
+        // Moving a piece
+        const validMoves = getValidMoves(selectedPiece.row, selectedPiece.col);
+        const move = validMoves.find(m => m.row === row && m.col === col);
+        
+        if (move) {
+            console.log('Moving piece to:', row, col);
+            makeMove(selectedPiece, move, move.captures);
+            selectedPiece = null;
+            currentPlayer = 2;
+            drawCheckersBoard();
+            
+            // AI's turn
+            setTimeout(makeAIMove, 500);
+        } else {
+            // Invalid move, deselect piece
+            selectedPiece = null;
+            drawCheckersBoard();
+        }
+    }
 }
 
 function drawCheckersBoard() {
@@ -437,6 +485,11 @@ async function makeAIMove() {
 }
 
 function startCheckersGame() {
+    // Remove old event listener if it exists
+    const canvas = document.getElementById('checkersCanvas');
+    if (canvas) {
+        canvas.removeEventListener('click', handleCheckersClick);
+    }
     initCheckers();
 }
 
@@ -558,34 +611,6 @@ window.addEventListener('load', () => {
     if (checkersCanvas) {
         console.log('Found checkers canvas, initializing');
         initCheckers();
-        checkersCanvas.addEventListener('click', (e) => {
-            const rect = checkersCanvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const squareSize = checkersCanvas.width / 8;
-            const row = Math.floor(y / squareSize);
-            const col = Math.floor(x / squareSize);
-            
-            if (!selectedPiece) {
-                if (board[row][col] === currentPlayer) {
-                    selectedPiece = { row, col };
-                    const ctx = checkersCanvas.getContext('2d');
-                    ctx.strokeStyle = '#FFD700';
-                    ctx.lineWidth = 3;
-                    ctx.strokeRect(col * squareSize, row * squareSize, squareSize, squareSize);
-                }
-            } else {
-                if (isValidMove(selectedPiece, { row, col })) {
-                    makeMove(selectedPiece, { row, col }, []);
-                    currentPlayer = currentPlayer === 1 ? 2 : 1;
-                    if (currentPlayer === 2) {
-                        makeAIMove();
-                    }
-                }
-                selectedPiece = null;
-                drawCheckersBoard();
-            }
-        });
     } else {
         console.error('Checkers canvas not found');
     }
