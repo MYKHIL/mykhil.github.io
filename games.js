@@ -8,8 +8,12 @@ let snakeGameLoop;
 let isPaused = false;
 
 function initSnake() {
+    console.log('Initializing Snake Game');
     const snakeCanvas = document.getElementById('snakeCanvas');
-    if (!snakeCanvas) return;
+    if (!snakeCanvas) {
+        console.error('Snake canvas not found');
+        return;
+    }
 
     const snakeCtx = snakeCanvas.getContext('2d');
     snakeCanvas.width = 400;
@@ -25,6 +29,9 @@ function initSnake() {
     generateFood();
     score = 0;
     document.getElementById('snakeScore').textContent = score;
+    console.log('Snake Game initialized');
+    drawSnake();
+    drawFood();
 }
 
 function generateFood() {
@@ -296,9 +303,13 @@ function flipCard(card, symbol) {
 }
 
 // Initialize games when the page loads
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('load', () => {
+    console.log('Page loaded, initializing games');
+    
     // Initialize Snake Game
-    if (document.getElementById('snakeCanvas')) {
+    const snakeCanvas = document.getElementById('snakeCanvas');
+    if (snakeCanvas) {
+        console.log('Found snake canvas, initializing');
         initSnake();
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowUp' && dy === 0) { dx = 0; dy = -10; }
@@ -306,12 +317,15 @@ document.addEventListener('DOMContentLoaded', () => {
             else if (e.key === 'ArrowLeft' && dx === 0) { dx = -10; dy = 0; }
             else if (e.key === 'ArrowRight' && dx === 0) { dx = 10; dy = 0; }
         });
+    } else {
+        console.error('Snake canvas not found');
     }
 
     // Initialize Checkers Game
-    if (document.getElementById('checkersCanvas')) {
+    const checkersCanvas = document.getElementById('checkersCanvas');
+    if (checkersCanvas) {
+        console.log('Found checkers canvas, initializing');
         initCheckers();
-        const checkersCanvas = document.getElementById('checkersCanvas');
         checkersCanvas.addEventListener('click', (e) => {
             const rect = checkersCanvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -337,10 +351,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 drawCheckersBoard();
             }
         });
+    } else {
+        console.error('Checkers canvas not found');
     }
 
     // Initialize Memory Game
-    if (document.getElementById('memoryGame')) {
+    const memoryGame = document.getElementById('memoryGame');
+    if (memoryGame) {
+        console.log('Found memory game container, initializing');
         startMemoryGame();
+    } else {
+        console.error('Memory game container not found');
     }
 });
