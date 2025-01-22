@@ -187,13 +187,22 @@
             <!-- Checkers Game -->
             <div class="game-card">
                 <h2>Checkers</h2>
-                <canvas id="checkersCanvas" class="game-canvas"></canvas>
                 <div class="game-controls">
                     <button class="game-btn" onclick="startCheckersGame()">New Game</button>
                     <button class="game-btn" onclick="undoMove()">Undo Move</button>
                 </div>
+                <canvas id="checkersCanvas" class="game-canvas"></canvas>
                 <div class="game-instructions">
-                    <p>Click to select and move pieces. Double jump to capture multiple pieces!</p>
+                    <h3>How to Play:</h3>
+                    <ul>
+                        <li>You play as red pieces, AI plays as blue</li>
+                        <li>Click a piece to select it, then click a valid destination to move</li>
+                        <li>Regular pieces can only move diagonally forward</li>
+                        <li>Kings (crowned pieces) can move diagonally in any direction</li>
+                        <li>If you can capture an opponent's piece by jumping over it, you must take that move</li>
+                        <li>Multiple jumps in a single turn are required if available</li>
+                        <li>Reach the opposite end of the board to make your piece a king</li>
+                    </ul>
                 </div>
             </div>
 
