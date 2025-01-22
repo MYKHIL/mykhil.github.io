@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games - Mykhil Creations</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .game-canvas {
+            width: 100%;
+            max-width: 400px;
+            height: 400px;
+            margin: 1rem auto;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: #000;
+        }
+
+        .game-controls {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .game-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .game-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .score {
+            font-size: 1.2rem;
+            margin: 1rem 0;
+        }
+
+        .game-instructions {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Mykhil Creations</div>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="games.html" class="active">Games</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="dot-pattern"></div>
+            <h1>Fun & Games</h1>
+            <p>Take a break and enjoy some classic games!</p>
+        </section>
+
+        <section class="games-grid">
+            <!-- Snake Game -->
+            <div class="game-card">
+                <h2>Snake</h2>
+                <canvas id="snakeCanvas" class="game-canvas"></canvas>
+                <div class="score">Score: <span id="snakeScore">0</span></div>
+                <div class="game-controls">
+                    <button class="game-btn" onclick="startSnakeGame()">Start Game</button>
+                    <button class="game-btn" onclick="pauseSnakeGame()">Pause</button>
+                </div>
+                <div class="game-instructions">
+                    <p>Use arrow keys to control the snake. Collect food to grow longer!</p>
+                </div>
+            </div>
+
+            <!-- Checkers Game -->
+            <div class="game-card">
+                <h2>Checkers</h2>
+                <canvas id="checkersCanvas" class="game-canvas"></canvas>
+                <div class="game-controls">
+                    <button class="game-btn" onclick="startCheckersGame()">New Game</button>
+                    <button class="game-btn" onclick="undoMove()">Undo Move</button>
+                </div>
+                <div class="game-instructions">
+                    <p>Click to select and move pieces. Double jump to capture multiple pieces!</p>
+                </div>
+            </div>
+
+            <!-- Card Memory Game -->
+            <div class="game-card">
+                <h2>Memory Cards</h2>
+                <div id="memoryGame" class="game-canvas"></div>
+                <div class="score">Moves: <span id="memoryMoves">0</span></div>
+                <div class="game-controls">
+                    <button class="game-btn" onclick="startMemoryGame()">New Game</button>
+                </div>
+                <div class="game-instructions">
+                    <p>Match pairs of cards by remembering their positions!</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>Email: contact@mykhilcreations.com</p>
+                <div class="social-links">
+                    <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="games.html">Games</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Mykhil Creations. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="games.js"></script>
+</body>
+</html>
