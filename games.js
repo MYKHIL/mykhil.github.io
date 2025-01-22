@@ -215,7 +215,7 @@ function handleCheckersClick(event) {
             drawCheckersBoard();
             
             // AI's turn
-            setTimeout(makeAIMove, 500);
+            makeAIMove();
         } else {
             // Invalid move, deselect piece if not in middle of multiple jumps
             if (!mustJumpFrom) {
@@ -409,10 +409,14 @@ function getAllValidMoves(player) {
 }
 
 function makeMove(from, to, captures) {
-    moveHistory.push({
+    // Save the current state before making the move
+    const currentState = {
         boardState: board.map(row => [...row]),
-        player: currentPlayer
-    });
+        player: currentPlayer,
+        selectedPiece: selectedPiece,
+        mustJumpFrom: mustJumpFrom
+    };
+    moveHistory.push(currentState);
 
     // Move piece
     board[to.row][to.col] = board[from.row][from.col];
@@ -431,18 +435,92 @@ function makeMove(from, to, captures) {
     }
 }
 
-function evaluateBoard() {
-    let score = 0;
-    for (let row = 0; row < 8; row++) {
-        for (let col = 0; col < 8; col++) {
-            if (isPlayerPiece(board[row][col])) {
-                score -= (board[row][col] === PLAYER_KING ? 3 : 1);
-            } else if (isAIPiece(board[row][col])) {
-                score += (board[row][col] === AI_KING ? 3 : 1);
+function undoMove() {
+    if (moveHistory.length > 0) {
+        const lastState = moveHistory.pop();
+        board = lastState.boardState;
+        currentPlayer = lastState.player;
+        selectedPiece = lastState.selectedPiece;
+        mustJumpFrom = lastState.mustJumpFrom;
+        drawCheckersBoard();
+    }
+}
+
+async function makeAIMove() {
+    if (currentPlayer !== 2) return; // Not AI's turn
+    
+    isThinking = true;
+    drawCheckersBoard();
+    
+    // Add a small delay to show "thinking" state
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    let move = findBestMove();
+    let madeMove = false;
+    
+    while (move) {
+        console.log('AI making move:', move);
+        makeMove(move.from, move.to, move.to.captures);
+        madeMove = true;
+        
+        // Check for additional jumps
+        if (move.to.captures.length > 0) {
+            const additionalJumps = getValidMoves(move.to.row, move.to.col);
+            if (additionalJumps.length > 0 && additionalJumps[0].captures.length > 0) {
+                // Simulate finding best move from this position only
+                move = {
+                    from: { row: move.to.row, col: move.to.col },
+                    to: additionalJumps[0]
+                };
+                continue;
             }
         }
+        break;
     }
-    return score;
+    
+    if (madeMove) {
+        currentPlayer = 1;
+    } else {
+        const playerMoves = getAllValidMoves(1);
+        if (playerMoves.length === 0) {
+            alert('Game Over! AI wins!');
+        } else {
+            alert('Game Over! You win!');
+        }
+        startCheckersGame();
+    }
+    
+    isThinking = false;
+    mustJumpFrom = null;
+    drawCheckersBoard();
+}
+
+function findBestMove() {
+    const moves = getAllValidMoves(2);
+    if (moves.length === 0) return null;
+    
+    let bestMove = moves[0];
+    let bestValue = -Infinity;
+    
+    for (const move of moves) {
+        // Save current board state
+        const oldBoard = board.map(row => [...row]);
+        
+        // Try the move
+        makeMove(move.from, move.to, move.to.captures);
+        const moveValue = minimax(3, -Infinity, Infinity, false);
+        
+        // Restore board state
+        board = oldBoard;
+        
+        if (moveValue > bestValue) {
+            bestValue = moveValue;
+            bestMove = move;
+        }
+    }
+    
+    console.log('AI chose move:', bestMove, 'with value:', bestValue);
+    return bestMove;
 }
 
 function minimax(depth, alpha, beta, maximizingPlayer) {
@@ -482,67 +560,18 @@ function minimax(depth, alpha, beta, maximizingPlayer) {
     }
 }
 
-function findBestMove() {
-    const moves = getAllValidMoves(2);
-    if (moves.length === 0) return null;
-    
-    let bestMove = moves[0];
-    let bestValue = -Infinity;
-    
-    for (const move of moves) {
-        const oldBoard = board.map(row => [...row]);
-        makeMove(move.from, move.to, move.to.captures);
-        const moveValue = minimax(3, -Infinity, Infinity, false);
-        board = oldBoard;
-        
-        if (moveValue > bestValue) {
-            bestValue = moveValue;
-            bestMove = move;
-        }
-    }
-    
-    return bestMove;
-}
-
-async function makeAIMove() {
-    isThinking = true;
-    drawCheckersBoard();
-    
-    // Add a small delay to show "thinking" state
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    let move = findBestMove();
-    let madeMove = false;
-    
-    while (move) {
-        makeMove(move.from, move.to, move.to.captures);
-        madeMove = true;
-        
-        // Check for additional jumps
-        if (move.to.captures.length > 0) {
-            const additionalJumps = getValidMoves(move.to.row, move.to.col);
-            if (additionalJumps.length > 0 && additionalJumps[0].captures.length > 0) {
-                // Simulate finding best move from this position only
-                move = {
-                    from: { row: move.to.row, col: move.to.col },
-                    to: additionalJumps[0]
-                };
-                continue;
+function evaluateBoard() {
+    let score = 0;
+    for (let row = 0; row < 8; row++) {
+        for (let col = 0; col < 8; col++) {
+            if (isPlayerPiece(board[row][col])) {
+                score -= (board[row][col] === PLAYER_KING ? 3 : 1);
+            } else if (isAIPiece(board[row][col])) {
+                score += (board[row][col] === AI_KING ? 3 : 1);
             }
         }
-        break;
     }
-    
-    if (madeMove) {
-        currentPlayer = 1;
-    } else {
-        alert('Game Over! You win!');
-        startCheckersGame();
-    }
-    
-    isThinking = false;
-    mustJumpFrom = null;
-    drawCheckersBoard();
+    return score;
 }
 
 function startCheckersGame() {
@@ -551,17 +580,26 @@ function startCheckersGame() {
     if (canvas) {
         canvas.removeEventListener('click', handleCheckersClick);
     }
-    initCheckers();
-}
-
-function undoMove() {
-    if (moveHistory.length >= 2) {
-        // Undo both player's and AI's moves
-        moveHistory.pop(); // AI move
-        const lastState = moveHistory.pop(); // Player move
-        board = lastState.boardState.map(row => [...row]);
-        currentPlayer = lastState.player;
-        selectedPiece = null;
+    
+    // Reset game state
+    board = Array(8).fill().map(() => Array(8).fill(EMPTY));
+    currentPlayer = 1;
+    selectedPiece = null;
+    mustJumpFrom = null;
+    moveHistory = [];
+    isThinking = false;
+    
+    // Initialize board
+    for (let row = 0; row < 3; row++) {
+        for (let col = (row % 2); col < 8; col += 2) {
+            board[row][col] = AI_PIECE;
+            board[7-row][7-col] = PLAYER_PIECE;
+        }
+    }
+    
+    // Add click handler and draw board
+    if (canvas) {
+        canvas.addEventListener('click', handleCheckersClick);
         drawCheckersBoard();
     }
 }
