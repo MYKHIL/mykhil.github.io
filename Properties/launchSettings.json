@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "mykhilcreations": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:6726;http://localhost:6727"
+    }
+  }
+}
