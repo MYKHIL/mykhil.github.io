@@ -710,45 +710,44 @@
     </footer>
 
     <script>
-        // Function to track downloads using a counter service
-        async function trackDownload(event, projectId) {
+        // Function to track downloads using localStorage
+        function trackDownload(event, projectId) {
             event.preventDefault();
             const link = event.target.closest('a').href;
             
             // Open the download link immediately
             window.open(link, '_blank');
             
-            // Update the counter asynchronously
+            // Update the counter in localStorage
             try {
-                const response = await fetch(`https://api.countapi.xyz/hit/mykhilcreations/${projectId}`);
-                const data = await response.json();
+                let downloads = JSON.parse(localStorage.getItem('downloads')) || {};
+                downloads[projectId] = (downloads[projectId] || 0) + 1;
+                localStorage.setItem('downloads', JSON.stringify(downloads));
                 
                 // Update the download count display
                 const countElement = document.querySelector(`#${projectId}-downloads`);
                 if (countElement) {
-                    countElement.textContent = data.value;
+                    countElement.textContent = downloads[projectId];
                 }
             } catch (error) {
                 console.error('Error tracking download:', error);
             }
         }
 
-        // Load initial download counts
-        async function loadDownloadCounts() {
+        // Load initial download counts from localStorage
+        function loadDownloadCounts() {
             const projects = ['sba-pro-master', 'ecollation', 'referee-connect', 'ibank', 'exam-analyzer'];
-            
-            for (const project of projects) {
-                try {
-                    const response = await fetch(`https://api.countapi.xyz/get/mykhilcreations/${project}`);
-                    const data = await response.json();
-                    
+            try {
+                const downloads = JSON.parse(localStorage.getItem('downloads')) || {};
+                
+                for (const project of projects) {
                     const countElement = document.querySelector(`#${project}-downloads`);
                     if (countElement) {
-                        countElement.textContent = data.value || 0;
+                        countElement.textContent = downloads[project] || 0;
                     }
-                } catch (error) {
-                    console.error(`Error loading download count for ${project}:`, error);
                 }
+            } catch (error) {
+                console.error('Error loading download counts:', error);
             }
         }
 
