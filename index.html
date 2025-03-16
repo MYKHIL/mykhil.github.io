@@ -6,6 +6,7 @@
     <title>Mykhil Creations - Professional Software Solutions</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/connection-status.css">
     <style>
         :root {
             --gradient-1: linear-gradient(45deg, #2193b0, #6dd5ed);
@@ -296,6 +297,10 @@
     <header>
         <nav>
             <div class="logo">Mykhil Creations</div>
+            <div id="connection-status" class="connection-status">
+                <i class="fas fa-wifi"></i>
+                <span id="connection-label">Checking...</span>
+            </div>
             <div class="menu-toggle">
                 <span></span>
                 <span></span>
@@ -435,5 +440,6 @@
             });
         });
     </script>
+    <script src="js/connection-status.js"></script>
 </body>
 </html>
