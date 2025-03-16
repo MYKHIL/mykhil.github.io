@@ -710,9 +710,8 @@
     </footer>
 
     <script>
-        // JSONbin.io configuration
-        const BIN_ID = '65f2d1c1dc74654018a8d0c6';  // New JSONbin.io bin ID
-        const API_KEY = '$2b$10$Gy/yQxBXJGXOPQWPJRPgEuqGxOBr.Wd6LPPuXBXEEFQGVGXPBPHOi';  // Updated API key format
+        // JSONbin.io configuration - using public bin
+        const BIN_ID = '65f2d7c1dc74654018a8d2c1';  // Public bin ID
 
         // Function to track downloads
         async function trackDownload(event, projectId) {
@@ -721,12 +720,7 @@
             
             try {
                 // Get current counts
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-                    method: 'GET',
-                    headers: {
-                        'X-Access-Key': API_KEY
-                    }
-                });
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`);
                 const data = await response.json();
                 let counts = data.record || {};
                 
@@ -738,7 +732,7 @@
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-Access-Key': API_KEY
+                        'X-Bin-Meta': false
                     },
                     body: JSON.stringify(counts)
                 });
@@ -762,12 +756,7 @@
             const projects = ['sba-pro-master', 'ecollation', 'referee-connect', 'ibank', 'exam-analyzer'];
             
             try {
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-                    method: 'GET',
-                    headers: {
-                        'X-Access-Key': API_KEY
-                    }
-                });
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`);
                 const data = await response.json();
                 const counts = data.record || {};
                 
