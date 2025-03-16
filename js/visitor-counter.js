@@ -124,22 +124,40 @@ async function getVisitCount() {
         
         const data = await response.json();
         let counts = data.record || {};
+        let needsUpdate = false;
         
-        // Initialize counters if they don't exist
+        // Initialize total visit counter if it doesn't exist
         if (!counts.visits) {
-            counts.visits = 5000; // Start with 5000 visits as requested
-            
-            // Initialize page visits
-            if (!counts.pageVisits) {
-                counts.pageVisits = {};
+            counts.visits = 5000; // Start with 5000 visits
+            needsUpdate = true;
+        }
+        
+        // Initialize page visits object if it doesn't exist
+        if (!counts.pageVisits) {
+            counts.pageVisits = {};
+            needsUpdate = true;
+        }
+        
+        // Make sure current page has a counter
+        if (!counts.pageVisits[currentPage] && counts.pageVisits[currentPage] !== 0) {
+            counts.pageVisits[currentPage] = 0;
+            needsUpdate = true;
+        }
+        
+        // Initialize standard pages if they don't exist
+        const standardPages = ['home', 'projects', 'blog', 'games', 'about'];
+        standardPages.forEach(page => {
+            if (!counts.pageVisits[page] && counts.pageVisits[page] !== 0) {
+                counts.pageVisits[page] = 0;
+                needsUpdate = true;
             }
+        });
+        
+        // If we've initialized any values, update the bin
+        if (needsUpdate) {
+            debugLog('Initializing missing page visit counters');
             
-            if (!counts.pageVisits[currentPage]) {
-                counts.pageVisits[currentPage] = 0;
-            }
-            
-            // Update JSONbin with initialized visits
-            await fetch(JSONBIN_API_URL, {
+            const updateResponse = await fetch(JSONBIN_API_URL, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -148,16 +166,19 @@ async function getVisitCount() {
                 },
                 body: JSON.stringify(counts)
             });
+            
+            if (!updateResponse.ok) {
+                throw new Error(`Failed to update initialized counters. Status: ${updateResponse.status}`);
+            }
+            
+            debugLog('Missing counters initialized successfully');
         }
         
         debugLog(`Current total visit count: ${counts.visits}`);
-        debugLog(`Current ${currentPage} visit count: ${counts.pageVisits ? (counts.pageVisits[currentPage] || 0) : 0}`);
+        debugLog(`Current ${currentPage} visit count: ${counts.pageVisits[currentPage]}`);
         
         // Update the visitor counter displays
-        updateVisitorDisplay(
-            counts.visits, 
-            counts.pageVisits && counts.pageVisits[currentPage] ? counts.pageVisits[currentPage] : 0
-        );
+        updateVisitorDisplay(counts.visits, counts.pageVisits[currentPage]);
         
         return counts;
     } catch (error) {
