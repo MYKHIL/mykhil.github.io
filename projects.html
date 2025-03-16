@@ -475,12 +475,54 @@
         .submit-btn i {
             font-size: 1.1rem;
         }
+
+        /* Connection Status Styles */
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 0.9rem;
+            margin-right: 1rem;
+        }
+
+        .connection-status i {
+            font-size: 1rem;
+        }
+
+        .connection-status.good {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+        }
+
+        .connection-status.medium {
+            background: rgba(241, 196, 15, 0.2);
+            color: #f1c40f;
+        }
+
+        .connection-status.poor {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+
+        @media (max-width: 768px) {
+            .connection-status {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
         <nav>
             <div class="logo">Mykhil Creations</div>
+            <div id="connection-status" class="connection-status">
+                <i class="fas fa-wifi"></i>
+                <span id="connection-label">Checking...</span>
+            </div>
             <div class="menu-toggle">
                 <span></span>
                 <span></span>
@@ -710,6 +752,73 @@
     </footer>
 
     <script>
+        // Connection Status Check
+        function updateConnectionStatus() {
+            const connectionStatus = document.getElementById('connection-status');
+            const connectionLabel = document.getElementById('connection-label');
+
+            if (!navigator.onLine) {
+                connectionStatus.className = 'connection-status poor';
+                connectionLabel.textContent = 'Offline';
+                return;
+            }
+
+            // Use the Network Information API if available
+            if ('connection' in navigator) {
+                const connection = navigator.connection;
+                const effectiveType = connection.effectiveType;
+                
+                switch (effectiveType) {
+                    case '4g':
+                        connectionStatus.className = 'connection-status good';
+                        connectionLabel.textContent = 'Good';
+                        break;
+                    case '3g':
+                        connectionStatus.className = 'connection-status medium';
+                        connectionLabel.textContent = 'Medium';
+                        break;
+                    default:
+                        connectionStatus.className = 'connection-status poor';
+                        connectionLabel.textContent = 'Poor';
+                        break;
+                }
+            } else {
+                // Fallback: measure connection by loading a small resource
+                const startTime = performance.now();
+                fetch('https://www.google.com/favicon.ico', { 
+                    mode: 'no-cors',
+                    cache: 'no-store'
+                })
+                .then(() => {
+                    const duration = performance.now() - startTime;
+                    if (duration < 100) {
+                        connectionStatus.className = 'connection-status good';
+                        connectionLabel.textContent = 'Good';
+                    } else if (duration < 300) {
+                        connectionStatus.className = 'connection-status medium';
+                        connectionLabel.textContent = 'Medium';
+                    } else {
+                        connectionStatus.className = 'connection-status poor';
+                        connectionLabel.textContent = 'Poor';
+                    }
+                })
+                .catch(() => {
+                    connectionStatus.className = 'connection-status poor';
+                    connectionLabel.textContent = 'Poor';
+                });
+            }
+        }
+
+        // Update connection status initially and every 10 seconds
+        document.addEventListener('DOMContentLoaded', () => {
+            updateConnectionStatus();
+            setInterval(updateConnectionStatus, 10000);
+        });
+
+        // Update status when online/offline status changes
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+
         // JSONbin.io configuration - using public bin
         const BIN_ID = '65f2d7c1dc74654018a8d2c1';  // Public bin ID
 
