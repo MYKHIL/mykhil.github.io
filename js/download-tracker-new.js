@@ -65,9 +65,12 @@ async function trackDownload(event, projectId) {
             debugLog('Using local storage as fallback');
         }
         
+        // Log the current value before incrementing
+        debugLog(`Current count for ${projectId} BEFORE increment:`, counts[projectId]);
+        
         // Increment count
         counts[projectId] = (counts[projectId] || 0) + 1;
-        debugLog(`New count for ${projectId}:`, counts[projectId]);
+        debugLog(`New count for ${projectId} AFTER increment:`, counts[projectId]);
         
         // Update local storage immediately
         saveLocalCounts(counts);
