@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="css/feedback.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/connection-status.css">
+    <link rel="stylesheet" href="css/visitor-counter.css">
     <style>
         /* Table of Contents Styles */
         .toc {
@@ -227,6 +229,14 @@
     <header>
         <nav>
             <div class="logo">Mykhil Creations</div>
+            <div class="visitor-counter">
+                <i class="fas fa-eye"></i>
+                <span>Total Visitors: <span id="visitor-count" class="visitor-counter-value">0</span></span>
+            </div>
+            <div id="connection-status" class="connection-status">
+                <i class="fas fa-wifi"></i>
+                <span id="connection-label">Checking...</span>
+            </div>
             <div class="menu-toggle">
                 <span></span>
                 <span></span>
@@ -764,5 +774,22 @@
             return false;
         }
     </script>
+
+    <footer>
+        <p>&copy; 2024 Mykhil Creations. All rights reserved.</p>
+        <div class="footer-stats">
+            <div class="page-visitor-counter">
+                <i class="fas fa-chart-line"></i>
+                <span>Page Visits: <span id="page-visitor-count">0</span></span>
+            </div>
+            <div id="connection-status" class="footer-connection-status">
+                <i class="fas fa-wifi"></i>
+                <span id="connection-label">Checking connection...</span>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="js/connection-status.js"></script>
+    <script src="js/visitor-counter.js"></script>
 </body>
 </html>
