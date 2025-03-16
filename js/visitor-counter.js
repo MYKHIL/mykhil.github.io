@@ -31,6 +31,8 @@
         const pathParts = path.split('/');
         let pageName = pathParts.pop(); // Get the last part of the path
         
+        debugLog(`Current path: ${path}, Page name: ${pageName}`);
+        
         // If we're in the articles directory
         if (pathParts.length > 0 && pathParts[pathParts.length - 1] === 'articles') {
             // Check if it's one of the article pages
@@ -43,6 +45,12 @@
         // If it's the root/index page or empty
         if (!pageName || pageName === '' || pageName === 'index.html') {
             return 'home';
+        }
+        
+        // Explicit check for projects.html
+        if (pageName === 'projects.html') {
+            debugLog('Projects page detected');
+            return 'projects';
         }
         
         // Remove .html extension
@@ -58,6 +66,17 @@
     async function trackVisit() {
         const currentPage = getCurrentPage();
         debugLog(`Tracking page visit on: ${currentPage}`);
+        
+        // Add explicit debug for projects page
+        if (currentPage === 'projects') {
+            console.log('VISITOR TRACKER DEBUG: On projects page');
+            console.log('VISITOR TRACKER DEBUG: pathname =', window.location.pathname);
+            console.log('VISITOR TRACKER DEBUG: page elements =', {
+                headerCounter: document.getElementById('header-visitor-count'),
+                pageCounter: document.getElementById('page-visitor-count'),
+                footerCounter: document.getElementById('visitor-count')
+            });
+        }
         
         try {
             // Fetch current data from JSONbin
@@ -90,11 +109,22 @@
                 counts.pageVisits = {};
             }
             
-            if (!counts.pageVisits[currentPage]) {
-                counts.pageVisits[currentPage] = 0;
+            // Special handling for projects page
+            if (currentPage === 'projects') {
+                debugLog('Special handling for projects page');
+                console.log('VISITOR TRACKER DEBUG: Projects page, before update:', counts.pageVisits.projects);
+                if (counts.pageVisits.projects === undefined || counts.pageVisits.projects === null) {
+                    counts.pageVisits.projects = 0;
+                }
+                counts.pageVisits.projects += 1;
+                console.log('VISITOR TRACKER DEBUG: Projects page, after update:', counts.pageVisits.projects);
+            } else {
+                // Normal handling for other pages
+                if (!counts.pageVisits[currentPage]) {
+                    counts.pageVisits[currentPage] = 0;
+                }
+                counts.pageVisits[currentPage] += 1;
             }
-            
-            counts.pageVisits[currentPage] += 1;
             
             debugLog(`New total visit count: ${counts.visits}`);
             debugLog(`New ${currentPage} visit count: ${counts.pageVisits[currentPage]}`);
@@ -193,8 +223,19 @@
                 needsUpdate = true;
             }
             
-            // Make sure current page has a counter
-            if (!counts.pageVisits[currentPage] && counts.pageVisits[currentPage] !== 0) {
+            // Special projects page handling
+            if (currentPage === 'projects') {
+                debugLog('Special handling for projects page in getVisitCount');
+                console.log('VISITOR TRACKER DEBUG: Special handling for projects page in getVisitCount');
+                
+                if (counts.pageVisits.projects === undefined || counts.pageVisits.projects === null || counts.pageVisits.projects === 0) {
+                    console.log('VISITOR TRACKER DEBUG: Projects counter missing or 0, setting to 1');
+                    counts.pageVisits.projects = 1;
+                    needsUpdate = true;
+                }
+            }
+            // Normal page handling
+            else if (!counts.pageVisits[currentPage] && counts.pageVisits[currentPage] !== 0) {
                 counts.pageVisits[currentPage] = 0;
                 needsUpdate = true;
             }
@@ -254,22 +295,33 @@
 
     // Function to update the visitor counter display
     function updateVisitorDisplay(totalCount, pageCount) {
+        console.log('VISITOR TRACKER DEBUG: updateVisitorDisplay called with', { totalCount, pageCount });
+        
         // Update total visitor count
         const visitorCountElement = document.getElementById('visitor-count');
         if (visitorCountElement) {
             visitorCountElement.textContent = formatNumber(totalCount);
+            console.log('VISITOR TRACKER DEBUG: Updated footer visitor count to', formatNumber(totalCount));
+        } else {
+            console.log('VISITOR TRACKER DEBUG: Footer visitor count element not found');
         }
         
         // Update header visitor count if it exists (for projects page)
         const headerVisitorCountElement = document.getElementById('header-visitor-count');
         if (headerVisitorCountElement) {
             headerVisitorCountElement.textContent = formatNumber(totalCount);
+            console.log('VISITOR TRACKER DEBUG: Updated header visitor count to', formatNumber(totalCount));
+        } else {
+            console.log('VISITOR TRACKER DEBUG: Header visitor count element not found');
         }
         
         // Update page-specific visitor count
         const pageVisitorCountElement = document.getElementById('page-visitor-count');
         if (pageVisitorCountElement) {
             pageVisitorCountElement.textContent = formatNumber(pageCount);
+            console.log('VISITOR TRACKER DEBUG: Updated page visitor count to', formatNumber(pageCount));
+        } else {
+            console.log('VISITOR TRACKER DEBUG: Page visitor count element not found');
         }
     }
 
@@ -328,12 +380,16 @@
         const currentPage = getCurrentPage();
         const sessionVisitKey = `visited_${currentPage}`;
         
+        debugLog(`Checking unique visit for: ${currentPage}, Session key: ${sessionVisitKey}`);
+        
         const sessionVisit = sessionStorage.getItem(sessionVisitKey);
         if (!sessionVisit) {
             // This is a unique visit to this page in this session
+            debugLog(`First visit to ${currentPage} in this session`);
             sessionStorage.setItem(sessionVisitKey, 'true');
             return true;
         }
+        debugLog(`Repeat visit to ${currentPage} in this session`);
         return false;
     }
 
@@ -356,6 +412,96 @@
         }
     }
 
+    // Function to fix the projects page counter if it's not working
+    async function fixProjectsCounter() {
+        const currentPage = getCurrentPage();
+        
+        console.log('VISITOR TRACKER DEBUG: fixProjectsCounter called, currentPage =', currentPage);
+        
+        // Only run this fix on the projects page
+        if (currentPage !== 'projects') {
+            console.log('VISITOR TRACKER DEBUG: Not on projects page, skipping fix');
+            return;
+        }
+        
+        debugLog('Running fix for projects page counter');
+        
+        try {
+            // Fetch current data from JSONbin
+            const response = await fetch(`${JSONBIN_API_URL}/latest?${Date.now()}`, {
+                headers: {
+                    'X-Master-Key': MASTER_KEY
+                },
+                cache: 'no-store'
+            });
+            
+            if (!response.ok) {
+                throw new Error(`Failed to fetch data. Status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            let counts = data.record || {};
+            
+            console.log('VISITOR TRACKER DEBUG: Current JSONbin data:', JSON.stringify(counts));
+            
+            // Ensure pageVisits exists
+            if (!counts.pageVisits) {
+                counts.pageVisits = {};
+            }
+            
+            // Check if projects counter is 0 or doesn't exist
+            console.log('VISITOR TRACKER DEBUG: Current projects count:', counts.pageVisits.projects);
+            
+            // ALWAYS update the projects counter to ensure it's working
+            let needsUpdate = false;
+            
+            if (!counts.pageVisits.projects) {
+                console.log('VISITOR TRACKER DEBUG: Fixing projects counter - setting to 1');
+                counts.pageVisits.projects = 1; // Start with 1 (current visit)
+                needsUpdate = true;
+            } else if (counts.pageVisits.projects === 0) {
+                console.log('VISITOR TRACKER DEBUG: Projects counter is 0 - setting to 1');
+                counts.pageVisits.projects = 1;
+                needsUpdate = true;
+            }
+            
+            if (needsUpdate) {
+                // Update JSONbin
+                const updateResponse = await fetch(JSONBIN_API_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': MASTER_KEY,
+                        'X-Bin-Meta': false
+                    },
+                    body: JSON.stringify(counts)
+                });
+                
+                if (!updateResponse.ok) {
+                    throw new Error(`Failed to update. Status: ${updateResponse.status}`);
+                }
+                
+                console.log('VISITOR TRACKER DEBUG: Fixed projects counter successfully');
+                debugLog('Fixed projects counter successfully');
+                
+                // Save to local storage for consistent display across pages
+                localStorage.setItem(LS_TOTAL_VISITS, counts.visits);
+                localStorage.setItem(LS_LAST_UPDATE, Date.now());
+                
+                // Save page visits
+                const pageVisits = JSON.stringify(counts.pageVisits);
+                localStorage.setItem(LS_PAGE_VISITS, pageVisits);
+                
+                // Update the visitor counter displays
+                updateVisitorDisplay(counts.visits, counts.pageVisits.projects);
+            } else {
+                console.log('VISITOR TRACKER DEBUG: Projects counter already exists and is not 0:', counts.pageVisits.projects);
+            }
+        } catch (error) {
+            console.error('Error fixing projects counter:', error);
+        }
+    }
+
     // Initialize the visitor counter
     document.addEventListener('DOMContentLoaded', () => {
         debugLog('Initializing visitor counter');
@@ -365,6 +511,34 @@
         
         // Initialize download counts to 3000 each
         initializeDownloadCounts();
+        
+        // Force initialize projects page counter if we're on that page
+        const currentPage = getCurrentPage();
+        if (currentPage === 'projects') {
+            console.log('VISITOR TRACKER DEBUG: On projects page - forcing counter initialization');
+            
+            // Get cached data
+            let pageVisits = {};
+            try {
+                pageVisits = JSON.parse(localStorage.getItem(LS_PAGE_VISITS) || '{}');
+            } catch (e) {
+                console.log('VISITOR TRACKER DEBUG: Error parsing page visits from local storage');
+            }
+            
+            // Force projects counter to at least 1
+            if (!pageVisits.projects || pageVisits.projects < 1) {
+                console.log('VISITOR TRACKER DEBUG: Setting projects counter to 1 in local storage');
+                pageVisits.projects = 1;
+                localStorage.setItem(LS_PAGE_VISITS, JSON.stringify(pageVisits));
+                
+                // Update display
+                const totalVisits = localStorage.getItem(LS_TOTAL_VISITS) || 5000;
+                updateVisitorDisplay(totalVisits, 1);
+            }
+        }
+        
+        // Run special fix for projects page
+        fixProjectsCounter();
         
         // Check if we should increment the counter or just display it
         if (isUniqueVisit()) {
