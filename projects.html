@@ -709,8 +709,27 @@
         <p>&copy; 2024 Mykhil Creations. All rights reserved.</p>
     </footer>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
     <script>
-        // Function to track downloads using localStorage
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBXvwQPj9H3dvnVvHE9K6pm7FPuaVofBF8",
+            authDomain: "mykhil-downloads.firebaseapp.com",
+            databaseURL: "https://mykhil-downloads-default-rtdb.firebaseio.com",
+            projectId: "mykhil-downloads",
+            storageBucket: "mykhil-downloads.appspot.com",
+            messagingSenderId: "1234567890",
+            appId: "1:1234567890:web:abcdef123456789"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Function to track downloads using Firebase
         function trackDownload(event, projectId) {
             event.preventDefault();
             const link = event.target.closest('a').href;
@@ -718,37 +737,31 @@
             // Open the download link immediately
             window.open(link, '_blank');
             
-            // Update the counter in localStorage
-            try {
-                let downloads = JSON.parse(localStorage.getItem('downloads')) || {};
-                downloads[projectId] = (downloads[projectId] || 0) + 1;
-                localStorage.setItem('downloads', JSON.stringify(downloads));
-                
-                // Update the download count display
-                const countElement = document.querySelector(`#${projectId}-downloads`);
-                if (countElement) {
-                    countElement.textContent = downloads[projectId];
-                }
-            } catch (error) {
-                console.error('Error tracking download:', error);
-            }
+            // Update the counter in Firebase
+            const downloadRef = database.ref('downloads/' + projectId);
+            downloadRef.transaction((currentCount) => {
+                return (currentCount || 0) + 1;
+            }).then(() => {
+                console.log('Download counted successfully');
+            }).catch((error) => {
+                console.error('Error counting download:', error);
+            });
         }
 
-        // Load initial download counts from localStorage
+        // Load initial download counts from Firebase
         function loadDownloadCounts() {
             const projects = ['sba-pro-master', 'ecollation', 'referee-connect', 'ibank', 'exam-analyzer'];
-            try {
-                const downloads = JSON.parse(localStorage.getItem('downloads')) || {};
-                
-                for (const project of projects) {
+            
+            projects.forEach(project => {
+                const downloadRef = database.ref('downloads/' + project);
+                downloadRef.on('value', (snapshot) => {
+                    const count = snapshot.val() || 0;
                     const countElement = document.querySelector(`#${project}-downloads`);
                     if (countElement) {
-                        countElement.textContent = downloads[project] || 0;
+                        countElement.textContent = count;
                     }
-                }
-            } catch (error) {
-                console.error('Error loading download counts:', error);
-            }
+                });
+            });
         }
 
         // Load download counts when page loads
