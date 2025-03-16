@@ -9,6 +9,14 @@ const MASTER_KEY = '$2a$10$Zwr/q5r0c.Lv/6Ikq9a.ROrJruWGsHzf8uSI/HWq7yjG.4OrsE2O6
 // Debug mode
 const DEBUG = true;
 
+// Local storage keys
+const LS_TOTAL_VISITS = 'total_visits';
+const LS_PAGE_VISITS = 'page_visits';
+const LS_LAST_UPDATE = 'visits_last_update';
+
+// Cache duration in milliseconds (5 minutes)
+const CACHE_DURATION = 5 * 60 * 1000;
+
 // Debug logger
 function debugLog(...args) {
     if (DEBUG) {
@@ -19,7 +27,17 @@ function debugLog(...args) {
 // Get current page name
 function getCurrentPage() {
     const path = window.location.pathname;
-    let pageName = path.split('/').pop();
+    const pathParts = path.split('/');
+    let pageName = pathParts.pop(); // Get the last part of the path
+    
+    // If we're in the articles directory
+    if (pathParts.length > 0 && pathParts[pathParts.length - 1] === 'articles') {
+        // Check if it's one of the article pages
+        if (pageName.startsWith('ghana-') && pageName.endsWith('.html')) {
+            // For article pages, we want to track the specific article
+            return pageName.replace('.html', '');
+        }
+    }
     
     // If it's the root/index page or empty
     if (!pageName || pageName === '' || pageName === 'index.html') {
@@ -95,19 +113,55 @@ async function trackVisit() {
             throw new Error(`Failed to update. Status: ${updateResponse.status}`);
         }
         
+        // Save to local storage for consistent display across pages
+        localStorage.setItem(LS_TOTAL_VISITS, counts.visits);
+        localStorage.setItem(LS_LAST_UPDATE, Date.now());
+        
+        // Save page visits
+        const pageVisits = JSON.stringify(counts.pageVisits);
+        localStorage.setItem(LS_PAGE_VISITS, pageVisits);
+        
         // Update the visitor counter displays
         updateVisitorDisplay(counts.visits, counts.pageVisits[currentPage]);
         
         debugLog('Visit tracked successfully');
     } catch (error) {
         console.error('Error tracking visit:', error);
+        // Use cached values if available
+        useCachedCounters();
     }
+}
+
+// Function to get cached values from local storage
+function useCachedCounters() {
+    const currentPage = getCurrentPage();
+    const totalVisits = localStorage.getItem(LS_TOTAL_VISITS) || 5000;
+    
+    let pageVisits = {};
+    try {
+        pageVisits = JSON.parse(localStorage.getItem(LS_PAGE_VISITS) || '{}');
+    } catch (e) {
+        debugLog('Error parsing page visits from local storage');
+    }
+    
+    const pageVisitCount = pageVisits[currentPage] || 0;
+    updateVisitorDisplay(totalVisits, pageVisitCount);
 }
 
 // Function to get visit count without incrementing
 async function getVisitCount() {
     const currentPage = getCurrentPage();
     debugLog(`Getting current visit count for: ${currentPage}`);
+    
+    // Check if we have recent cached data
+    const lastUpdate = localStorage.getItem(LS_LAST_UPDATE);
+    const now = Date.now();
+    
+    if (lastUpdate && (now - lastUpdate < CACHE_DURATION)) {
+        debugLog('Using cached visit counts');
+        useCachedCounters();
+        return;
+    }
     
     try {
         // Fetch current data from JSONbin
@@ -177,12 +231,22 @@ async function getVisitCount() {
         debugLog(`Current total visit count: ${counts.visits}`);
         debugLog(`Current ${currentPage} visit count: ${counts.pageVisits[currentPage]}`);
         
+        // Store in local storage for consistent display across pages
+        localStorage.setItem(LS_TOTAL_VISITS, counts.visits);
+        localStorage.setItem(LS_LAST_UPDATE, Date.now());
+        
+        // Save page visits
+        const pageVisits = JSON.stringify(counts.pageVisits);
+        localStorage.setItem(LS_PAGE_VISITS, pageVisits);
+        
         // Update the visitor counter displays
         updateVisitorDisplay(counts.visits, counts.pageVisits[currentPage]);
         
         return counts;
     } catch (error) {
         console.error('Error getting visit count:', error);
+        // Use cached values if available
+        useCachedCounters();
         return { visits: 0, pageVisits: {} };
     }
 }
@@ -266,9 +330,31 @@ function isUniqueVisit() {
     return false;
 }
 
+// Immediately show cached values (if available) for faster user experience
+function showCachedValues() {
+    // Check if we have data in local storage
+    const totalVisits = localStorage.getItem(LS_TOTAL_VISITS);
+    if (totalVisits) {
+        const currentPage = getCurrentPage();
+        let pageVisits = {};
+        
+        try {
+            pageVisits = JSON.parse(localStorage.getItem(LS_PAGE_VISITS) || '{}');
+        } catch (e) {
+            debugLog('Error parsing page visits from local storage');
+        }
+        
+        const pageVisitCount = pageVisits[currentPage] || 0;
+        updateVisitorDisplay(totalVisits, pageVisitCount);
+    }
+}
+
 // Initialize the visitor counter
 document.addEventListener('DOMContentLoaded', () => {
     debugLog('Initializing visitor counter');
+    
+    // Show cached values first for fast display
+    showCachedValues();
     
     // Initialize download counts to 3000 each
     initializeDownloadCounts();
