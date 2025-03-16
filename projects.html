@@ -524,7 +524,7 @@
                         <span class="last-updated"><i class="fas fa-clock"></i> Updated: Mar 2025</span>
                     </div>
                     <div class="project-links">
-                        <a href="https://drive.google.com/file/d/1jdcYIoazFYDjFen7DCY0a3BsC844Lu8I/view?usp=drive_link" class="btn download-btn" target="_blank">
+                        <a href="https://drive.google.com/file/d/1jdcYIoazFYDjFen7DCY0a3BsC844Lu8I/view?usp=drive_link" class="btn download-btn" onclick="trackDownload(event, 'sba-pro-master')">
                             <i class="fas fa-download"></i> Download SBA Pro Master
                         </a>
                     </div>
@@ -718,9 +718,6 @@
             event.preventDefault();
             const link = event.target.closest('a').href;
             
-            // Open the download link immediately
-            window.open(link, '_blank');
-            
             try {
                 // Get current counts
                 const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
@@ -744,13 +741,18 @@
                     body: JSON.stringify(counts)
                 });
                 
-                // Update display
+                // Update display immediately
                 const countElement = document.querySelector(`#${projectId}-downloads`);
                 if (countElement) {
                     countElement.textContent = counts[projectId];
                 }
+
+                // Open the download link after updating the counter
+                window.open(link, '_blank');
             } catch (error) {
                 console.error('Error tracking download:', error);
+                // Still open the download link even if tracking fails
+                window.open(link, '_blank');
             }
         }
 
