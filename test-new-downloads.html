@@ -152,7 +152,7 @@
         // JSONbin.io configuration
         const BIN_ID = '67d621238a456b79667697a5';
         const JSONBIN_API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
-        const ACCESS_KEY = '$2a$10$Zwr/q5r0c.Lv/6Ikq9a.ROrJruWGsHzf8uSI/HWq7yjG.4OrsE2O6';
+        const MASTER_KEY = '$2a$10$Zwr/q5r0c.Lv/6Ikq9a.ROrJruWGsHzf8uSI/HWq7yjG.4OrsE2O6';
         
         // Local Storage Keys
         const LS_DOWNLOAD_COUNTS = 'mykhil_download_counts';
@@ -176,7 +176,7 @@
             try {
                 const response = await fetch(`${JSONBIN_API_URL}/latest?${Date.now()}`, {
                     headers: {
-                        'X-Access-Key': ACCESS_KEY
+                        'X-Master-Key': MASTER_KEY
                     },
                     cache: 'no-store'
                 });
@@ -228,7 +228,7 @@
                 log('Fetching latest counts from JSONbin...');
                 const response = await fetch(`${JSONBIN_API_URL}/latest?${Date.now()}`, {
                     headers: {
-                        'X-Access-Key': ACCESS_KEY
+                        'X-Master-Key': MASTER_KEY
                     },
                     cache: 'no-store'
                 });
@@ -263,7 +263,7 @@
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-Access-Key': ACCESS_KEY,
+                        'X-Master-Key': MASTER_KEY,
                         'X-Bin-Meta': false
                     },
                     body: JSON.stringify(counts)
@@ -289,7 +289,7 @@
             try {
                 const response = await fetch(`${JSONBIN_API_URL}/latest?${Date.now()}`, {
                     headers: {
-                        'X-Access-Key': ACCESS_KEY
+                        'X-Master-Key': MASTER_KEY
                     },
                     cache: 'no-store'
                 });
