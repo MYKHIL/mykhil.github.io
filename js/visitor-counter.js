@@ -328,7 +328,7 @@
     // Function to initialize download counts
     async function initializeDownloadCounts() {
         try {
-            // Only do this if we haven't already initialized
+            // Check if all projects have download counters
             const response = await fetch(`${JSONBIN_API_URL}/latest?${Date.now()}`, {
                 headers: {
                     'X-Master-Key': MASTER_KEY
@@ -344,18 +344,21 @@
             let counts = data.record || {};
             let needsUpdate = false;
             
-            // Check if download counts need to be set to 3000
+            // Project list to ensure counters exist
             const projectsToCheck = ['sba-pro-master', 'ecollation', 'referee-connect', 'ibank', 'exam-analyzer'];
             
+            // Only initialize missing counters, don't force a minimum value
             projectsToCheck.forEach(project => {
-                if (!counts[project] || counts[project] < 3000) {
-                    counts[project] = 3000; // Set each download count to 3000
+                if (counts[project] === undefined) {
+                    // Initialize missing counter to 0 instead of 3000
+                    counts[project] = 0;
                     needsUpdate = true;
+                    debugLog(`Initializing missing download counter for ${project} to 0`);
                 }
             });
             
             if (needsUpdate) {
-                debugLog('Initializing download counts to 3000 each');
+                debugLog('Initializing missing download counters');
                 
                 // Update JSONbin with initialized download counts
                 await fetch(JSONBIN_API_URL, {
@@ -368,7 +371,7 @@
                     body: JSON.stringify(counts)
                 });
                 
-                debugLog('Download counts initialized successfully');
+                debugLog('Missing download counters initialized successfully');
             }
         } catch (error) {
             console.error('Error initializing download counts:', error);
@@ -509,7 +512,7 @@
         // Show cached values first for fast display
         showCachedValues();
         
-        // Initialize download counts to 3000 each
+        // Ensure all download counters exist (without forcing a minimum value)
         initializeDownloadCounts();
         
         // Force initialize projects page counter if we're on that page
