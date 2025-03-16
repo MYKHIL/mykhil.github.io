@@ -709,59 +709,73 @@
         <p>&copy; 2024 Mykhil Creations. All rights reserved.</p>
     </footer>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-
     <script>
-        // Initialize Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyBXvwQPj9H3dvnVvHE9K6pm7FPuaVofBF8",
-            authDomain: "mykhil-downloads.firebaseapp.com",
-            databaseURL: "https://mykhil-downloads-default-rtdb.firebaseio.com",
-            projectId: "mykhil-downloads",
-            storageBucket: "mykhil-downloads.appspot.com",
-            messagingSenderId: "1234567890",
-            appId: "1:1234567890:web:abcdef123456789"
-        };
+        const BIN_ID = '65f2c0c8dc74654018a8c7c7';  // JSONbin.io bin ID
+        const API_KEY = '$2a$10$Gy/yQxBXJGXOPQWPJRPgEuqGxOBr.Wd6LPPuXBXEEFQGVGXPBPHOi';  // JSONbin.io API key
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-
-        // Function to track downloads using Firebase
-        function trackDownload(event, projectId) {
+        // Function to track downloads
+        async function trackDownload(event, projectId) {
             event.preventDefault();
             const link = event.target.closest('a').href;
             
             // Open the download link immediately
             window.open(link, '_blank');
             
-            // Update the counter in Firebase
-            const downloadRef = database.ref('downloads/' + projectId);
-            downloadRef.transaction((currentCount) => {
-                return (currentCount || 0) + 1;
-            }).then(() => {
-                console.log('Download counted successfully');
-            }).catch((error) => {
-                console.error('Error counting download:', error);
-            });
-        }
-
-        // Load initial download counts from Firebase
-        function loadDownloadCounts() {
-            const projects = ['sba-pro-master', 'ecollation', 'referee-connect', 'ibank', 'exam-analyzer'];
-            
-            projects.forEach(project => {
-                const downloadRef = database.ref('downloads/' + project);
-                downloadRef.on('value', (snapshot) => {
-                    const count = snapshot.val() || 0;
-                    const countElement = document.querySelector(`#${project}-downloads`);
-                    if (countElement) {
-                        countElement.textContent = count;
+            try {
+                // Get current counts
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                    headers: {
+                        'X-Master-Key': API_KEY
                     }
                 });
-            });
+                const data = await response.json();
+                let counts = data.record || {};
+                
+                // Increment count
+                counts[projectId] = (counts[projectId] || 0) + 1;
+                
+                // Update count in JSONbin
+                await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': API_KEY
+                    },
+                    body: JSON.stringify(counts)
+                });
+                
+                // Update display
+                const countElement = document.querySelector(`#${projectId}-downloads`);
+                if (countElement) {
+                    countElement.textContent = counts[projectId];
+                }
+            } catch (error) {
+                console.error('Error tracking download:', error);
+            }
+        }
+
+        // Load initial download counts
+        async function loadDownloadCounts() {
+            const projects = ['sba-pro-master', 'ecollation', 'referee-connect', 'ibank', 'exam-analyzer'];
+            
+            try {
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                    headers: {
+                        'X-Master-Key': API_KEY
+                    }
+                });
+                const data = await response.json();
+                const counts = data.record || {};
+                
+                projects.forEach(project => {
+                    const countElement = document.querySelector(`#${project}-downloads`);
+                    if (countElement) {
+                        countElement.textContent = counts[project] || 0;
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading download counts:', error);
+            }
         }
 
         // Load download counts when page loads
