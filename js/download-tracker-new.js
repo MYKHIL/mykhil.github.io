@@ -2,8 +2,8 @@
 const BIN_ID = '67d621238a456b79667697a5';
 const JSONBIN_API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
-// Using Access Key (same as your Master Key)
-const ACCESS_KEY = '$2a$10$Zwr/q5r0c.Lv/6Ikq9a.ROrJruWGsHzf8uSI/HWq7yjG.4OrsE2O6';
+// Using Master Key for full permissions (read/write/update)
+const MASTER_KEY = '$2a$10$Zwr/q5r0c.Lv/6Ikq9a.ROrJruWGsHzf8uSI/HWq7yjG.4OrsE2O6';
 
 // Cache control parameter to prevent browser caching
 const CACHE_BUSTER = `cacheBuster=${Date.now()}`;
@@ -12,7 +12,7 @@ const CACHE_BUSTER = `cacheBuster=${Date.now()}`;
 const LS_DOWNLOAD_COUNTS = 'mykhil_download_counts';
 const LS_LAST_FETCH = 'mykhil_last_fetch';
 
-// Cache expiration time (2 minutes in milliseconds) - reduced from 10 minutes
+// Cache expiration time (2 minutes in milliseconds)
 const CACHE_EXPIRATION = 2 * 60 * 1000;
 
 // Debug mode
@@ -85,7 +85,7 @@ async function trackDownload(event, projectId) {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'X-Access-Key': ACCESS_KEY,
+                'X-Master-Key': MASTER_KEY, // Use Master Key for update operations
                 'X-Bin-Meta': false
             },
             body: JSON.stringify(counts)
@@ -115,7 +115,7 @@ async function fetchFromJSONbin(forceRefresh = false) {
         
         const response = await fetch(url, {
             headers: {
-                'X-Access-Key': ACCESS_KEY
+                'X-Master-Key': MASTER_KEY // Use Master Key for read operations as well
             },
             cache: 'no-store' // Explicitly tell browser not to cache
         });
