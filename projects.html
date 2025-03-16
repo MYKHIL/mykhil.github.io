@@ -520,9 +520,9 @@
     <header>
         <nav>
             <div class="logo">Mykhil Creations</div>
-            <div id="connection-status" class="connection-status">
-                <i class="fas fa-wifi"></i>
-                <span id="connection-label">Checking...</span>
+            <div class="visitor-counter">
+                <i class="fas fa-eye"></i>
+                <span>Total Visitors: <span id="visitor-count" class="visitor-counter-value">0</span></span>
             </div>
             <div class="menu-toggle">
                 <span></span>
@@ -750,10 +750,21 @@
 
     <footer>
         <p>&copy; 2024 Mykhil Creations. All rights reserved.</p>
+        <div class="footer-stats">
+            <div class="page-visitor-counter">
+                <i class="fas fa-chart-line"></i>
+                <span>Page Visits: <span id="page-visitor-count">0</span></span>
+            </div>
+            <div id="connection-status" class="footer-connection-status">
+                <i class="fas fa-wifi"></i>
+                <span id="connection-label">Checking connection...</span>
+            </div>
+        </div>
     </footer>
 
     <script src="js/connection-status.js"></script>
     <script src="js/download-tracker-new.js"></script>
+    <script src="js/visitor-counter.js"></script>
     <script src="js/email-handler.js"></script>
     <script src="js/mobile-menu.js"></script>
 </body>
