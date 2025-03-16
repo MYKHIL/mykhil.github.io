@@ -1,10 +1,9 @@
 // JSONbin.io configuration with Access Key approach
-const BIN_ID = '65f2d7c1dc74654018a8d2c1';
+const BIN_ID = '67d621238a456b79667697a5';
 const JSONBIN_API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
-// Using Access Key which has only read and update permissions
-// Note: This is much safer to use in the browser than a Master Key
-const ACCESS_KEY = '$2a$10$YHwxM5hbJrZANqH.YEqw/u6CAbWQR7MnUzZVhcpRIAj4wnVJaQJSK';
+// Using Access Key (same as your Master Key)
+const ACCESS_KEY = '$2a$10$Zwr/q5r0c.Lv/6Ikq9a.ROrJruWGsHzf8uSI/HWq7yjG.4OrsE2O6';
 
 // Cache control parameter to prevent browser caching
 const CACHE_BUSTER = `cacheBuster=${Date.now()}`;
@@ -13,8 +12,8 @@ const CACHE_BUSTER = `cacheBuster=${Date.now()}`;
 const LS_DOWNLOAD_COUNTS = 'mykhil_download_counts';
 const LS_LAST_FETCH = 'mykhil_last_fetch';
 
-// Cache expiration time (10 minutes in milliseconds)
-const CACHE_EXPIRATION = 10 * 60 * 1000;
+// Cache expiration time (2 minutes in milliseconds) - reduced from 10 minutes
+const CACHE_EXPIRATION = 2 * 60 * 1000;
 
 // Debug mode
 const DEBUG = true;
@@ -57,11 +56,14 @@ async function trackDownload(event, projectId) {
     debugLog(`Tracking download for: ${projectId}`);
     
     try {
-        // First, fetch the latest data from JSONbin
-        await refreshDownloadCounts();
+        // Always fetch the latest data from JSONbin to ensure we have the current counts
+        let counts = await fetchFromJSONbin(true); // Force refresh
         
-        // Get counts from local storage
-        const counts = getLocalCounts() || {};
+        if (!counts) {
+            // If server fetch fails, fallback to local storage
+            counts = getLocalCounts() || {};
+            debugLog('Using local storage as fallback');
+        }
         
         // Increment count
         counts[projectId] = (counts[projectId] || 0) + 1;
@@ -103,20 +105,13 @@ async function trackDownload(event, projectId) {
     }
 }
 
-// Function to fetch the latest download counts from JSONbin
-async function refreshDownloadCounts() {
-    debugLog('Fetching latest download counts from JSONbin...');
-    
+// Function to fetch data from JSONbin
+async function fetchFromJSONbin(forceRefresh = false) {
     try {
-        // Check if we have a recent fetch in local storage
-        const lastFetch = localStorage.getItem(LS_LAST_FETCH);
-        if (lastFetch && Date.now() - parseInt(lastFetch) < CACHE_EXPIRATION) {
-            debugLog('Using cached counts (cache not expired yet)');
-            return getLocalCounts();
-        }
-        
         // Add cache buster to prevent browser caching
-        const url = `${JSONBIN_API_URL}/latest?${CACHE_BUSTER}`;
+        const url = `${JSONBIN_API_URL}/latest?${forceRefresh ? Date.now() : CACHE_BUSTER}`;
+        
+        debugLog(`Fetching from JSONbin (force refresh: ${forceRefresh})`);
         
         const response = await fetch(url, {
             headers: {
@@ -135,15 +130,40 @@ async function refreshDownloadCounts() {
             throw new Error('Invalid response format from JSONbin');
         }
         
+        debugLog('Fetched data from JSONbin:', data.record);
+        
         // Save to local storage
         saveLocalCounts(data.record);
         
         return data.record;
     } catch (error) {
-        console.error('Error refreshing download counts:', error);
-        // Return local counts as fallback
-        return getLocalCounts() || {};
+        console.error('Error fetching from JSONbin:', error);
+        return null;
     }
+}
+
+// Function to fetch the latest download counts from JSONbin
+async function refreshDownloadCounts() {
+    debugLog('Refreshing download counts...');
+    
+    // Always try to fetch from server first
+    const serverCounts = await fetchFromJSONbin();
+    
+    if (serverCounts) {
+        return serverCounts;
+    }
+    
+    // If server fetch fails, check if we have a recent fetch in local storage
+    const lastFetch = localStorage.getItem(LS_LAST_FETCH);
+    const counts = getLocalCounts();
+    
+    if (counts && lastFetch && Date.now() - parseInt(lastFetch) < CACHE_EXPIRATION) {
+        debugLog('Server fetch failed, using recent cached counts');
+        return counts;
+    }
+    
+    debugLog('No recent data available');
+    return {};
 }
 
 // Load initial download counts
@@ -159,16 +179,8 @@ async function loadDownloadCounts() {
             return;
         }
         
-        // Try to get counts from local storage first
-        let counts = getLocalCounts();
-        const lastFetch = localStorage.getItem(LS_LAST_FETCH);
-        
-        // If local storage is empty or cache is expired, fetch from JSONbin
-        if (!counts || !lastFetch || Date.now() - parseInt(lastFetch) >= CACHE_EXPIRATION) {
-            counts = await refreshDownloadCounts();
-        } else {
-            debugLog('Using cached download counts');
-        }
+        // Always try to get fresh data from server first
+        let counts = await refreshDownloadCounts();
         
         // Update the display
         projects.forEach(project => {
@@ -178,6 +190,20 @@ async function loadDownloadCounts() {
                 debugLog(`Set ${project} count to ${counts[project] || 0}`);
             }
         });
+        
+        // Set up periodic refresh to ensure counts stay updated
+        setInterval(async () => {
+            debugLog('Performing periodic refresh');
+            counts = await refreshDownloadCounts();
+            
+            // Update the display with fresh data
+            projects.forEach(project => {
+                const countElement = document.querySelector(`#${project}-downloads`);
+                if (countElement) {
+                    countElement.textContent = counts[project] || 0;
+                }
+            });
+        }, 30000); // Refresh every 30 seconds
     } catch (error) {
         console.error('Error loading download counts:', error);
     }
