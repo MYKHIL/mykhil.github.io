@@ -710,8 +710,9 @@
     </footer>
 
     <script>
-        const BIN_ID = '65f2c0c8dc74654018a8c7c7';  // JSONbin.io bin ID
-        const API_KEY = '$2a$10$Gy/yQxBXJGXOPQWPJRPgEuqGxOBr.Wd6LPPuXBXEEFQGVGXPBPHOi';  // JSONbin.io API key
+        // JSONbin.io configuration
+        const BIN_ID = '65f2d1c1dc74654018a8d0c6';  // New JSONbin.io bin ID
+        const API_KEY = '$2b$10$Gy/yQxBXJGXOPQWPJRPgEuqGxOBr.Wd6LPPuXBXEEFQGVGXPBPHOi';  // Updated API key format
 
         // Function to track downloads
         async function trackDownload(event, projectId) {
@@ -720,9 +721,10 @@
             
             try {
                 // Get current counts
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                    method: 'GET',
                     headers: {
-                        'X-Master-Key': API_KEY
+                        'X-Access-Key': API_KEY
                     }
                 });
                 const data = await response.json();
@@ -736,7 +738,7 @@
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-Master-Key': API_KEY
+                        'X-Access-Key': API_KEY
                     },
                     body: JSON.stringify(counts)
                 });
@@ -747,11 +749,10 @@
                     countElement.textContent = counts[projectId];
                 }
 
-                // Open the download link after updating the counter
+                // Open the download link
                 window.open(link, '_blank');
             } catch (error) {
                 console.error('Error tracking download:', error);
-                // Still open the download link even if tracking fails
                 window.open(link, '_blank');
             }
         }
@@ -761,9 +762,10 @@
             const projects = ['sba-pro-master', 'ecollation', 'referee-connect', 'ibank', 'exam-analyzer'];
             
             try {
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                    method: 'GET',
                     headers: {
-                        'X-Master-Key': API_KEY
+                        'X-Access-Key': API_KEY
                     }
                 });
                 const data = await response.json();
