@@ -6,6 +6,7 @@
     <title>Games - Mykhil Creations</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/connection-status.css">
     <style>
         .games-grid {
             display: grid;
@@ -147,6 +148,10 @@
     <header>
         <nav>
             <div class="logo">Mykhil Creations</div>
+            <div id="connection-status" class="connection-status">
+                <i class="fas fa-wifi"></i>
+                <span id="connection-label">Checking...</span>
+            </div>
             <div class="menu-toggle">
                 <span></span>
                 <span></span>
@@ -249,5 +254,6 @@
     </footer>
 
     <script src="games.js"></script>
+    <script src="js/connection-status.js"></script>
 </body>
 </html>
