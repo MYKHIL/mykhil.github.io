@@ -16,59 +16,74 @@ function initSnake() {
     }
 
     const snakeCtx = snakeCanvas.getContext('2d');
-    snakeCanvas.width = 400;
-    snakeCanvas.height = 400;
+    
+    // Make canvas a perfect square to ensure consistent movement in all directions
+    const containerWidth = snakeCanvas.clientWidth;
+    snakeCanvas.width = containerWidth;
+    snakeCanvas.height = containerWidth; // Make it square just like checkers
+    
+    // Adjust snake size based on canvas dimensions
+    const cellSize = Math.floor(containerWidth / 40);
     
     snake = [
-        { x: 200, y: 200 },
-        { x: 190, y: 200 },
-        { x: 180, y: 200 },
+        { x: Math.floor(snakeCanvas.width / 2), y: Math.floor(snakeCanvas.height / 2) },
+        { x: Math.floor(snakeCanvas.width / 2) - cellSize, y: Math.floor(snakeCanvas.height / 2) },
+        { x: Math.floor(snakeCanvas.width / 2) - cellSize * 2, y: Math.floor(snakeCanvas.height / 2) },
     ];
-    dx = 10;
+    dx = cellSize;
     dy = 0;
-    generateFood();
+    generateFood(cellSize);
     score = 0;
     document.getElementById('snakeScore').textContent = score;
     console.log('Snake Game initialized');
-    drawSnake();
-    drawFood();
+    drawSnake(cellSize);
+    drawFood(cellSize);
 }
 
-function generateFood() {
+function generateFood(cellSize = 10) {
     const snakeCanvas = document.getElementById('snakeCanvas');
     if (!snakeCanvas) return;
 
-    food.x = Math.floor(Math.random() * (snakeCanvas.width / 10)) * 10;
-    food.y = Math.floor(Math.random() * (snakeCanvas.height / 10)) * 10;
+    // Ensure food aligns with grid
+    const cols = Math.floor(snakeCanvas.width / cellSize);
+    const rows = Math.floor(snakeCanvas.height / cellSize);
+    
+    food.x = Math.floor(Math.random() * cols) * cellSize;
+    food.y = Math.floor(Math.random() * rows) * cellSize;
 }
 
-function drawSnake() {
+function drawSnake(cellSize = 10) {
     const snakeCanvas = document.getElementById('snakeCanvas');
     if (!snakeCanvas) return;
 
     const snakeCtx = snakeCanvas.getContext('2d');
     snake.forEach((segment) => {
         snakeCtx.fillStyle = '#4CAF50';
-        snakeCtx.fillRect(segment.x, segment.y, 10, 10);
+        snakeCtx.fillRect(segment.x, segment.y, cellSize, cellSize);
     });
 }
 
-function drawFood() {
+function drawFood(cellSize = 10) {
     const snakeCanvas = document.getElementById('snakeCanvas');
     if (!snakeCanvas) return;
 
     const snakeCtx = snakeCanvas.getContext('2d');
     snakeCtx.fillStyle = '#FF5252';
-    snakeCtx.fillRect(food.x, food.y, 10, 10);
+    snakeCtx.fillRect(food.x, food.y, cellSize, cellSize);
 }
 
-function moveSnake() {
+function moveSnake(cellSize = 10) {
     const head = { x: snake[0].x + dx, y: snake[0].y + dy };
     snake.unshift(head);
-    if (head.x === food.x && head.y === food.y) {
+    
+    // Check if head collides with food by checking if they overlap, not exact position
+    const distanceX = Math.abs(head.x - food.x);
+    const distanceY = Math.abs(head.y - food.y);
+    
+    if (distanceX < cellSize && distanceY < cellSize) {
         score += 10;
         document.getElementById('snakeScore').textContent = score;
-        generateFood();
+        generateFood(cellSize);
     } else {
         snake.pop();
     }
@@ -95,8 +110,10 @@ function updateSnakeGame() {
     if (!snakeCanvas) return;
 
     const snakeCtx = snakeCanvas.getContext('2d');
+    const cellSize = Math.floor(snakeCanvas.width / 40);
+    
     snakeCtx.clearRect(0, 0, snakeCanvas.width, snakeCanvas.height);
-    moveSnake();
+    moveSnake(cellSize);
     
     if (checkCollision()) {
         alert('Game Over! Score: ' + score);
@@ -104,15 +121,20 @@ function updateSnakeGame() {
         return;
     }
     
-    drawFood();
-    drawSnake();
+    drawFood(cellSize);
+    drawSnake(cellSize);
 }
 
 function startSnakeGame() {
     clearInterval(snakeGameLoop);
     initSnake();
     isPaused = false;
-    snakeGameLoop = setInterval(updateSnakeGame, 100);
+    
+    // Adjust game speed based on screen size to keep consistent feel
+    const snakeCanvas = document.getElementById('snakeCanvas');
+    const gameSpeed = snakeCanvas ? Math.max(80, Math.min(150, Math.floor(snakeCanvas.width / 4))) : 100;
+    
+    snakeGameLoop = setInterval(updateSnakeGame, gameSpeed);
 }
 
 function pauseSnakeGame() {
@@ -141,8 +163,11 @@ function initCheckers() {
         return;
     }
 
-    checkersCanvas.width = 400;
-    checkersCanvas.height = 400;
+    // Make canvas properly sized based on its container - use square dimensions
+    const containerWidth = checkersCanvas.clientWidth;
+    checkersCanvas.width = containerWidth;
+    checkersCanvas.height = containerWidth; // Make it square
+    
     board = Array(8).fill().map(() => Array(8).fill(EMPTY));
     
     // Set up initial pieces
@@ -231,6 +256,8 @@ function drawCheckersBoard() {
     if (!checkersCanvas) return;
 
     const ctx = checkersCanvas.getContext('2d');
+    
+    // Calculate square size based on canvas width
     const squareSize = checkersCanvas.width / 8;
     
     // Draw board
@@ -308,7 +335,7 @@ function drawCheckersBoard() {
         ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
         ctx.fillRect(0, 0, checkersCanvas.width, checkersCanvas.height);
         ctx.fillStyle = '#fff';
-        ctx.font = '24px Arial';
+        ctx.font = (checkersCanvas.width * 0.06) + 'px Arial';
         ctx.textAlign = 'center';
         ctx.fillText('AI is thinking...', checkersCanvas.width/2, checkersCanvas.height/2);
     }
@@ -702,6 +729,7 @@ function createMemoryCard(symbol) {
             <div class="card-back">${symbol}</div>
         </div>
     `;
+    card.style.width = '100%';
     return card;
 }
 
@@ -722,6 +750,11 @@ function startMemoryGame() {
     canFlip = true;
     document.getElementById('memoryMoves').textContent = memoryMoves;
     
+    // Make sure the container is properly sized
+    const container = memoryGame.parentElement;
+    const computedStyle = window.getComputedStyle(memoryGame);
+    const containerWidth = memoryGame.clientWidth;
+    
     const shuffledSymbols = shuffleCards();
     
     shuffledSymbols.forEach((symbol) => {
@@ -730,6 +763,25 @@ function startMemoryGame() {
         memoryGame.appendChild(card);
         
         card.addEventListener('click', () => flipCard(card, symbol));
+    });
+    
+    // Resize observer to handle responsive resizing
+    const resizeObserver = new ResizeObserver(() => {
+        updateMemoryCardStyles();
+    });
+    
+    resizeObserver.observe(memoryGame);
+    updateMemoryCardStyles();
+}
+
+function updateMemoryCardStyles() {
+    const memoryGame = document.getElementById('memoryGame');
+    if (!memoryGame) return;
+    
+    // Update card styles if needed
+    const gameWidth = memoryGame.clientWidth;
+    memoryCards.forEach(card => {
+        card.style.fontSize = (gameWidth / 16) + 'px';
     });
 }
 
@@ -775,12 +827,60 @@ window.addEventListener('load', () => {
     if (snakeCanvas) {
         console.log('Found snake canvas, initializing');
         initSnake();
+        
+        // Get cell size for movement
+        const getCellSize = () => Math.floor(snakeCanvas.width / 40);
+        
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowUp' && dy === 0) { dx = 0; dy = -10; }
-            else if (e.key === 'ArrowDown' && dy === 0) { dx = 0; dy = 10; }
-            else if (e.key === 'ArrowLeft' && dx === 0) { dx = -10; dy = 0; }
-            else if (e.key === 'ArrowRight' && dx === 0) { dx = 10; dy = 0; }
+            // Prevent arrow keys from scrolling the page
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.key)) {
+                e.preventDefault();
+            }
+            
+            const cellSize = getCellSize();
+            if (e.key === 'ArrowUp' && dy === 0) { dx = 0; dy = -cellSize; }
+            else if (e.key === 'ArrowDown' && dy === 0) { dx = 0; dy = cellSize; }
+            else if (e.key === 'ArrowLeft' && dx === 0) { dx = -cellSize; dy = 0; }
+            else if (e.key === 'ArrowRight' && dx === 0) { dx = cellSize; dy = 0; }
+            // Add spacebar to pause/resume the game
+            else if (e.key === ' ' || e.key === 'Space') { pauseSnakeGame(); }
         });
+        
+        // Add touch controls for mobile
+        let touchStartX = 0;
+        let touchStartY = 0;
+        
+        snakeCanvas.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+            e.preventDefault();
+        }, { passive: false });
+        
+        snakeCanvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+        }, { passive: false });
+        
+        snakeCanvas.addEventListener('touchend', (e) => {
+            const cellSize = getCellSize();
+            const touchEndX = e.changedTouches[0].screenX;
+            const touchEndY = e.changedTouches[0].screenY;
+            
+            const diffX = touchEndX - touchStartX;
+            const diffY = touchEndY - touchStartY;
+            
+            if (Math.abs(diffX) > Math.abs(diffY)) {
+                // Horizontal swipe
+                if (diffX > 0 && dy !== 0) { dx = cellSize; dy = 0; }
+                else if (diffX < 0 && dy !== 0) { dx = -cellSize; dy = 0; }
+            } else {
+                // Vertical swipe
+                if (diffY > 0 && dx !== 0) { dx = 0; dy = cellSize; }
+                else if (diffY < 0 && dx !== 0) { dx = 0; dy = -cellSize; }
+            }
+            
+            e.preventDefault();
+        }, { passive: false });
+        
     } else {
         console.error('Snake canvas not found');
     }
@@ -802,4 +902,24 @@ window.addEventListener('load', () => {
     } else {
         console.error('Memory game container not found');
     }
+    
+    // Handle window resize for all games
+    window.addEventListener('resize', () => {
+        if (snakeCanvas) {
+            const containerWidth = snakeCanvas.clientWidth;
+            snakeCanvas.width = containerWidth;
+            snakeCanvas.height = containerWidth; // Keep it square like checkers
+        }
+        
+        if (checkersCanvas) {
+            const containerWidth = checkersCanvas.clientWidth;
+            checkersCanvas.width = containerWidth;
+            checkersCanvas.height = containerWidth; // Keep it square
+            drawCheckersBoard();
+        }
+        
+        if (memoryGame) {
+            updateMemoryCardStyles();
+        }
+    });
 });
