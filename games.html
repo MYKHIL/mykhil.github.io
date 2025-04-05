@@ -11,7 +11,7 @@
     <style>
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
             padding: 2rem;
             max-width: 1200px;
@@ -25,6 +25,9 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .game-card:hover {
@@ -32,7 +35,8 @@
         }
 
         .game-canvas {
-            width: 400px;
+            width: 100%;
+            max-width: 400px;
             height: 400px;
             margin: 1rem auto;
             border: 2px solid var(--border-color);
@@ -43,7 +47,8 @@
         }
 
         #memoryGame {
-            width: 400px;
+            width: 100%;
+            max-width: 400px;
             height: 400px;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -51,12 +56,14 @@
             padding: 10px;
             background: #1a1a1a;
             margin: 1rem auto;
+            box-sizing: border-box;
         }
 
         .memory-card {
             aspect-ratio: 1;
             perspective: 1000px;
             cursor: pointer;
+            box-sizing: border-box;
         }
 
         .card-inner {
@@ -142,6 +149,16 @@
             --primary-hover: #388E3C;
             --bg-secondary: #1a1a1a;
             --text-color: #fff;
+        }
+
+        /* Media query for responsiveness */
+        @media (max-width: 768px) {
+            .game-canvas, #memoryGame {
+                height: 300px;
+            }
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>

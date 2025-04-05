@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter Reset Tool</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            margin-top: 0;
+            color: #2c5282;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4a5568;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #2d3748;
+        }
+        button.danger {
+            background-color: #e53e3e;
+        }
+        button.danger:hover {
+            background-color: #c53030;
+        }
+        button.primary {
+            background-color: #3182ce;
+        }
+        button.primary:hover {
+            background-color: #2b6cb0;
+        }
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .alert-success {
+            background-color: #c6f6d5;
+            color: #276749;
+            border: 1px solid #9ae6b4;
+        }
+        .alert-error {
+            background-color: #fed7d7;
+            color: #c53030;
+            border: 1px solid #feb2b2;
+        }
+        .hidden {
+            display: none;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        #jsonOutput {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            font-family: monospace;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+    <h1>Counter Reset Tool</h1>
+    
+    <div id="alert" class="alert hidden"></div>
+    
+    <div id="loading" class="loading hidden">Loading data from JSONbin...</div>
+    
+    <div class="section">
+        <h2>JSONbin Configuration</h2>
+        <div class="form-group">
+            <label for="binId">Bin ID:</label>
+            <input type="text" id="binId" value="67d621238a456b79667697a5">
+        </div>
+        <div class="form-group">
+            <label for="masterKey">Master Key:</label>
+            <input type="text" id="masterKey" value="$2a$10$Zwr/q5r0c.Lv/6Ikq9a.ROrJruWGsHzf8uSI/HWq7yjG.4OrsE2O6">
+        </div>
+        <div class="actions">
+            <button id="fetchData" class="primary">Fetch Current Data</button>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Visitor Counters</h2>
+        <div class="form-group">
+            <label for="totalVisits">Total Site Visits:</label>
+            <input type="number" id="totalVisits" min="0">
+        </div>
+        
+        <h3>Page-Specific Visits</h3>
+        <div class="grid">
+            <div class="form-group">
+                <label for="homeVisits">Home Page:</label>
+                <input type="number" id="homeVisits" min="0">
+            </div>
+            <div class="form-group">
+                <label for="projectsVisits">Projects Page:</label>
+                <input type="number" id="projectsVisits" min="0">
+            </div>
+            <div class="form-group">
+                <label for="blogVisits">Blog Page:</label>
+                <input type="number" id="blogVisits" min="0">
+            </div>
+            <div class="form-group">
+                <label for="gamesVisits">Games Page:</label>
+                <input type="number" id="gamesVisits" min="0">
+            </div>
+            <div class="form-group">
+                <label for="aboutVisits">About Page:</label>
+                <input type="number" id="aboutVisits" min="0">
+            </div>
+        </div>
+        
+        <div id="articleVisits" class="form-group">
+            <!-- Will be dynamically populated with article visits -->
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Download Counters</h2>
+        <div class="grid">
+            <div class="form-group">
+                <label for="sbaProDownloads">SBA Pro Master:</label>
+                <input type="number" id="sbaProDownloads" min="0">
+            </div>
+            <div class="form-group">
+                <label for="ecollationDownloads">eCollation:</label>
+                <input type="number" id="ecollationDownloads" min="0">
+            </div>
+            <div class="form-group">
+                <label for="refereeDownloads">Referee Connect:</label>
+                <input type="number" id="refereeDownloads" min="0">
+            </div>
+            <div class="form-group">
+                <label for="ibankDownloads">iBank:</label>
+                <input type="number" id="ibankDownloads" min="0">
+            </div>
+            <div class="form-group">
+                <label for="examAnalyzerDownloads">Exam Analyzer:</label>
+                <input type="number" id="examAnalyzerDownloads" min="0">
+            </div>
+        </div>
+        
+        <div id="otherDownloads" class="form-group">
+            <!-- Will be dynamically populated with other download counters -->
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Current JSON Data</h2>
+        <div id="jsonOutput">Fetch data to view current values</div>
+    </div>
+    
+    <div class="actions">
+        <button id="resetAll" class="danger">Reset All to Zero</button>
+        <button id="updateValues" class="primary">Update Values</button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get DOM elements
+            const fetchDataBtn = document.getElementById('fetchData');
+            const resetAllBtn = document.getElementById('resetAll');
+            const updateValuesBtn = document.getElementById('updateValues');
+            const jsonOutput = document.getElementById('jsonOutput');
+            const loadingDiv = document.getElementById('loading');
+            const alertDiv = document.getElementById('alert');
+            const articleVisitsDiv = document.getElementById('articleVisits');
+            const otherDownloadsDiv = document.getElementById('otherDownloads');
+            
+            let currentData = null;
+            
+            // Function to show an alert
+            function showAlert(message, type = 'success') {
+                alertDiv.textContent = message;
+                alertDiv.className = `alert ${type === 'success' ? 'alert-success' : 'alert-error'}`;
+                alertDiv.classList.remove('hidden');
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    alertDiv.classList.add('hidden');
+                }, 5000);
+            }
+            
+            // Function to get JSONbin configuration
+            function getConfig() {
+                return {
+                    binId: document.getElementById('binId').value.trim(),
+                    masterKey: document.getElementById('masterKey').value.trim()
+                };
+            }
+            
+            // Function to fetch data from JSONbin
+            async function fetchData() {
+                const config = getConfig();
+                
+                if (!config.binId || !config.masterKey) {
+                    showAlert('Please provide both Bin ID and Master Key', 'error');
+                    return;
+                }
+                
+                loadingDiv.classList.remove('hidden');
+                
+                try {
+                    const url = `https://api.jsonbin.io/v3/b/${config.binId}/latest`;
+                    const response = await fetch(url, {
+                        headers: {
+                            'X-Master-Key': config.masterKey
+                        },
+                        cache: 'no-store'
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch data. Status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    currentData = data.record || {};
+                    
+                    // Display the JSON data
+                    jsonOutput.textContent = JSON.stringify(currentData, null, 2);
+                    
+                    // Populate form fields
+                    populateFormFields(currentData);
+                    
+                    showAlert('Data fetched successfully');
+                } catch (error) {
+                    showAlert(`Error: ${error.message}`, 'error');
+                    console.error('Error fetching data:', error);
+                } finally {
+                    loadingDiv.classList.add('hidden');
+                }
+            }
+            
+            // Function to populate form fields with fetched data
+            function populateFormFields(data) {
+                // Visitor counts
+                document.getElementById('totalVisits').value = data.visits || 0;
+                
+                // Page visits
+                const pageVisits = data.pageVisits || {};
+                document.getElementById('homeVisits').value = pageVisits.home || 0;
+                document.getElementById('projectsVisits').value = pageVisits.projects || 0;
+                document.getElementById('blogVisits').value = pageVisits.blog || 0;
+                document.getElementById('gamesVisits').value = pageVisits.games || 0;
+                document.getElementById('aboutVisits').value = pageVisits.about || 0;
+                
+                // Clear previous article visits
+                articleVisitsDiv.innerHTML = '<h3>Article Page Visits</h3>';
+                
+                // Add article visits
+                for (const key in pageVisits) {
+                    if (key.startsWith('ghana-')) {
+                        const div = document.createElement('div');
+                        div.className = 'form-group';
+                        div.innerHTML = `
+                            <label for="${key}Visits">${key}:</label>
+                            <input type="number" id="${key}Visits" min="0" value="${pageVisits[key] || 0}">
+                        `;
+                        articleVisitsDiv.appendChild(div);
+                    }
+                }
+                
+                // Download counts
+                document.getElementById('sbaProDownloads').value = data['sba-pro-master'] || 0;
+                document.getElementById('ecollationDownloads').value = data.ecollation || 0;
+                document.getElementById('refereeDownloads').value = data['referee-connect'] || 0;
+                document.getElementById('ibankDownloads').value = data.ibank || 0;
+                document.getElementById('examAnalyzerDownloads').value = data['exam-analyzer'] || 0;
+                
+                // Clear previous other downloads
+                otherDownloadsDiv.innerHTML = '<h3>Other Download Counters</h3>';
+                
+                // Add other download counters
+                const standardDownloads = ['sba-pro-master', 'ecollation', 'referee-connect', 'ibank', 'exam-analyzer'];
+                const standardFields = ['visits', 'pageVisits'];
+                
+                for (const key in data) {
+                    if (!standardDownloads.includes(key) && !standardFields.includes(key) && typeof data[key] === 'number') {
+                        const div = document.createElement('div');
+                        div.className = 'form-group';
+                        div.innerHTML = `
+                            <label for="${key}Other">${key}:</label>
+                            <input type="number" id="${key}Other" min="0" value="${data[key] || 0}">
+                        `;
+                        otherDownloadsDiv.appendChild(div);
+                    }
+                }
+            }
+            
+            // Function to reset all counters to zero
+            function resetAllCounters() {
+                if (!confirm('Are you sure you want to reset ALL counters to zero?')) {
+                    return;
+                }
+                
+                // Reset visitor counts
+                document.getElementById('totalVisits').value = 0;
+                document.getElementById('homeVisits').value = 0;
+                document.getElementById('projectsVisits').value = 0;
+                document.getElementById('blogVisits').value = 0;
+                document.getElementById('gamesVisits').value = 0;
+                document.getElementById('aboutVisits').value = 0;
+                
+                // Reset article visits
+                const articleInputs = articleVisitsDiv.querySelectorAll('input[type="number"]');
+                articleInputs.forEach(input => {
+                    input.value = 0;
+                });
+                
+                // Reset download counts
+                document.getElementById('sbaProDownloads').value = 0;
+                document.getElementById('ecollationDownloads').value = 0;
+                document.getElementById('refereeDownloads').value = 0;
+                document.getElementById('ibankDownloads').value = 0;
+                document.getElementById('examAnalyzerDownloads').value = 0;
+                
+                // Reset other downloads
+                const otherInputs = otherDownloadsDiv.querySelectorAll('input[type="number"]');
+                otherInputs.forEach(input => {
+                    input.value = 0;
+                });
+                
+                showAlert('All counters reset to zero in the form. Click "Update Values" to save to JSONbin.');
+            }
+            
+            // Function to collect values from form
+            function collectFormValues() {
+                // Start with current data structure or empty object
+                const newData = currentData || {};
+                
+                // Update visitor counts
+                newData.visits = parseInt(document.getElementById('totalVisits').value) || 0;
+                
+                // Ensure pageVisits exists
+                if (!newData.pageVisits) {
+                    newData.pageVisits = {};
+                }
+                
+                // Update page visits
+                newData.pageVisits.home = parseInt(document.getElementById('homeVisits').value) || 0;
+                newData.pageVisits.projects = parseInt(document.getElementById('projectsVisits').value) || 0;
+                newData.pageVisits.blog = parseInt(document.getElementById('blogVisits').value) || 0;
+                newData.pageVisits.games = parseInt(document.getElementById('gamesVisits').value) || 0;
+                newData.pageVisits.about = parseInt(document.getElementById('aboutVisits').value) || 0;
+                
+                // Update article visits
+                const articleInputs = articleVisitsDiv.querySelectorAll('input[type="number"]');
+                articleInputs.forEach(input => {
+                    const key = input.id.replace('Visits', '');
+                    newData.pageVisits[key] = parseInt(input.value) || 0;
+                });
+                
+                // Update download counts
+                newData['sba-pro-master'] = parseInt(document.getElementById('sbaProDownloads').value) || 0;
+                newData.ecollation = parseInt(document.getElementById('ecollationDownloads').value) || 0;
+                newData['referee-connect'] = parseInt(document.getElementById('refereeDownloads').value) || 0;
+                newData.ibank = parseInt(document.getElementById('ibankDownloads').value) || 0;
+                newData['exam-analyzer'] = parseInt(document.getElementById('examAnalyzerDownloads').value) || 0;
+                
+                // Update other downloads
+                const otherInputs = otherDownloadsDiv.querySelectorAll('input[type="number"]');
+                otherInputs.forEach(input => {
+                    const key = input.id.replace('Other', '');
+                    newData[key] = parseInt(input.value) || 0;
+                });
+                
+                return newData;
+            }
+            
+            // Function to update values in JSONbin
+            async function updateValues() {
+                if (!currentData) {
+                    showAlert('Please fetch data first before updating', 'error');
+                    return;
+                }
+                
+                if (!confirm('Are you sure you want to update the counters with these values?')) {
+                    return;
+                }
+                
+                const config = getConfig();
+                
+                if (!config.binId || !config.masterKey) {
+                    showAlert('Please provide both Bin ID and Master Key', 'error');
+                    return;
+                }
+                
+                loadingDiv.classList.remove('hidden');
+                
+                try {
+                    const newData = collectFormValues();
+                    
+                    const url = `https://api.jsonbin.io/v3/b/${config.binId}`;
+                    const response = await fetch(url, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Master-Key': config.masterKey,
+                            'X-Bin-Meta': false
+                        },
+                        body: JSON.stringify(newData)
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`Failed to update data. Status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    currentData = data;
+                    
+                    // Update the JSON display
+                    jsonOutput.textContent = JSON.stringify(currentData, null, 2);
+                    
+                    showAlert('Values updated successfully');
+                } catch (error) {
+                    showAlert(`Error: ${error.message}`, 'error');
+                    console.error('Error updating values:', error);
+                } finally {
+                    loadingDiv.classList.add('hidden');
+                }
+            }
+            
+            // Event listeners
+            fetchDataBtn.addEventListener('click', fetchData);
+            resetAllBtn.addEventListener('click', resetAllCounters);
+            updateValuesBtn.addEventListener('click', updateValues);
+            
+            // Initial fetch
+            fetchData();
+        });
+    </script>
+</body>
+</html> 
