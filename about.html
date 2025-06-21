@@ -512,7 +512,7 @@
     <aside class="comments-section">
         <div class="container">
             <h2 class="section-title">Quick Feedback</h2>
-            <form id="commentForm" onsubmit="return sendEmail(event)">
+            <form id="commentForm" action="https://formspree.io/f/myzjdnja" method="POST">
                 <div class="form-group">
                     <label for="name"><i class="fas fa-user"></i> Name</label>
                     <input type="text" id="name" name="name" required placeholder="Enter your name">
@@ -543,83 +543,7 @@
         </div>
     </aside>
 
-    <!-- Guide Modal -->
-    <div class="guide-modal" id="guideModal">
-        <div class="guide-content">
-            <h3>Send Your Message</h3>
-            <div class="guide-steps">
-                <div class="guide-step">
-                    <div class="step-number">1</div>
-                    <div class="step-text">Your default email client will open with your message pre-filled.</div>
-                </div>
-                <div class="guide-step">
-                    <div class="step-number">2</div>
-                    <div class="step-text">Review your message in your email client to make any final adjustments.</div>
-                </div>
-                <div class="guide-step">
-                    <div class="step-number">3</div>
-                    <div class="step-text">Click the Send button in your email client to send your message.</div>
-                </div>
-                <div class="guide-step">
-                    <div class="step-number">4</div>
-                    <div class="step-text">You'll receive a confirmation once your message is sent successfully.</div>
-                </div>
-            </div>
-            <div class="guide-buttons">
-                <button class="guide-btn cancel" onclick="closeGuideModal()">Cancel</button>
-                <button class="guide-btn proceed" onclick="proceedWithEmail()">Continue</button>
-            </div>
-        </div>
-    </div>
-
     <script>
-        let pendingMailtoLink = '';
-
-        function sendEmail(event) {
-            event.preventDefault();
-            
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const subject = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
-            
-            // Format the email body
-            const emailBody = `
-Name: ${name}
-Email: ${email}
-Subject: ${subject}
-
-Message:
-${message}
-            `.trim();
-            
-            // Create mailto link but don't open it yet
-            pendingMailtoLink = `mailto:darkmic50@gmail.com?subject=${encodeURIComponent(subject)} from ${encodeURIComponent(name)}&body=${encodeURIComponent(emailBody)}`;
-            
-            // Show the guide modal
-            document.getElementById('guideModal').classList.add('show');
-            
-            return false;
-        }
-
-        function closeGuideModal() {
-            document.getElementById('guideModal').classList.remove('show');
-            pendingMailtoLink = '';
-        }
-
-        function proceedWithEmail() {
-            if (pendingMailtoLink) {
-                // Open email client
-                window.location.href = pendingMailtoLink;
-                
-                // Clear the form
-                document.getElementById('commentForm').reset();
-                
-                // Close the modal
-                closeGuideModal();
-            }
-        }
-
         // Animate skill bars on scroll
         function animateSkillBars() {
             const skillBars = document.querySelectorAll('.progress');

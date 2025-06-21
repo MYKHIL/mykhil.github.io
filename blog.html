@@ -561,7 +561,7 @@
     <aside class="comments-section">
         <div class="container">
             <h2 class="section-title">Quick Feedback</h2>
-            <form id="commentForm" onsubmit="return sendEmail(event)">
+            <form id="commentForm" action="https://formspree.io/f/myzjdnja" method="POST">
                 <div class="form-group">
                     <label for="name"><i class="fas fa-user"></i> Name</label>
                     <input type="text" id="name" name="name" required placeholder="Enter your name">
@@ -637,20 +637,6 @@
                 navMenu.classList.toggle('active');
             });
         });
-
-        // Email handling function
-        function sendEmail(event) {
-            event.preventDefault();
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const subject = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
-            
-            const mailtoLink = `mailto:contact@mykhilcreations.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`)}`;
-            window.location.href = mailtoLink;
-            
-            return false;
-        }
     </script>
 
     <footer>

@@ -298,107 +298,6 @@
             color: var(--primary-color);
         }
 
-        /* Guide Modal Styles */
-        .guide-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .guide-modal.show {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .guide-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            max-width: 500px;
-            position: relative;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .guide-content h3 {
-            color: #1a1a1a;
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-        }
-
-        .guide-steps {
-            margin-bottom: 1.5rem;
-        }
-
-        .guide-step {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-            padding: 0.8rem;
-            background: #f8f9fa;
-            border-radius: 5px;
-        }
-
-        .step-number {
-            background: #007bff;
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1rem;
-            flex-shrink: 0;
-            font-size: 0.9rem;
-        }
-
-        .step-text {
-            color: #444;
-            line-height: 1.4;
-            font-size: 1rem;
-        }
-
-        .guide-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .guide-btn {
-            padding: 0.8rem 1.5rem;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: none;
-        }
-
-        .guide-btn.cancel {
-            background: #f8f9fa;
-            color: #444;
-        }
-
-        .guide-btn.cancel:hover {
-            background: #e2e6ea;
-        }
-
-        .guide-btn.proceed {
-            background: #007bff;
-            color: white;
-        }
-
-        .guide-btn.proceed:hover {
-            background: #0056b3;
-        }
-
         /* Form Styles */
         .form-group {
             margin-bottom: 1.5rem;
@@ -689,7 +588,7 @@
     <aside class="comments-section">
         <div class="container">
             <h2 class="section-title">Quick Feedback</h2>
-            <form id="commentForm" onsubmit="return sendEmail(event)">
+            <form id="commentForm" action="https://formspree.io/f/myzjdnja" method="POST">
                 <div class="form-group">
                     <label for="name"><i class="fas fa-user"></i> Name</label>
                     <input type="text" id="name" name="name" required placeholder="Enter your name">
@@ -720,35 +619,6 @@
         </div>
     </aside>
 
-    <!-- Guide Modal -->
-    <div class="guide-modal" id="guideModal">
-        <div class="guide-content">
-            <h3>Send Your Message</h3>
-            <div class="guide-steps">
-                <div class="guide-step">
-                    <div class="step-number">1</div>
-                    <div class="step-text">Your default email client will open with your message pre-filled.</div>
-                </div>
-                <div class="guide-step">
-                    <div class="step-number">2</div>
-                    <div class="step-text">Review your message in your email client to make any final adjustments.</div>
-                </div>
-                <div class="guide-step">
-                    <div class="step-number">3</div>
-                    <div class="step-text">Click the Send button in your email client to send your message.</div>
-                </div>
-                <div class="guide-step">
-                    <div class="step-number">4</div>
-                    <div class="step-text">You'll receive a confirmation once your message is sent successfully.</div>
-                </div>
-            </div>
-            <div class="guide-buttons">
-                <button class="guide-btn cancel" onclick="closeGuideModal()">Cancel</button>
-                <button class="guide-btn proceed" onclick="proceedWithEmail()">Continue</button>
-            </div>
-        </div>
-    </div>
-
     <footer>
         <p>&copy; 2024 Mykhil Creations. All rights reserved.</p>
         <div class="footer-stats">
@@ -770,7 +640,6 @@
     <script src="js/connection-status.js"></script>
     <script src="js/download-tracker-new.js"></script>
     <script src="js/visitor-counter.js"></script>
-    <script src="js/email-handler.js"></script>
     <script src="js/mobile-menu.js"></script>
 </body>
 </html>
