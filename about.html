@@ -627,7 +627,7 @@
                 // Show loading state
                 submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
                 submitButton.disabled = true;
-                
+            
                 // Submit to Formspree
                 fetch(form.action, {
                     method: 'POST',
@@ -696,7 +696,7 @@
                 }
             }, 5000);
         }
-        
+
         function showErrorMessage() {
             // Create error message element
             const errorDiv = document.createElement('div');
@@ -727,12 +727,12 @@
             
             // Add to page
             document.body.appendChild(errorDiv);
-            
+                
             // Auto-remove after 5 seconds
             setTimeout(() => {
                 if (errorDiv.parentElement) {
                     errorDiv.remove();
-                }
+            }
             }, 5000);
         }
 
