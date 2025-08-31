@@ -51,7 +51,7 @@ function saveLocalCounts(counts) {
 // Function to track downloads
 async function trackDownload(event, projectId) {
     event.preventDefault();
-    const link = event.target.closest('a').href;
+    const link = window.downloadItems[projectId]?.url;
     
     debugLog(`Tracking download for: ${projectId}`);
     
