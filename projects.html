@@ -509,6 +509,14 @@
                 projectId: 'exam-analyzer'
             }
         };
+        // Set the href for all download buttons based on window.downloadItems
+        document.addEventListener('DOMContentLoaded', function() {
+            for (const key in window.downloadItems) {
+                const url = window.downloadItems[key].url;
+                const btn = document.querySelector(`a[onclick*="${key}"]`);
+                if (btn) btn.setAttribute('href', url);
+            }
+        });
     </script>
     <header>
         <nav>
