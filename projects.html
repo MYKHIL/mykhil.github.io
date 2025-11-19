@@ -183,6 +183,17 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0,123,255,0.3);
         }
+        .pricing-btn {
+            background: white;
+            color: #007bff;
+            border: 1px solid #007bff;
+            box-shadow: none;
+        }
+        .pricing-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,123,255,0.08);
+            background: #f8fbff;
+        }
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -493,7 +504,7 @@
                 <div class="project-card">
                     <div class="project-header">
                         <h3>SBA Pro Master</h3>
-                        <span class="version">6.0.4</span>
+                        <span class="version">6.0</span>
                     </div>
                     <p class="project-description">Advanced School-Based Assessment management system designed for modern educational institutions.</p>
                     <ul class="feature-list">
@@ -510,6 +521,9 @@
                     <div class="project-links">
                         <a href="javascript:void(0);" class="btn download-btn" onclick="trackDownload(event, window.downloadItems['sba-pro-master'].projectId)">
                             <i class="fas fa-download"></i> Download SBA Pro Master
+                        </a>
+                        <a href="pricingpage.html" class="btn pricing-btn" title="View pricing for SBA Pro Master">
+                            <i class="fas fa-tags"></i> View Pricing
                         </a>
                     </div>
                 </div>
@@ -902,6 +916,7 @@
     </script>
 </body>
 </html>
+
 
 
 
