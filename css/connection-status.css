@@ -1,0 +1,37 @@
+/* Connection Status Styles */
+.connection-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 0.9rem;
+    margin-right: 1rem;
+}
+
+.connection-status i {
+    font-size: 1rem;
+}
+
+.connection-status.good {
+    background: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+}
+
+.connection-status.medium {
+    background: rgba(241, 196, 15, 0.2);
+    color: #f1c40f;
+}
+
+.connection-status.poor {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+}
+
+@media (max-width: 768px) {
+    .connection-status {
+        display: none;
+    }
+} 

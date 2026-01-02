@@ -1,0 +1,42 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20251119081431
+Username: MYKHIL-LAPTOP\USER
+RunAs User: MYKHIL-LAPTOP\USER
+Configuration Name: 
+Machine: MYKHIL-LAPTOP (Microsoft Windows NT 10.0.26200.0)
+Host Application: powershell -NoProfile -ExecutionPolicy Bypass -Command try { Start-Transcript -Path 'D:\Projects\My website\update_website.log.trans' -Force; & 'D:\Projects\My website\scripts\update_website.ps1'; exit $LASTEXITCODE } finally { Stop-Transcript | Out-Null; try { Get-Content -LiteralPath 'D:\Projects\My website\update_website.log.trans' -ErrorAction SilentlyContinue | Set-Content -LiteralPath 'D:\Projects\My website\update_website.log' -Encoding UTF8 -Force } catch { Write-Error 'Failed to convert transcript to UTF8' } }
+Process ID: 17836
+PSVersion: 5.1.26100.7019
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.7019
+BuildVersion: 10.0.26100.7019
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is D:\Projects\My website\update_website.log.trans
+Select a project to update (leave blank to skip editing projects list):
+[1] ibank - iBank
+[2] ecollation - eCollation Center
+[3] referee-connect - Referee Connect
+[4] sba-pro-master - SBA Pro Master
+[5] exam-analyzer - Exam Analyzer
+Selected: sba-pro-master
+Updated download URL for sba-pro-master
+Updated version for sba-pro-master to 6.0.4
+Updated index.html version text for sba-pro-master to v6.0.4
+Updated 'Updated' date for sba-pro-master to Nov 2025
+Backup saved to D:\Projects\My website\projects.html.bak.20251119082143
+projects.html updated.
+Backup saved to D:\Projects\My website\index.html.bak.20251119082143
+index.html updated.
+Staging changes...
+Committing with message: Update sba-pro-master version 6.0.4 url updated
+Pushing to origin main...
+
+**********************
+Windows PowerShell transcript end
+End time: 20251119082154
+**********************

@@ -1,0 +1,426 @@
+﻿<DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mykhil Creations - Professional Software Solutions</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/connection-status.css">
+    <link rel="stylesheet" href="css/visitor-counter.css">
+    <style>
+        :root {
+            --gradient-1: linear-gradient(45deg, #2193b0, #6dd5ed);
+            --gradient-2: linear-gradient(135deg, #667eea, #764ba2);
+            --gradient-3: linear-gradient(45deg, #11998e, #38ef7d);
+        }
+        .hero {
+            background: var(--gradient-1);
+            padding: 6rem 2rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: moveBackground 20s linear infinite;
+        }
+        @keyframes moveBackground {
+            from { background-position: 0 0; }
+            to { background-position: 100px 100px; }
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            animation: slideDown 1s ease-out;
+        }
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.5s forwards;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: white;
+            color: #2193b0;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1s forwards;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .featured {
+            padding: 5rem 2rem;
+            background: #f8f9fa;
+        }
+        .featured h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #333;
+            font-size: 2.5rem;
+            opacity: 0;
+            animation: slideUp 1s ease-out forwards;
+        }
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .featured-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+        .featured-item:hover {
+            transform: translateY(-10px);
+        }
+        .featured-item i {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: #2193b0;
+            background: linear-gradient(45deg, #2193b0, #6dd5ed);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .featured-item h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        .featured-item ul {
+            list-style: none;
+            padding: 0;
+        }
+        .featured-item ul li {
+            padding: 0.5rem 0;
+            color: #666;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        .featured-item ul li::before {
+            /* Use a proper right-arrow character (ensure file is saved as UTF-8) */
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #2193b0;
+        }
+        /* Make project links look like balloons */
+        .featured-item ul li a {
+            display: inline-block;
+            padding: 0.35rem 0.9rem;
+            background: linear-gradient(135deg, rgba(33,147,176,0.12), rgba(102,126,234,0.08));
+            color: #0b5c6d;
+            border-radius: 999px;
+            box-shadow: 0 6px 12px rgba(16,24,40,0.06);
+            text-decoration: none;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+            font-weight: 600;
+        }
+        .featured-item ul li a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(16,24,40,0.12);
+            background: linear-gradient(135deg, rgba(33,147,176,0.18), rgba(102,126,234,0.12));
+        }
+        .featured-item ul li a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+        .why-choose {
+            padding: 5rem 2rem;
+            background: var(--gradient-2);
+            color: white;
+        }
+        .why-choose h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+        }
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .benefit {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s;
+        }
+        .benefit:hover {
+            transform: translateY(-5px);
+        }
+        .benefit i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .contact-cta {
+            padding: 5rem 2rem;
+            text-align: center;
+            background: var(--gradient-3);
+            color: white;
+        }
+        .contact-cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .contact-info {
+            margin: 2rem 0;
+        }
+        .contact-info p {
+            margin: 0.5rem 0;
+            font-size: 1.2rem;
+        }
+        .contact-info .phone-number {
+            font-weight: 500;
+            margin-right: 10px;
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        /* Floating animation for icons */
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        /* Add responsive design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1.2rem;
+            }
+            .featured-grid, .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .contact-info a {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .contact-info a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+        .contact-links {
+            display: inline-block;
+            margin-left: 10px;
+        }
+        .contact-links a {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background: #f8f9fa;
+            margin: 0 5px;
+            transition: all 0.3s;
+        }
+        .contact-links a:hover {
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+        .contact-links i {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Mykhil Creations</div>
+            <div class="visitor-counter">
+                <i class="fas fa-eye"></i>
+                <span>Total Visitors: <span id="visitor-count" class="visitor-counter-value">0</span></span>
+            </div>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul>
+                <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="projects.html"><i class="fas fa-code"></i> Projects</a></li>
+                <li><a href="blog.html"><i class="fas fa-blog"></i> Blog</a></li>
+                <li><a href="games.html"><i class="fas fa-gamepad"></i> Games</a></li>
+                <li><a href="about.html"><i class="fas fa-user"></i> About</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="hero">
+            <h1>Welcome to Mykhil Creations</h1>
+            <p>Innovative Software Solutions for Education and Sports Management</p>
+            <a href="projects.html" class="cta-button">Explore Our Softwares</a>
+        </section>
+        <section class="featured">
+            <h2>Featured Solutions</h2>
+            <div class="featured-grid">
+                <div class="featured-item">
+                    <i class="fas fa-school floating"></i>
+                    <h3>Education Management</h3>
+                    <p>Comprehensive solutions for schools and educational institutions</p>
+                    <ul>
+                        <li><a href="projects.html">SBA Pro Master v6.0.5</a></li>
+                    </ul>
+                </div>
+                <div class="featured-item">
+                    <i class="fas fa-vote-yea floating"></i>
+                    <h3>Election Management</h3>
+                    <p>Secure and efficient election result management system</p>
+                    <ul>
+                        <li><a href="projects.html">eCollation Center v2.0</a></li>
+                    </ul>
+                </div>
+                <div class="featured-item">
+                    <i class="fas fa-futbol floating"></i>
+                    <h3>Sports Management</h3>
+                    <p>Professional tools for sports officials and organizations</p>
+                    <ul>
+                        <li><a href="projects.html">Referee Connect v1.1.0.5</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section class="why-choose">
+            <h2>Why Choose Our Software?</h2>
+            <div class="benefits-grid">
+                <div class="benefit">
+                    <i class="fas fa-shield-alt floating"></i>
+                    <h3>Secure & Reliable</h3>
+                    <p>Built with industry-standard security practices</p>
+                </div>
+                <div class="benefit">
+                    <i class="fas fa-sync floating"></i>
+                    <h3>Regular Updates</h3>
+                    <p>Continuous improvements and new features</p>
+                </div>
+                <div class="benefit">
+                    <i class="fas fa-headset floating"></i>
+                    <h3>Professional Support</h3>
+                    <p>Dedicated technical assistance when you need it</p>
+                </div>
+            </div>
+        </section>
+        <section class="contact-cta">
+            <h2>Get in Touch</h2>
+            <p>Have questions about our software solutions?</p>
+            <div class="contact-info">
+                <p>
+                    <i class="fas fa-phone floating"></i> 
+                    <span class="phone-number">+233 54 241 0613</span>
+                    <span class="contact-links">
+                        <a href="tel:+233542410613" title="Call us"><i class="fas fa-phone-alt"></i> Call</a> | 
+                        <a href="https://wa.me/233542410613" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                    </span>
+                </p>
+                <p>
+                    <i class="fas fa-envelope floating"></i> 
+                    darkmic50@gmail.com
+                    <a href="about.html#contact-form" onclick="focusNameInput()" title="Send us an email" class="contact-links">
+                        <i class="fas fa-paper-plane"></i> Send Email
+                    </a>
+                </p>
+            </div>
+            <a href="about.html#contact-form" class="cta-button">Contact Us</a>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Mykhil Creations. All rights reserved.</p>
+        <div class="footer-stats">
+            <div class="page-visitor-counter">
+                <i class="fas fa-chart-line"></i>
+                <span>Page Visits: <span id="page-visitor-count">0</span></span>
+            </div>
+            <div id="connection-status" class="footer-connection-status">
+                <i class="fas fa-wifi"></i>
+                <span id="connection-label">Checking connection...</span>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Function to focus the name input when redirected from email link
+        function focusNameInput() {
+            // Store a flag in sessionStorage to indicate we should focus the name input
+            sessionStorage.setItem('focusNameInput', 'true');
+        }
+        // Check if we should focus the name input (when page loads)
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.location.pathname.endsWith('about.html') && sessionStorage.getItem('focusNameInput')) {
+                const nameInput = document.querySelector('#name');
+                if (nameInput) {
+                    nameInput.focus();
+                    // Clear the flag
+                    sessionStorage.removeItem('focusNameInput');
+                }
+            }
+        });
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.querySelector('nav ul');
+            menuToggle.addEventListener('click', function() {
+                menuToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+            // Close menu when clicking a link
+            const navLinks = document.querySelectorAll('nav ul li a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+        });
+    </script>
+    <script src="js/connection-status.js"></script>
+    <script src="js/visitor-counter.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+

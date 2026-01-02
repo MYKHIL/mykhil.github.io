@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Insights - Mykhil Creations</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/feedback.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/connection-status.css">
+    <link rel="stylesheet" href="css/visitor-counter.css">
+    <style>
+        /* Table of Contents Styles */
+        .toc {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            width: 250px;
+            height: calc(100vh - 80px);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            overflow-y: auto;
+            overflow-x: hidden;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            transition: transform 0.3s ease;
+            transform: translateX(-100%);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .toc.active {
+            transform: translateX(0);
+        }
+
+        .toc-toggle {
+            position: fixed;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 1rem 0.5rem;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            z-index: 101;
+            transition: all 0.3s ease;
+            writing-mode: vertical-lr;
+            text-orientation: mixed;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+        }
+
+        .toc-toggle:hover {
+            background: var(--hover-color);
+            padding-left: 1rem;
+        }
+
+        .toc h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+            font-size: 1.2rem;
+            white-space: nowrap;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
+        .toc li {
+            margin: 0;
+            width: 100%;
+        }
+
+        .toc a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem;
+            border-radius: 4px;
+            border-right: 3px solid transparent;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .toc a i {
+            width: 16px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .toc a:hover {
+            background: rgba(52, 152, 219, 0.1);
+            border-right-color: var(--secondary-color);
+            padding-left: 0.8rem;
+        }
+
+        .toc a.active {
+            background: var(--secondary-color);
+            color: white;
+            border-right-color: var(--primary-color);
+        }
+
+        /* Blog Content Styles */
+        .blog-section {
+            padding: 4rem 2rem;
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+        }
+
+        .blog-section.shifted {
+            margin-left: 250px;
+        }
+
+        .blog-card {
+            margin-bottom: 4rem;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .blog-image-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .blog-card:hover .blog-image {
+            transform: scale(1.05);
+        }
+
+        .blog-content {
+            padding: 2rem;
+        }
+
+        .blog-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .blog-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .blog-excerpt {
+            color: #444;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            margin: 2rem 0;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .source-link {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+
+        .source-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .toc, .toc-toggle {
+                display: none !important;
+            }
+            
+            .blog-section {
+                margin-left: 0 !important;
+                padding: 2rem 1rem;
+            }
+
+            .blog-section.shifted {
+                margin-left: 0;
+                padding: 2rem 1rem;
+            }
+
+            .blog-card {
+                margin-bottom: 2rem;
+            }
+        }
+
+        /* Success and Error Message Styles */
+        .success-content, .error-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        .success-content i {
+            font-size: 3rem;
+            color: #28a745;
+            margin-bottom: 1rem;
+        }
+
+        .error-content i {
+            font-size: 3rem;
+            color: #dc3545;
+            margin-bottom: 1rem;
+        }
+
+        .success-content h3, .error-content h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .success-content p, .error-content p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .close-btn {
+            background: linear-gradient(45deg, #007bff, #00ff88);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Mykhil Creations</div>
+            <div class="visitor-counter">
+                <i class="fas fa-eye"></i>
+                <span>Total Visitors: <span id="visitor-count" class="visitor-counter-value">0</span></span>
+            </div>
+            <div id="connection-status" class="connection-status">
+                <i class="fas fa-wifi"></i>
+                <span id="connection-label">Checking...</span>
+            </div>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="blog.html" class="active">Blog</a></li>
+                <li><a href="games.html">Games</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <button class="toc-toggle">
+        <i class="fas fa-list"></i> Contents
+    </button>
+
+    <nav class="toc">
+        <h2>Table of Contents</h2>
+        <ul>
+            <li><a href="#political-news"><i class="fas fa-landmark"></i> Ghana's Political Landscape</a></li>
+            <li><a href="#entertainment-news"><i class="fas fa-music"></i> Ghana's Music Scene</a></li>
+            <li><a href="#social-news"><i class="fas fa-users"></i> Social Movements</a></li>
+            <li><a href="#healthcare-news"><i class="fas fa-heartbeat"></i> Healthcare System</a></li>
+            <li><a href="#economy-news"><i class="fas fa-chart-line"></i> Economic Landscape</a></li>
+            <li><a href="#tourism-news"><i class="fas fa-plane"></i> Tourism</a></li>
+            <li><a href="#sports-news"><i class="fas fa-futbol"></i> Sports</a></li>
+            <li><a href="#environment-news"><i class="fas fa-leaf"></i> Environment</a></li>
+            <li><a href="#tech-news"><i class="fas fa-laptop-code"></i> Technology Revolution</a></li>
+            <li><a href="#education-news"><i class="fas fa-graduation-cap"></i> Educational Transformation</a></li>
+            <li><a href="#ai-revolution"><i class="fas fa-robot"></i> AI Revolution in Africa</a></li>
+            <li><a href="#blockchain"><i class="fas fa-link"></i> Blockchain's Impact</a></li>
+            <li><a href="#cybersecurity"><i class="fas fa-shield-alt"></i> Cybersecurity Trends</a></li>
+            <li><a href="#future-tech"><i class="fas fa-microchip"></i> Future of Technology</a></li>
+            <li><a href="#digital-transformation"><i class="fas fa-sync"></i> Digital Transformation</a></li>
+            <li><a href="#fintech-innovation"><i class="fas fa-money-bill-wave"></i> Fintech Innovation</a></li>
+            <li><a href="#renewable-tech"><i class="fas fa-solar-panel"></i> Renewable Energy Tech</a></li>
+            <li><a href="#edtech-revolution"><i class="fas fa-graduation-cap"></i> EdTech Revolution</a></li>
+            <li><a href="#health-tech"><i class="fas fa-heartbeat"></i> Healthcare Technology</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="blog-section">
+            <!-- Political News Article -->
+            <article id="political-news" class="blog-card">
+                <div class="blog-image-container">
+                    <img src="https://cdn.britannica.com/42/128342-050-8C2363CE/Kwame-Nkrumah-Memorial-Park-Accra-Ghana.jpg" alt="Ghana Parliament Building" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> March 14, 2025</span>
+                        <span><i class="fas fa-user"></i> Michael Darko</span>
+                        <span><i class="fas fa-tag"></i> Politics</span>
+                    </div>
+                    <h2 class="blog-title">Ghana's Evolving Political Landscape: Democracy in Transition</h2>
+                    <div class="blog-excerpt">
+                        <p>Ghana's political landscape is experiencing profound shifts as the nation approaches its upcoming elections. Since gaining independence from British colonial rule in 1957, Ghana has established itself as one of Africa's most stable democracies, yet current developments suggest the country is entering a critical phase of democratic evolution. Political dynamics in Ghana remain fluid as established political forces contend with emerging movements, while civic consciousness continues to rise among younger generations of citizens. The country's democratic institutions face significant stress tests as economic challenges, corruption concerns, and demands for greater accountability reshape voter priorities and expectations.</p>
+
+                        <p>The two dominant political forces – the incumbent New Patriotic Party (NPP) and the opposition National Democratic Congress (NDC) – are experiencing internal transformations while maintaining their grip on the national political framework. Within the NPP, the transition from President Nana Akufo-Addo's leadership to new flagbearers has revealed factional dynamics previously contained beneath the party's unified public image. Meanwhile, the NDC's reformation process under former President John Mahama involves balancing established party structures with demands for new approaches to governance and economic management. The continued dominance of these two major parties contrasts with many citizens' desire for alternatives beyond the traditional binary political landscape.</p>
+
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/wfAQN4DSvYQ" allowfullscreen title="Ghana's Democratic Journey - PBS NewsHour"></iframe>
+                        </div>
+
+                        <p>Economic concerns dominate Ghana's political discourse as the country navigates difficult financial conditions, including high inflation, currency depreciation, and public debt management challenges. The government's decision to pursue an International Monetary Fund (IMF) program in 2022 marked a significant shift in economic policy direction and sparked intense public debate about national economic sovereignty versus fiscal stability. Political leaders across the spectrum acknowledge the gravity of the economic situation, yet differ sharply on proposed solutions – contrasting state-led development approaches with market-oriented reforms.</p>
+
+                        <p>Ghana's youth demographic represents perhaps the most powerful emerging force in the country's politics. With over 57% of the population under 25 years old, Ghana's political future inevitably belongs to its youth. This generation, better educated and more digitally connected than any before it, is increasingly unwilling to accept the political status quo. Young activists are challenging entrenched leadership models that have traditionally valued seniority over competence and loyalty over innovation. Through social media campaigns, protest movements, and grassroots organizing, youth-led initiatives like #FixTheCountry have demonstrated their ability to mobilize public opinion and demand accountability outside traditional political channels.</p>
+
+                        <h3>Key Political Developments:</h3>
+                        <ul>
+                            <li>The emergence of new political movements challenging the NPP-NDC duopoly</li>
+                            <li>Enhanced civic activism through digital platforms and grassroots organizing</li>
+                            <li>Economic policy directions amid IMF program implementation</li>
+                            <li>Electoral reforms to strengthen democratic processes</li>
+                            <li>Increased youth political engagement through activist movements</li>
+                        </ul>
+
+                        <a href="https://www.africanews.com/2023/12/28/ghana-s-political-landscape-ahead-of-the-2024-elections/" class="source-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Source: African News - Ghana's Political Landscape
+                        </a><br>
+                        <a href="https://theconversation.com/ghana-at-65-the-successes-and-failures-of-the-african-independence-pioneer-178576" class="source-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Source: The Conversation - Ghana at 65
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Entertainment News Article -->
+            <article id="entertainment-news" class="blog-card">
+                <div class="blog-image-container">
+                    <img src="https://www.musicinafrica.net/sites/default/files/images/article/202003/artistspotlightsjackie.jpg" alt="Ghana Music Scene" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> March 10, 2025</span>
+                        <span><i class="fas fa-user"></i> Michael Darko</span>
+                        <span><i class="fas fa-tag"></i> Entertainment</span>
+                    </div>
+                    <h2 class="blog-title">Ghana's Vibrant Entertainment Scene: From Highlife to Afrobeats</h2>
+                    <div class="blog-excerpt">
+                        <p>Ghana's entertainment industry stands as a powerhouse in Africa, blending rich cultural traditions with contemporary global influences to create a dynamic and ever-evolving creative landscape. From its historic roots in highlife music to today's internationally acclaimed Afrobeats scene, Ghana continues to punch above its weight in African entertainment. The country's creative sectors – spanning music, film, dance, comedy, and digital content – reflect Ghana's position at the cultural crossroads of West Africa, where traditional artforms seamlessly merge with modern expression. This vibrant ecosystem not only entertains but serves as a significant economic driver, creating opportunities for a growing creative class while projecting Ghana's cultural influence across continental and global audiences.</p>
+
+                        <p>Ghana's musical heritage remains central to its entertainment identity, with a storied evolution from traditional drumming and folk songs through highlife's golden era to contemporary Afrobeats dominance. The 1920s emergence of highlife – blending local rhythms with Western instrumentation – established Ghana's first internationally recognized musical form. Artists like E.T. Mensah and later Amakye Dede became continental stars, creating the foundation for subsequent generations. The 1970s saw experimentation with funk, rock, and reggae influences through pioneers like Ebo Taylor and Gyedu-Blay Ambolley, whose work is now experiencing international rediscovery. Today's Ghanaian music scene thrives through global superstars like Sarkodie, Stonebwoy, and Shatta Wale, who have transformed local genres into international phenomena while maintaining distinctly Ghanaian elements that separate them from Nigeria's parallel Afrobeats movement.</p>
+
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/FCEIRjHiVtc" allowfullscreen title="The Evolution of Ghanaian Music - BBC Africa"></iframe>
+                        </div>
+
+                        <p>Female artists are increasingly reshaping Ghana's entertainment landscape, breaking through long-standing barriers to achieve unprecedented success both domestically and internationally. Pioneers like Efya and Becca paved the way for today's stars including Gyakie, Amaarae, and Wendy Shay, whose distinctive artistic voices have garnered millions of streams across global platforms. These artists navigate complex terrain, balancing commercial viability with artistic authenticity while addressing social expectations regarding female expression.</p>
+
+                        <p>Ghana's film industry, affectionately termed "Ghallywood," has evolved significantly from its modest beginnings to become an increasingly sophisticated sector producing content for both domestic and international consumption. The industry has historically operated in the shadow of Nigeria's larger Nollywood, but has cultivated a distinctive approach focusing on higher production values and more deliberate storytelling. Major production hubs in Accra and Kumasi generate feature films, television series, and increasingly, streaming content targeting diaspora audiences. Pioneering directors like Shirley Frimpong-Manso and Peter Sedufia have elevated Ghanaian cinema through technically accomplished productions addressing contemporary social themes while maintaining commercial appeal.</p>
+
+                        <h3>Rising Stars in Ghana's Entertainment Scene:</h3>
+                        <ul>
+                            <li>Black Sherif - Innovative rapper blending trap music with Ghanaian highlife influences</li>
+                            <li>Gyakie - Second-generation music star establishing her own international legacy</li>
+                            <li>Amaarae - Genre-defying artist pushing boundaries with alternative R&B sounds</li>
+                            <li>Kelvyn Boy - Afrobeat powerhouse known for innovative production and vocal versatility</li>
+                            <li>Yaw Tog - Pioneer of the "Asakaa" drill music movement in Kumasi</li>
+                        </ul>
+
+                        <a href="https://www.musicinafrica.net/magazine/state-ghanaian-music-industry" class="source-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Source: Music in Africa - State of the Ghanaian Music Industry
+                        </a><br>
+                        <a href="https://www.bbc.com/culture/article/20200930-afrobeats-the-ten-songs-that-defined-the-decade" class="source-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Source: BBC Culture - Afrobeats: The Songs that Defined the Decade
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Social News Article -->
+            <article id="social-news" class="blog-card">
+                <div class="blog-image-container">
+                    <img src="https://ichef.bbci.co.uk/news/976/cpsprodpb/1005A/production/_118712135_mediaitem118712134.jpg" alt="Ghana FixTheCountry Protest" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> March 7, 2025</span>
+                        <span><i class="fas fa-user"></i> Michael Darko</span>
+                        <span><i class="fas fa-tag"></i> Social</span>
+                    </div>
+                    <h2 class="blog-title">Ghana's Social Movements: Catalysts for Change and Accountability</h2>
+                    <div class="blog-excerpt">
+                        <p>Ghana's social movements have emerged as powerful vehicles for civic engagement, fundamentally reshaping the relationship between citizens and institutions across the country's democratic landscape. From grassroots community initiatives to nationwide digital activism campaigns, these movements reflect growing public determination to participate directly in governance processes beyond traditional electoral politics. Driven primarily by younger, digitally connected Ghanaians disillusioned with conventional political channels, these movements have successfully mobilized citizens around issues including corruption, infrastructure development, environmental protection, and economic opportunity. As Ghana navigates complex development challenges, these civil society forces increasingly function as critical accountability mechanisms, amplifying citizen voices and demanding responsive governance across both public and private sectors.</p>
+
+                        <p>The #FixTheCountry movement stands as perhaps Ghana's most significant recent social movement, emerging in 2021 as a digital campaign before evolving into a sustained multi-platform initiative demanding systemic change. What began as a Twitter hashtag responding to economic hardships, infrastructure deficiencies, and governance challenges quickly transformed into street demonstrations attracting thousands of participants across multiple cities. The movement's leadership structure intentionally remained decentralized, enabling broad-based participation while complicating government attempts to engage through traditional channels. This approach created unprecedented civic momentum by connecting grievances across socioeconomic classes, age groups, and geographical regions through sophisticated digital organizing tactics. Though initial demands focused on concrete issues including water access, stable electricity, and road improvements, the movement's scope expanded to address underlying governance structures that enable persistent development failures despite Ghana's natural resource wealth and relative political stability.</p>
+
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/CxLBP1KYYdA" allowfullscreen title="Fix The Country Movement - DW News"></iframe>
+                        </div>
+
+                        <p>Environmental activism has gained significant momentum in Ghana, particularly through movements confronting extractive industries' negative impacts on communities and ecosystems. The #StopGalamsey campaign emerged as a national effort against illegal small-scale mining operations devastating water bodies, forests, and agricultural lands across multiple regions. This movement successfully combined traditional community organizing with sophisticated media engagement, using compelling imagery of polluted rivers and degraded landscapes to mobilize urban populations previously disconnected from rural environmental challenges.</p>
+
+                        <p>Women's rights movements in Ghana have achieved significant policy victories while working to transform deeply embedded social attitudes regarding gender roles and equality. Organizations including The Ark Foundation, Women in Law and Development in Africa (WiLDAF), and the Network for Women's Rights (NETRIGHT) have successfully advocated for legislative reforms addressing domestic violence, property rights, and political representation. These formal organizations receive crucial grassroots support from women's collectives operating at community levels, particularly in rural areas where traditional practices sometimes conflict with constitutional gender equality provisions.</p>
+
+                        <h3>Key Social Movements in Ghana:</h3>
+                        <ul>
+                            <li>#FixTheCountry - Demanding governmental accountability and improved infrastructure</li>
+                            <li>#StopGalamsey - Fighting against illegal mining and environmental destruction</li>
+                            <li>Economic Fighters League - Advocating for economic justice and systemic change</li>
+                            <li>Occupy Ghana - Promoting anti-corruption and good governance</li>
+                            <li>LGBTQ+ Rights Movement - Challenging discrimination despite significant social opposition</li>
+                        </ul>
+
+                        <a href="https://theconversation.com/how-ghanas-fixthcountry-movement-is-changing-activism-182988" class="source-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Source: The Conversation - How Ghana's #FixTheCountry Movement is Changing Activism
+                        </a><br>
+                        <a href="https://www.bbc.com/news/world-africa-57996350" class="source-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Source: BBC News - The Ghanaian Activists Taking on the Government
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Healthcare Article -->
+            <article id="healthcare-news" class="blog-card">
+                <div class="blog-image-container">
+                    <img src="https://www.who.int/images/default-source/countries/gha/ghana-who-country-office.jpg" alt="Ghana Healthcare Center" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> March 5, 2025</span>
+                        <span><i class="fas fa-user"></i> Dr. Elizabeth Mensah</span>
+                        <span><i class="fas fa-tag"></i> Healthcare</span>
+                    </div>
+                    <h2 class="blog-title">Ghana's Healthcare System: Progress, Challenges, and Future Directions</h2>
+                    <div class="blog-excerpt">
+                        <p>Ghana's healthcare system has undergone significant transformation since independence, evolving from a largely colonial framework to a comprehensive national structure aimed at providing universal health coverage. The introduction of the National Health Insurance Scheme (NHIS) in 2003 marked a pivotal development, establishing Ghana as one of the first countries in sub-Saharan Africa to implement a national insurance program intended to eliminate financial barriers to healthcare access.</p>
+                        
+                        <a href="articles/ghana-healthcare.html" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Economy Article -->
+            <article id="economy-news" class="blog-card">
+                <div class="blog-image-container">
+                    <img src="https://www.trade.gov/sites/default/files/styles/full_width_image__1_2x/public/2020-06/ghana.jpg" alt="Accra Financial District" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> March 7, 2025</span>
+                        <span><i class="fas fa-user"></i> Daniel Kwame Asiedu</span>
+                        <span><i class="fas fa-tag"></i> Economy</span>
+                    </div>
+                    <h2 class="blog-title">Ghana's Economic Landscape: Resilience Amid Global Challenges</h2>
+                    <div class="blog-excerpt">
+                        <p>Ghana's economy has undergone significant structural transformations since independence, evolving from a primarily agricultural base to a more diversified economic structure encompassing expanding service and industrial sectors. The country's economic trajectory has featured periods of robust growth punctuated by cyclical macroeconomic challenges often linked to commodity price fluctuations, fiscal management issues, and external economic shocks.</p>
+                        
+                        <a href="articles/ghana-economy.html" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Tourism Article -->
+            <article id="tourism-news" class="blog-card">
+                <div class="blog-image-container">
+                    <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/33/fc/f0/ghana.jpg" alt="Cape Coast Castle" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> March 10, 2025</span>
+                        <span><i class="fas fa-user"></i> Abena Osei-Tutu</span>
+                        <span><i class="fas fa-tag"></i> Tourism</span>
+                    </div>
+                    <h2 class="blog-title">Exploring Ghana: From Cultural Heritage to Natural Wonders</h2>
+                    <div class="blog-excerpt">
+                        <p>Ghana has emerged as West Africa's leading tourism destination, offering visitors a compelling combination of historical sites, vibrant cultural experiences, and diverse natural attractions. The country's tourism sector has expanded significantly over the past decade, with international arrivals growing from approximately 800,000 in 2010 to over 1.3 million by 2023.</p>
+                        
+                        <a href="articles/ghana-tourism.html" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Sports Article -->
+            <article id="sports-news" class="blog-card">
+                <div class="blog-image-container">
+                    <img src="https://cdn.ghanaweb.com/imagelib/pics/823/82324206.jpg" alt="Black Stars Celebration" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> March 12, 2025</span>
+                        <span><i class="fas fa-user"></i> Kofi Mensah</span>
+                        <span><i class="fas fa-tag"></i> Sports</span>
+                    </div>
+                    <h2 class="blog-title">Ghana's Sporting Heritage: Triumphs, Challenges, and Future Prospects</h2>
+                    <div class="blog-excerpt">
+                        <p>Ghana's sporting landscape reflects both deep historical traditions and contemporary developments across multiple disciplines, with football maintaining undisputed prominence in national sporting consciousness. The country's sporting heritage encompasses both celebrated international achievements and persistent developmental challenges affecting consistency and long-term sustainability.</p>
+                        
+                        <a href="articles/ghana-sports.html" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Environment Article -->
+            <article id="environment-news" class="blog-card">
+                <div class="blog-image-container">
+                    <img src="https://www.undp.org/sites/g/files/zskgke326/files/migration/gh/4275a9b04228e17c3bbc2a06b31b744ecf21a8be87bd8a51051db30c2c9d90be.jpg" alt="Ghana Forest Landscape" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> March 15, 2025</span>
+                        <span><i class="fas fa-user"></i> Nana Adwoa Baah</span>
+                        <span><i class="fas fa-tag"></i> Environment</span>
+                    </div>
+                    <h2 class="blog-title">Ghana's Environmental Challenges: Balancing Development and Sustainability</h2>
+                    <div class="blog-excerpt">
+                        <p>Ghana's environmental landscape reflects the complex interplay between development imperatives and ecological sustainability, with the country facing significant challenges across multiple environmental dimensions. Forest resources have experienced substantial degradation, with forest cover declining from approximately 8.2 million hectares at the beginning of the 20th century to less than 1.6 million hectares currently.</p>
+                        
+                        <a href="articles/ghana-environment.html" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Technology Article -->
+            <article id="tech-news" class="blog-card">
+                <div class="blog-image-container">
+                    <img src="https://africa.businessinsider.com/local/markets/ghanaafrica/meet-accra-digital-centre-a-tech-hub-in-ghana-driving-job-creation-and-economic/b14wc22.jpg" alt="Accra Digital Centre" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> March 2, 2025</span>
+                        <span><i class="fas fa-user"></i> Michael Darko</span>
+                        <span><i class="fas fa-tag"></i> Technology</span>
+                    </div>
+                    <h2 class="blog-title">Ghana's Tech Revolution: Innovation at Africa's Digital Crossroads</h2>
+                    <div class="blog-excerpt">
+                        <p>Ghana's technological landscape is undergoing a remarkable transformation, establishing the country as an emerging innovation hub within West Africa and increasingly across the continent. From mobile banking innovations to artificial intelligence applications, the country's tech sector demonstrates impressive growth through a combination of entrepreneurial energy, government policy support, and strategic international partnerships.</p>
+                        
+                        <a href="articles/ghana-tech.html" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Education Article -->
+            <article id="education-news" class="blog-card">
+                <div class="blog-image-container">
+                    <img src="https://www.unicef.org/ghana/sites/unicef.org.ghana/files/styles/hero_desktop/public/UN0339412.jpg" alt="Ghana Education" class="blog-image">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> March 5, 2025</span>
+                        <span><i class="fas fa-user"></i> Michael Darko</span>
+                        <span><i class="fas fa-tag"></i> Education</span>
+                    </div>
+                    <h2 class="blog-title">Ghana's Educational Transformation: Challenges and Innovations</h2>
+                    <div class="blog-excerpt">
+                        <p>Ghana's educational system has undergone significant transformation since independence, evolving from colonial-era structures to a comprehensive national framework aimed at providing quality education for all citizens. The introduction of free Senior High School education in 2017 marked a pivotal development, establishing Ghana as one of the countries in sub-Saharan Africa committed to removing financial barriers to secondary education.</p>
+                        
+                        <a href="articles/ghana-education.html" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <!-- Comments Section -->
+    <aside class="comments-section">
+        <div class="container">
+            <h2 class="section-title">Quick Feedback</h2>
+            <form id="commentForm" action="https://formspree.io/f/myzjdnja" method="POST">
+                <div class="form-group">
+                    <label for="name"><i class="fas fa-user"></i> Name</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="subject"><i class="fas fa-tag"></i> Type</label>
+                    <select id="subject" name="subject" required>
+                        <option value="">Select feedback type</option>
+                        <option value="Comment">💬 Comment</option>
+                        <option value="Review">⭐ Review</option>
+                        <option value="Bug Report">🐛 Bug Report</option>
+                        <option value="Suggestion">💡 Suggestion</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message"><i class="fas fa-comment"></i> Message</label>
+                    <textarea id="message" name="message" rows="4" required placeholder="Type your message here..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    Send Feedback
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <script>
+        // Table of Contents Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocToggle = document.querySelector('.toc-toggle');
+            const toc = document.querySelector('.toc');
+            const blogSection = document.querySelector('.blog-section');
+            
+            tocToggle.addEventListener('click', function() {
+                toc.classList.toggle('active');
+                blogSection.classList.toggle('shifted');
+            });
+
+            // Highlight current section in TOC
+            const observerCallback = (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        document.querySelectorAll('.toc a').forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').slice(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            };
+
+            const observer = new IntersectionObserver(observerCallback, {
+                threshold: 0.2
+            });
+
+            document.querySelectorAll('.blog-card').forEach(section => {
+                observer.observe(section);
+            });
+        });
+
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.querySelector('nav ul');
+            
+            menuToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        });
+
+        // Handle Formspree form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('commentForm');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                const formData = new FormData(form);
+                const submitButton = form.querySelector('.submit-btn');
+                const originalText = submitButton.innerHTML;
+                
+                // Show loading state
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                submitButton.disabled = true;
+                
+                // Submit to Formspree
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Show success message
+                        showSuccessMessage();
+                        // Clear the form
+                        form.reset();
+                    } else {
+                        throw new Error('Network response was not ok');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showErrorMessage();
+                })
+                .finally(() => {
+                    // Reset button
+                    submitButton.innerHTML = originalText;
+                    submitButton.disabled = false;
+                });
+            });
+        });
+        
+        function showSuccessMessage() {
+            // Create success message element
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.innerHTML = `
+                <div class="success-content">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Message Sent Successfully!</h3>
+                    <p>Thank you for your feedback. We'll get back to you soon.</p>
+                    <button onclick="this.parentElement.parentElement.remove()" class="close-btn">Close</button>
+                </div>
+            `;
+            
+            // Add styles
+            successDiv.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                animation: fadeIn 0.3s ease;
+            `;
+            
+            // Add to page
+            document.body.appendChild(successDiv);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (successDiv.parentElement) {
+                    successDiv.remove();
+                }
+            }, 5000);
+        }
+        
+        function showErrorMessage() {
+            // Create error message element
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.innerHTML = `
+                <div class="error-content">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <h3>Message Not Sent</h3>
+                    <p>Sorry, there was an error sending your message. Please try again.</p>
+                    <button onclick="this.parentElement.parentElement.remove()" class="close-btn">Close</button>
+                </div>
+            `;
+            
+            // Add styles
+            errorDiv.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                animation: fadeIn 0.3s ease;
+            `;
+            
+            // Add to page
+            document.body.appendChild(errorDiv);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (errorDiv.parentElement) {
+                    errorDiv.remove();
+                }
+            }, 5000);
+        }
+    </script>
+
+    <footer>
+        <p>&copy; 2024 Mykhil Creations. All rights reserved.</p>
+        <div class="footer-stats">
+            <div class="page-visitor-counter">
+                <i class="fas fa-chart-line"></i>
+                <span>Page Visits: <span id="page-visitor-count">0</span></span>
+            </div>
+            <div id="connection-status" class="footer-connection-status">
+                <i class="fas fa-wifi"></i>
+                <span id="connection-label">Checking connection...</span>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="js/connection-status.js"></script>
+    <script src="js/visitor-counter.js"></script>
+</body>
+</html>

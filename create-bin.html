@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create JSONbin for Download Counts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            min-height: 100px;
+        }
+        .success {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .error {
+            color: #f44336;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Create JSONbin for Download Counts</h1>
+    <p>Click the button below to create a new bin in your JSONbin.io account for storing download counts.</p>
+    
+    <button id="createBtn">Create Download Counts Bin</button>
+    
+    <div id="results">Results will appear here...</div>
+    
+    <script>
+        // JSONbin.io credentials
+        const MASTER_KEY = '$2a$10$Zwr/q5r0c.Lv/6Ikq9a.ROrJruWGsHzf8uSI/HWq7yjG.4OrsE2O6';
+        
+        // Initial download counts (all starting at 0)
+        const initialData = {
+            'sba-pro-master': 0,
+            'ecollation': 0,
+            'referee-connect': 0,
+            'ibank': 0,
+            'exam-analyzer': 0
+        };
+        
+        const resultsDiv = document.getElementById('results');
+        
+        // Function to log messages to the results div
+        function log(message, isError = false) {
+            const messageEl = document.createElement('p');
+            messageEl.className = isError ? 'error' : '';
+            messageEl.innerHTML = message;
+            resultsDiv.appendChild(messageEl);
+        }
+        
+        // Function to create a new bin
+        async function createBin() {
+            resultsDiv.innerHTML = '';
+            log('Creating new bin for download counts...');
+            
+            try {
+                const response = await fetch('https://api.jsonbin.io/v3/b', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': MASTER_KEY,
+                        'X-Bin-Name': 'DownloadCounts',
+                        'X-Bin-Private': false
+                    },
+                    body: JSON.stringify(initialData)
+                });
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Failed to create bin. Status: ${response.status}, Response: ${errorText}`);
+                }
+                
+                const data = await response.json();
+                log('Bin created successfully! ✅', false);
+                log(`<span class="success">Bin ID: ${data.metadata.id}</span>`, false);
+                log(`Access Key (same as your Master Key)`, false);
+                log(`<strong>Next Steps:</strong> Update your download-tracker-new.js file with these credentials.`, false);
+                
+                // Create code sample
+                const codeEl = document.createElement('pre');
+                codeEl.style.backgroundColor = '#f0f0f0';
+                codeEl.style.padding = '10px';
+                codeEl.style.borderRadius = '4px';
+                codeEl.style.overflowX = 'auto';
+                
+                codeEl.textContent = `// Update these values in your download-tracker-new.js file
+const BIN_ID = '${data.metadata.id}';
+const ACCESS_KEY = '${MASTER_KEY}';`;
+                
+                resultsDiv.appendChild(codeEl);
+            } catch (error) {
+                log(`Error creating bin: ${error.message}`, true);
+            }
+        }
+        
+        // Add event listener to the create button
+        document.getElementById('createBtn').addEventListener('click', createBin);
+    </script>
+</body>
+</html> 

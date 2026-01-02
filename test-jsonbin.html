@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSONbin.io Test</title>
+</head>
+<body>
+    <h1>JSONbin.io Test</h1>
+    <div id="results">Testing...</div>
+
+    <script>
+        // Test script to check JSONbin.io access
+        const BIN_ID = '65f2d7c1dc74654018a8d2c1';
+        const JSONBIN_API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+        const MASTER_KEY = '$2a$10$YHwxM5hbJrZANqH.YEqw/u6CAbWQR7MnUzZVhcpRIAj4wnVJaQJSK';
+        const resultsDiv = document.getElementById('results');
+
+        // Function to append log message
+        function log(message) {
+            if (typeof message === 'object') {
+                message = JSON.stringify(message, null, 2);
+            }
+            resultsDiv.innerHTML += `<pre>${message}</pre>`;
+        }
+
+        // Function to test GET request
+        async function testGet() {
+            try {
+                log('Testing GET request...');
+                const response = await fetch(`${JSONBIN_API_URL}/latest`, {
+                    headers: {
+                        'X-Master-Key': MASTER_KEY
+                    }
+                });
+                
+                log(`Response status: ${response.status}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                log('GET response data:');
+                log(data);
+                return data;
+            } catch (error) {
+                log(`Error testing GET: ${error.message}`);
+                return null;
+            }
+        }
+
+        // Function to test PUT request
+        async function testPut(currentData) {
+            try {
+                log('Testing PUT request...');
+                // Add a test timestamp to verify update
+                const updateData = {
+                    ...currentData.record,
+                    testTimestamp: new Date().toISOString()
+                };
+                
+                const response = await fetch(JSONBIN_API_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': MASTER_KEY,
+                        'X-Bin-Meta': false
+                    },
+                    body: JSON.stringify(updateData)
+                });
+                
+                log(`Response status: ${response.status}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                log('PUT response data:');
+                log(data);
+                return true;
+            } catch (error) {
+                log(`Error testing PUT: ${error.message}`);
+                return false;
+            }
+        }
+
+        // Run tests
+        async function runTests() {
+            resultsDiv.innerHTML = '';
+            log('Starting JSONbin.io tests...');
+            const getData = await testGet();
+            if (getData) {
+                const putSuccess = await testPut(getData);
+                if (putSuccess) {
+                    // Verify our update worked
+                    await testGet();
+                    log('All tests completed!');
+                }
+            }
+        }
+
+        // Run tests when page loads
+        window.addEventListener('DOMContentLoaded', runTests);
+    </script>
+</body>
+</html> 

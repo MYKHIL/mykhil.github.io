@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test New Download Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+        .download-btn {
+            background: linear-gradient(45deg, #007bff, #00ff88);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .download-count {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .success {
+            color: #4CAF50;
+        }
+        .error {
+            color: #f44336;
+        }
+        .debug-section {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+        #log {
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .test-info {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test New Download Counter</h1>
+    
+    <div class="test-info">
+        <p><strong>Testing JSONbin Configuration:</strong></p>
+        <ul>
+            <li>Bin ID: 67d621238a456b79667697a5</li>
+            <li>Using your personal JSONbin.io account</li>
+            <li>Latest version of the download tracker script</li>
+        </ul>
+        <p>This page will help verify that the new download tracking system works correctly with your JSONbin.io account.</p>
+    </div>
+    
+    <!-- Test Download Card -->
+    <div class="card">
+        <h2>SBA Pro Master</h2>
+        <p>Click the button below to test tracking a download for SBA Pro Master</p>
+        <div class="download-count">
+            Current Downloads: <span id="sba-pro-master-downloads">0</span>
+        </div>
+        <a href="#" class="download-btn" onclick="trackDownload(event, 'sba-pro-master')">
+            Test Download
+        </a>
+    </div>
+    
+    <!-- Test Download Card -->
+    <div class="card">
+        <h2>Referee Connect</h2>
+        <p>Click the button below to test tracking a download for Referee Connect</p>
+        <div class="download-count">
+            Current Downloads: <span id="referee-connect-downloads">0</span>
+        </div>
+        <a href="#" class="download-btn" onclick="trackDownload(event, 'referee-connect')">
+            Test Download
+        </a>
+    </div>
+    
+    <!-- Debug Controls -->
+    <div class="debug-section">
+        <h2>Debug Tools</h2>
+        <div>
+            <button class="btn" onclick="refreshCounts()">Refresh Counts</button>
+            <button class="btn" onclick="clearLocalStorage()">Clear Local Storage</button>
+            <button class="btn" onclick="checkJSONbin()">Check JSONbin</button>
+            <button class="btn" onclick="clearLog()">Clear Log</button>
+        </div>
+        <div id="log"></div>
+    </div>
+    
+    <script>
+        // Log helper function
+        function log(message, isError = false) {
+            const logElem = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            let logMessage = message;
+            if (typeof message === 'object') {
+                logMessage = JSON.stringify(message, null, 2);
+            }
+            
+            const className = isError ? 'error' : '';
+            logElem.innerHTML += `<div class="${className}">[${timestamp}] ${logMessage}</div>`;
+            logElem.scrollTop = logElem.scrollHeight;
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+        
+        // JSONbin.io configuration
+        const BIN_ID = '67d621238a456b79667697a5';
+        const JSONBIN_API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+        const MASTER_KEY = '$2a$10$Zwr/q5r0c.Lv/6Ikq9a.ROrJruWGsHzf8uSI/HWq7yjG.4OrsE2O6';
+        
+        // Local Storage Keys
+        const LS_DOWNLOAD_COUNTS = 'mykhil_download_counts';
+        const LS_LAST_FETCH = 'mykhil_last_fetch';
+        
+        // Function to clear local storage
+        function clearLocalStorage() {
+            log('Clearing local storage...');
+            localStorage.removeItem(LS_DOWNLOAD_COUNTS);
+            localStorage.removeItem(LS_LAST_FETCH);
+            log('Local storage cleared');
+            
+            // Refresh counts to show the effect
+            refreshCounts();
+        }
+        
+        // Function to check JSONbin contents
+        async function checkJSONbin() {
+            log('Checking JSONbin contents...');
+            
+            try {
+                const response = await fetch(`${JSONBIN_API_URL}/latest?${Date.now()}`, {
+                    headers: {
+                        'X-Master-Key': MASTER_KEY
+                    },
+                    cache: 'no-store'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch. Status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                log('JSONbin contents:');
+                log(data.record);
+            } catch (error) {
+                log(`Error: ${error.message}`, true);
+            }
+        }
+        
+        // Function to get counts from local storage
+        function getLocalCounts() {
+            try {
+                const countsStr = localStorage.getItem(LS_DOWNLOAD_COUNTS);
+                if (countsStr) {
+                    return JSON.parse(countsStr);
+                }
+            } catch (error) {
+                log(`Error reading from local storage: ${error.message}`, true);
+            }
+            return {};
+        }
+        
+        // Function to save counts to local storage
+        function saveLocalCounts(counts) {
+            try {
+                localStorage.setItem(LS_DOWNLOAD_COUNTS, JSON.stringify(counts));
+                localStorage.setItem(LS_LAST_FETCH, Date.now().toString());
+                log('Saved counts to local storage');
+            } catch (error) {
+                log(`Error saving to local storage: ${error.message}`, true);
+            }
+        }
+        
+        // Function to track downloads
+        async function trackDownload(event, projectId) {
+            event.preventDefault();
+            
+            log(`Tracking download for: ${projectId}`);
+            
+            try {
+                // Fetch current counts from JSONbin
+                log('Fetching latest counts from JSONbin...');
+                const response = await fetch(`${JSONBIN_API_URL}/latest?${Date.now()}`, {
+                    headers: {
+                        'X-Master-Key': MASTER_KEY
+                    },
+                    cache: 'no-store'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch. Status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                log('Current counts from JSONbin:');
+                log(data.record);
+                
+                // Get counts and increment
+                let counts = data.record || {};
+                counts[projectId] = (counts[projectId] || 0) + 1;
+                log(`New count for ${projectId}: ${counts[projectId]}`);
+                
+                // Update local storage
+                saveLocalCounts(counts);
+                
+                // Update display
+                const countElement = document.querySelector(`#${projectId}-downloads`);
+                if (countElement) {
+                    countElement.textContent = counts[projectId];
+                    countElement.classList.add('success');
+                    setTimeout(() => countElement.classList.remove('success'), 2000);
+                }
+                
+                // Update JSONbin
+                log('Updating count in JSONbin...');
+                const updateResponse = await fetch(JSONBIN_API_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': MASTER_KEY,
+                        'X-Bin-Meta': false
+                    },
+                    body: JSON.stringify(counts)
+                });
+                
+                if (!updateResponse.ok) {
+                    throw new Error(`Failed to update. Status: ${updateResponse.status}`);
+                }
+                
+                const updateData = await updateResponse.json();
+                log('Update response:');
+                log(updateData);
+                log('Download tracked successfully ✅');
+            } catch (error) {
+                log(`Error tracking download: ${error.message}`, true);
+            }
+        }
+        
+        // Function to refresh download counts
+        async function refreshCounts() {
+            log('Refreshing download counts...');
+            
+            try {
+                const response = await fetch(`${JSONBIN_API_URL}/latest?${Date.now()}`, {
+                    headers: {
+                        'X-Master-Key': MASTER_KEY
+                    },
+                    cache: 'no-store'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch. Status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                log('Fetched counts:');
+                log(data.record);
+                
+                // Save to local storage
+                saveLocalCounts(data.record);
+                
+                // Update display
+                const counts = data.record || {};
+                const projects = ['sba-pro-master', 'referee-connect'];
+                
+                projects.forEach(project => {
+                    const countElement = document.querySelector(`#${project}-downloads`);
+                    if (countElement) {
+                        countElement.textContent = counts[project] || 0;
+                    }
+                });
+                
+                log('Counts refreshed successfully ✅');
+            } catch (error) {
+                log(`Error refreshing counts: ${error.message}`, true);
+            }
+        }
+        
+        // Load initial counts when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            log('Page loaded. Initializing download counter test...');
+            refreshCounts();
+        });
+    </script>
+</body>
+</html> 

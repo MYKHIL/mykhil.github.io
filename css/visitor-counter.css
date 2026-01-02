@@ -1,0 +1,87 @@
+.visitor-counter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    color: white;
+    font-size: 0.85rem;
+    margin-left: auto;
+    margin-right: 1rem;
+}
+
+.visitor-counter i {
+    color: #4CAF50;
+    font-size: 1rem;
+}
+
+.visitor-counter-value {
+    font-weight: bold;
+}
+
+/* Page-specific counter */
+.page-visitor-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    color: #fff;
+    font-size: 0.8rem;
+    margin-right: 10px;
+}
+
+.page-visitor-counter i {
+    color: #64B5F6;
+    font-size: 0.9rem;
+}
+
+/* Footer styles */
+.footer-stats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+/* Connection status in footer */
+.footer-connection-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.footer-connection-status.good i {
+    color: #4CAF50;
+}
+
+.footer-connection-status.medium i {
+    color: #FFC107;
+}
+
+.footer-connection-status.poor i {
+    color: #F44336;
+}
+
+@media (max-width: 768px) {
+    .visitor-counter {
+        margin-left: 0;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        justify-content: center;
+    }
+    
+    .footer-stats {
+        flex-direction: column;
+        gap: 8px;
+    }
+} 
