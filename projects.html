@@ -1,6 +1,6 @@
-<<<<<<< HEAD
-﻿<DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,6 +20,7 @@
             color: white;
             overflow: hidden;
         }
+
         .hero::before {
             content: '';
             position: absolute;
@@ -27,10 +28,11 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            background: radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
             z-index: 1;
         }
+
         .dot-pattern {
             position: absolute;
             top: 0;
@@ -42,12 +44,15 @@
             animation: fadeIn 2s ease-out;
             z-index: 1;
         }
-        .hero h1, .hero p {
+
+        .hero h1,
+        .hero p {
             position: relative;
             z-index: 2;
             opacity: 0;
             transform: translateY(20px);
         }
+
         .hero h1 {
             font-size: 3rem;
             margin-bottom: 1rem;
@@ -55,24 +60,28 @@
             background: linear-gradient(45deg, #fff, #f0f0f0);
             -webkit-background-clip: text;
             background-clip: text;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
+
         .hero p {
             font-size: 1.2rem;
             margin-bottom: 2rem;
             animation: slideDown 0.8s ease-out 0.2s forwards;
             color: #e0e0e0;
         }
+
         /* Projects Section Styles */
         .projects {
             padding: 4rem 2rem;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         }
+
         @media screen and (min-width: 769px) {
             .projects {
                 margin-right: 350px;
             }
         }
+
         .project-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -80,18 +89,20 @@
             max-width: 1200px;
             margin: 0 auto;
         }
+
         .project-card {
             background: white;
             border-radius: 15px;
             padding: 2rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             opacity: 0;
             animation: fadeInUp 0.8s ease-out forwards;
-            border: 1px solid rgba(0,0,0,0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             position: relative;
             overflow: hidden;
         }
+
         .project-card::before {
             content: '';
             position: absolute;
@@ -104,24 +115,29 @@
             transform-origin: left;
             transition: transform 0.3s ease;
         }
+
         .project-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
+
         .project-card:hover::before {
             transform: scaleX(1);
         }
+
         .project-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
         }
+
         .project-header h3 {
             font-size: 1.5rem;
             color: #2c3e50;
             margin: 0;
         }
+
         .version {
             background: linear-gradient(45deg, #007bff, #00ff88);
             color: white;
@@ -130,22 +146,26 @@
             font-size: 0.9rem;
             font-weight: 500;
         }
+
         .project-description {
             color: #666;
             margin-bottom: 1.5rem;
             line-height: 1.6;
         }
+
         .feature-list {
             list-style: none;
             padding: 0;
             margin: 0 0 1.5rem 0;
         }
+
         .feature-list li {
             padding-left: 1.5rem;
             margin-bottom: 0.8rem;
             position: relative;
             color: #555;
         }
+
         .feature-list li::before {
             content: '\2022';
             color: #007bff;
@@ -153,6 +173,7 @@
             left: 0;
             font-size: 1.2rem;
         }
+
         .project-stats {
             display: flex;
             justify-content: space-between;
@@ -160,10 +181,12 @@
             color: #666;
             font-size: 0.9rem;
         }
+
         .project-links {
             display: flex;
             gap: 1rem;
         }
+
         .btn {
             padding: 0.8rem 1.5rem;
             border-radius: 25px;
@@ -174,66 +197,85 @@
             align-items: center;
             gap: 0.5rem;
         }
+
         .download-btn {
             background: linear-gradient(45deg, #007bff, #00ff88);
             color: white;
             border: none;
-            box-shadow: 0 4px 15px rgba(0,123,255,0.2);
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
         }
+
         .download-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,123,255,0.3);
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
         }
+
         .pricing-btn {
             background: white;
             color: #007bff;
             border: 1px solid #007bff;
             box-shadow: none;
         }
+
         .pricing-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,123,255,0.08);
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.08);
             background: #f8fbff;
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
+
         @keyframes slideDown {
             from {
                 opacity: 0;
                 transform: translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .projects {
                 padding: 2rem 1rem;
             }
+
             .hero h1 {
                 font-size: 2rem;
             }
+
             .hero p {
                 font-size: 1rem;
             }
+
             .project-grid {
                 grid-template-columns: 1fr;
             }
         }
+
         /* Comments Section Styles */
         .comments-section {
             position: fixed;
@@ -243,11 +285,12 @@
             height: calc(100vh - 80px);
             background: white;
             padding: 1.5rem;
-            border-left: 1px solid rgba(0,0,0,0.1);
+            border-left: 1px solid rgba(0, 0, 0, 0.1);
             overflow-y: auto;
-            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
             z-index: 100;
         }
+
         @media screen and (max-width: 768px) {
             .comments-section {
                 position: relative;
@@ -255,20 +298,23 @@
                 width: 100%;
                 height: auto;
                 border-left: none;
-                border-top: 1px solid rgba(0,0,0,0.1);
-                box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+                border-top: 1px solid rgba(0, 0, 0, 0.1);
+                box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
                 margin-top: 2rem;
             }
+
             .projects {
                 margin-right: 0;
                 padding: 2rem 1rem;
             }
         }
+
         .comments-section .container {
             max-width: 100%;
             margin: 0;
             padding: 0;
         }
+
         .comments-section .section-title {
             font-size: 1.5rem;
             margin: 0 0 1.5rem;
@@ -276,19 +322,22 @@
             border-bottom: 2px solid var(--secondary-color);
             color: var(--primary-color);
         }
+
         /* Form Styles */
         .form-group {
             margin-bottom: 1.5rem;
             background: #f8f9fa;
             padding: 1rem;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
         }
+
         .form-group:hover {
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transform: translateY(-2px);
         }
+
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
@@ -296,6 +345,7 @@
             font-weight: 500;
             font-size: 0.9rem;
         }
+
         .form-group input,
         .form-group select,
         .form-group textarea {
@@ -308,6 +358,7 @@
             background: white;
             color: #2c3e50;
         }
+
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
@@ -315,10 +366,12 @@
             border-color: var(--secondary-color);
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
+
         .form-group textarea {
             resize: vertical;
             min-height: 100px;
         }
+
         .submit-btn {
             width: 100%;
             padding: 1rem;
@@ -335,16 +388,20 @@
             justify-content: center;
             gap: 0.5rem;
         }
+
         .submit-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
         }
+
         .submit-btn:active {
             transform: translateY(0);
         }
+
         .submit-btn i {
             font-size: 1.1rem;
         }
+
         /* Connection Status Styles */
         .connection-status {
             display: flex;
@@ -357,28 +414,35 @@
             font-size: 0.9rem;
             margin-right: 1rem;
         }
+
         .connection-status i {
             font-size: 1rem;
         }
+
         .connection-status.good {
             background: rgba(46, 204, 113, 0.2);
             color: #2ecc71;
         }
+
         .connection-status.medium {
             background: rgba(241, 196, 15, 0.2);
             color: #f1c40f;
         }
+
         .connection-status.poor {
             background: rgba(231, 76, 60, 0.2);
             color: #e74c3c;
         }
+
         @media (max-width: 768px) {
             .connection-status {
                 display: none;
             }
         }
+
         /* Success and Error Message Styles */
-        .success-content, .error-content {
+        .success-content,
+        .error-content {
             background: white;
             padding: 2rem;
             border-radius: 15px;
@@ -388,26 +452,33 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             animation: slideIn 0.3s ease;
         }
+
         .success-content i {
             font-size: 3rem;
             color: #28a745;
             margin-bottom: 1rem;
         }
+
         .error-content i {
             font-size: 3rem;
             color: #dc3545;
             margin-bottom: 1rem;
         }
-        .success-content h3, .error-content h3 {
+
+        .success-content h3,
+        .error-content h3 {
             color: #333;
             margin-bottom: 1rem;
             font-size: 1.5rem;
         }
-        .success-content p, .error-content p {
+
+        .success-content p,
+        .error-content p {
             color: #666;
             margin-bottom: 1.5rem;
             line-height: 1.5;
         }
+
         .close-btn {
             background: linear-gradient(45deg, #007bff, #00ff88);
             color: white;
@@ -418,26 +489,36 @@
             font-weight: 500;
             transition: all 0.3s ease;
         }
+
         .close-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
         }
+
         @keyframes slideIn {
             from {
                 opacity: 0;
                 transform: translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
     </style>
 </head>
+
 <body>
     <script>
         // Downloadable project variables (can be set or read externally)
@@ -464,7 +545,7 @@
             }
         };
         // Set the href for all download buttons based on window.downloadItems
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             for (const key in window.downloadItems) {
                 const url = window.downloadItems[key].url;
                 const btn = document.querySelector(`a[onclick*="${key}"]`);
@@ -507,7 +588,8 @@
                         <h3>SBA Pro Master</h3>
                         <span class="version">6.0.5</span>
                     </div>
-                    <p class="project-description">Advanced School-Based Assessment management system designed for modern educational institutions.</p>
+                    <p class="project-description">Advanced School-Based Assessment management system designed for
+                        modern educational institutions.</p>
                     <ul class="feature-list">
                         <li>Comprehensive student assessment tracking</li>
                         <li>Advanced reporting and analytics dashboard</li>
@@ -516,11 +598,13 @@
                         <li>Secure data encryption and backup</li>
                     </ul>
                     <div class="project-stats">
-                        <span class="downloads"><i class="fas fa-download"></i> <span id="sba-pro-master-downloads">0</span> downloads</span>
+                        <span class="downloads"><i class="fas fa-download"></i> <span
+                                id="sba-pro-master-downloads">0</span> downloads</span>
                         <span class="last-updated"><i class="fas fa-clock"></i> Updated: Dec 2025</span>
                     </div>
                     <div class="project-links">
-                        <a href="javascript:void(0);" class="btn download-btn" onclick="trackDownload(event, window.downloadItems['sba-pro-master'].projectId)">
+                        <a href="javascript:void(0);" class="btn download-btn"
+                            onclick="trackDownload(event, window.downloadItems['sba-pro-master'].projectId)">
                             <i class="fas fa-download"></i> Download SBA Pro Master
                         </a>
                         <a href="pricingpage.html" class="btn pricing-btn" title="View pricing for SBA Pro Master">
@@ -534,7 +618,8 @@
                         <h3>eCollation Center</h3>
                         <span class="version">v2.0</span>
                     </div>
-                    <p class="project-description">A comprehensive electronic voting and result collation system designed for secure, transparent, and efficient election management.</p>
+                    <p class="project-description">A comprehensive electronic voting and result collation system
+                        designed for secure, transparent, and efficient election management.</p>
                     <ul class="feature-list">
                         <li>Real-time Vote Counting & Collation</li>
                         <li>Multi-level Result Verification</li>
@@ -543,11 +628,13 @@
                         <li>Automated Report Generation</li>
                     </ul>
                     <div class="project-stats">
-                        <span class="downloads"><i class="fas fa-download"></i> <span id="ecollation-downloads">0</span> downloads</span>
+                        <span class="downloads"><i class="fas fa-download"></i> <span id="ecollation-downloads">0</span>
+                            downloads</span>
                         <span class="last-updated"><i class="fas fa-clock"></i> Updated: Dec 2024</span>
                     </div>
                     <div class="project-links">
-                        <a href="javascript:void(0);" class="btn download-btn" onclick="trackDownload(event, window.downloadItems['ecollation'].projectId)">
+                        <a href="javascript:void(0);" class="btn download-btn"
+                            onclick="trackDownload(event, window.downloadItems['ecollation'].projectId)">
                             <i class="fas fa-download"></i> Download eCollation Center
                         </a>
                     </div>
@@ -567,11 +654,13 @@
                         <li>Tournament management tools</li>
                     </ul>
                     <div class="project-stats">
-                        <span class="downloads"><i class="fas fa-download"></i> <span id="referee-connect-downloads">0</span> downloads</span>
+                        <span class="downloads"><i class="fas fa-download"></i> <span
+                                id="referee-connect-downloads">0</span> downloads</span>
                         <span class="last-updated"><i class="fas fa-clock"></i> Updated: Dec 2024</span>
                     </div>
                     <div class="project-links">
-                        <a href="javascript:void(0);" class="btn download-btn" onclick="trackDownload(event, window.downloadItems['referee-connect'].projectId)">
+                        <a href="javascript:void(0);" class="btn download-btn"
+                            onclick="trackDownload(event, window.downloadItems['referee-connect'].projectId)">
                             <i class="fas fa-download"></i> Download Referee Connect
                         </a>
                     </div>
@@ -582,7 +671,8 @@
                         <h3>iBank</h3>
                         <span class="version">v1.0</span>
                     </div>
-                    <p class="project-description">A comprehensive banking software solution for managing customer accounts, transactions, and financial records.</p>
+                    <p class="project-description">A comprehensive banking software solution for managing customer
+                        accounts, transactions, and financial records.</p>
                     <ul class="feature-list">
                         <li>Customer Account Management</li>
                         <li>Transaction Processing</li>
@@ -591,11 +681,13 @@
                         <li>User Authentication and Security</li>
                     </ul>
                     <div class="project-stats">
-                        <span class="downloads"><i class="fas fa-download"></i> <span id="ibank-downloads">0</span> downloads</span>
+                        <span class="downloads"><i class="fas fa-download"></i> <span id="ibank-downloads">0</span>
+                            downloads</span>
                         <span class="last-updated"><i class="fas fa-clock"></i> Updated: Dec 2024</span>
                     </div>
                     <div class="project-links">
-                        <a href="javascript:void(0);" class="btn download-btn" onclick="trackDownload(event, window.downloadItems['ibank'].projectId)">
+                        <a href="javascript:void(0);" class="btn download-btn"
+                            onclick="trackDownload(event, window.downloadItems['ibank'].projectId)">
                             <i class="fas fa-download"></i> Download iBank
                         </a>
                     </div>
@@ -606,7 +698,8 @@
                         <h3>Exam Analyzer</h3>
                         <span class="version">v1.0</span>
                     </div>
-                    <p class="project-description">An advanced tool for analyzing and processing examination results, providing detailed insights and statistics.</p>
+                    <p class="project-description">An advanced tool for analyzing and processing examination results,
+                        providing detailed insights and statistics.</p>
                     <ul class="feature-list">
                         <li>Result Analysis and Statistics</li>
                         <li>Performance Tracking</li>
@@ -615,11 +708,13 @@
                         <li>Report Generation</li>
                     </ul>
                     <div class="project-stats">
-                        <span class="downloads"><i class="fas fa-download"></i> <span id="exam-analyzer-downloads">0</span> downloads</span>
+                        <span class="downloads"><i class="fas fa-download"></i> <span
+                                id="exam-analyzer-downloads">0</span> downloads</span>
                         <span class="last-updated"><i class="fas fa-clock"></i> Updated: Dec 2024</span>
                     </div>
                     <div class="project-links">
-                        <a href="javascript:void(0);" class="btn download-btn" onclick="trackDownload(event, window.downloadItems['exam-analyzer'].projectId)">
+                        <a href="javascript:void(0);" class="btn download-btn"
+                            onclick="trackDownload(event, window.downloadItems['exam-analyzer'].projectId)">
                             <i class="fas fa-download"></i> Download Exam Analyzer
                         </a>
                     </div>
@@ -644,15 +739,16 @@
                     <label for="subject"><i class="fas fa-tag"></i> Type</label>
                     <select id="subject" name="subject" required>
                         <option value="">Select feedback type</option>
-                        <option value="Comment">Ã°Å¸â€™Â¬ Comment</option>
-                        <option value="Review">Ã¢Â­Â Review</option>
-                        <option value="Bug Report">Ã°Å¸Ââ€º Bug Report</option>
-                        <option value="Suggestion">Ã°Å¸â€™Â¡ Suggestion</option>
+                        <option value="Comment">💬 Comment</option>
+                        <option value="Review">⭐ Review</option>
+                        <option value="Bug Report">🐞 Bug Report</option>
+                        <option value="Suggestion">💡 Suggestion</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="message"><i class="fas fa-comment"></i> Message</label>
-                    <textarea id="message" name="message" rows="4" required placeholder="Type your message here..."></textarea>
+                    <textarea id="message" name="message" rows="4" required
+                        placeholder="Type your message here..."></textarea>
                 </div>
                 <button type="submit" class="submit-btn">
                     <i class="fas fa-paper-plane"></i>
@@ -682,1185 +778,6 @@
     <script src="js/download-tracker-new.js"></script>
     <script src="js/visitor-counter.js"></script>
     <script src="js/mobile-menu.js"></script>
-    <script>
-        // Function to show SBA Pro Master under review message
-        function showSBAUnderReview(event, projectId) {
-            event.preventDefault();
-            // Create modal element
-            const modalDiv = document.createElement('div');
-            modalDiv.className = 'sba-review-modal';
-            modalDiv.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <i class="fas fa-tools"></i>
-                        <h3>SBA Pro Master - Under Review</h3>
-                    </div>
-                    <div class="modal-body">
-                        <p><strong>We're currently reviewing SBA Pro Master for some bugs and improvements.</strong></p>
-                        <p>Please try again in a few days. We're working hard to ensure you get the best possible experience.</p>
-                        <p>Thank you for your patience</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button onclick="this.parentElement.parentElement.parentElement.remove()" class="modal-close-btn">
-                            <i class="fas fa-times"></i> Close
-                        </button>
-                    </div>
-                </div>
-            `;
-            // Add styles
-            modalDiv.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.7);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-                animation: fadeIn 0.3s ease;
-            `;
-            // Add modal styles
-            const style = document.createElement('style');
-            style.textContent = `
-                .sba-review-modal .modal-content {
-                    background: white;
-                    border-radius: 15px;
-                    padding: 0;
-                    max-width: 500px;
-                    width: 90%;
-                    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-                    animation: slideIn 0.3s ease;
-                }
-                .sba-review-modal .modal-header {
-                    background: linear-gradient(45deg, #2193b0, #6dd5ed);
-                    color: white;
-                    padding: 20px;
-                    border-radius: 15px 15px 0 0;
-                    text-align: center;
-                }
-                .sba-review-modal .modal-header i {
-                    font-size: 2rem;
-                    margin-bottom: 10px;
-                    display: block;
-                }
-                .sba-review-modal .modal-header h3 {
-                    margin: 0;
-                    font-size: 1.5rem;
-                }
-                .sba-review-modal .modal-body {
-                    padding: 30px 20px;
-                    text-align: center;
-                    line-height: 1.6;
-                }
-                .sba-review-modal .modal-body p {
-                    margin: 10px 0;
-                    color: #333;
-                }
-                .sba-review-modal .modal-footer {
-                    padding: 20px;
-                    text-align: center;
-                    border-top: 1px solid #eee;
-                }
-                .sba-review-modal .modal-close-btn {
-                    background: #2193b0;
-                    color: white;
-                    border: none;
-                    padding: 12px 24px;
-                    border-radius: 25px;
-                    cursor: pointer;
-                    font-size: 1rem;
-                    transition: all 0.3s ease;
-                }
-                .sba-review-modal .modal-close-btn:hover {
-                    background: #1a7a8f;
-                    transform: translateY(-2px);
-                }
-                @keyframes slideIn {
-                    from { transform: translateY(-50px); opacity: 0; }
-                    to { transform: translateY(0); opacity: 1; }
-                }
-                @keyframes fadeIn {
-                    from { opacity: 0; }
-                    to { opacity: 1; }
-                }
-            `;
-            // Add styles to head
-            document.head.appendChild(style);
-            // Add to page
-            document.body.appendChild(modalDiv);
-            // Close on background click
-            modalDiv.addEventListener('click', function(e) {
-                if (e.target === modalDiv) {
-                    modalDiv.remove();
-                }
-            });
-            // Close on Escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && document.body.contains(modalDiv)) {
-                    modalDiv.remove();
-                }
-            });
-        }
-        // Handle Formspree form submission
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('commentForm');
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                // Get form data
-                const formData = new FormData(form);
-                const submitButton = form.querySelector('.submit-btn');
-                const originalText = submitButton.innerHTML;
-                // Show loading state
-                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-                submitButton.disabled = true;
-                // Submit to Formspree
-                fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(response => {
-                    if (response.ok) {
-                        // Show success message
-                        showSuccessMessage();
-                        // Clear the form
-                        form.reset();
-                    } else {
-                        throw new Error('Network response was not ok');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showErrorMessage();
-                })
-                .finally(() => {
-                    // Reset button
-                    submitButton.innerHTML = originalText;
-                    submitButton.disabled = false;
-                });
-            });
-        });
-        function showSuccessMessage() {
-            // Create success message element
-            const successDiv = document.createElement('div');
-            successDiv.className = 'success-message';
-            successDiv.innerHTML = `
-                <div class="success-content">
-                    <i class="fas fa-check-circle"></i>
-                    <h3>Message Sent Successfully</h3>
-                    <p>Thank you for your feedback. We'll get back to you soon.</p>
-                    <button onclick="this.parentElement.parentElement.remove()" class="close-btn">Close</button>
-                </div>
-            `;
-            // Add styles
-            successDiv.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-                animation: fadeIn 0.3s ease;
-            `;
-            // Add to page
-            document.body.appendChild(successDiv);
-            // Auto-remove after 5 seconds
-            setTimeout(() => {
-                if (successDiv.parentElement) {
-                    successDiv.remove();
-                }
-            }, 5000);
-        }
-        function showErrorMessage() {
-            // Create error message element
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'error-message';
-            errorDiv.innerHTML = `
-                <div class="error-content">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <h3>Message Not Sent</h3>
-                    <p>Sorry, there was an error sending your message. Please try again.</p>
-                    <button onclick="this.parentElement.parentElement.remove()" class="close-btn">Close</button>
-                </div>
-            `;
-            // Add styles
-            errorDiv.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-                animation: fadeIn 0.3s ease;
-            `;
-            // Add to page
-            document.body.appendChild(errorDiv);
-            // Auto-remove after 5 seconds
-            setTimeout(() => {
-                if (errorDiv.parentElement) {
-                    errorDiv.remove();
-                }
-            }, 5000);
-        }
-    </script>
 </body>
+
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
-﻿<DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Software Projects - Mykhil Creations</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="css/feedback.css">
-    <link rel="stylesheet" href="css/connection-status.css">
-    <link rel="stylesheet" href="css/visitor-counter.css">
-    <style>
-        /* Hero Section Styles */
-        .hero {
-            position: relative;
-            background: linear-gradient(135deg, #1a1a1a 0%, #373737 100%);
-            padding: 6rem 2rem;
-            text-align: center;
-            color: white;
-            overflow: hidden;
-        }
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
-            z-index: 1;
-        }
-        .dot-pattern {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            animation: fadeIn 2s ease-out;
-            z-index: 1;
-        }
-        .hero h1, .hero p {
-            position: relative;
-            z-index: 2;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            animation: slideDown 0.8s ease-out forwards;
-            background: linear-gradient(45deg, #fff, #f0f0f0);
-            -webkit-background-clip: text;
-            background-clip: text;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            animation: slideDown 0.8s ease-out 0.2s forwards;
-            color: #e0e0e0;
-        }
-        /* Projects Section Styles */
-        .projects {
-            padding: 4rem 2rem;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        }
-        @media screen and (min-width: 769px) {
-            .projects {
-                margin-right: 350px;
-            }
-        }
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .project-card {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease-out forwards;
-            border: 1px solid rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #007bff, #00ff88);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease;
-        }
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-        }
-        .project-card:hover::before {
-            transform: scaleX(1);
-        }
-        .project-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        .project-header h3 {
-            font-size: 1.5rem;
-            color: #2c3e50;
-            margin: 0;
-        }
-        .version {
-            background: linear-gradient(45deg, #007bff, #00ff88);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-        .project-description {
-            color: #666;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-        .feature-list {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 1.5rem 0;
-        }
-        .feature-list li {
-            padding-left: 1.5rem;
-            margin-bottom: 0.8rem;
-            position: relative;
-            color: #555;
-        }
-        .feature-list li::before {
-            content: '\2022';
-            color: #007bff;
-            position: absolute;
-            left: 0;
-            font-size: 1.2rem;
-        }
-        .project-stats {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-            color: #666;
-            font-size: 0.9rem;
-        }
-        .project-links {
-            display: flex;
-            gap: 1rem;
-        }
-        .btn {
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .download-btn {
-            background: linear-gradient(45deg, #007bff, #00ff88);
-            color: white;
-            border: none;
-            box-shadow: 0 4px 15px rgba(0,123,255,0.2);
-        }
-        .download-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,123,255,0.3);
-        }
-        .pricing-btn {
-            background: white;
-            color: #007bff;
-            border: 1px solid #007bff;
-            box-shadow: none;
-        }
-        .pricing-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,123,255,0.08);
-            background: #f8fbff;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .projects {
-                padding: 2rem 1rem;
-            }
-            .hero h1 {
-                font-size: 2rem;
-            }
-            .hero p {
-                font-size: 1rem;
-            }
-            .project-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        /* Comments Section Styles */
-        .comments-section {
-            position: fixed;
-            top: 80px;
-            right: 0;
-            width: 350px;
-            height: calc(100vh - 80px);
-            background: white;
-            padding: 1.5rem;
-            border-left: 1px solid rgba(0,0,0,0.1);
-            overflow-y: auto;
-            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-            z-index: 100;
-        }
-        @media screen and (max-width: 768px) {
-            .comments-section {
-                position: relative;
-                top: 0;
-                width: 100%;
-                height: auto;
-                border-left: none;
-                border-top: 1px solid rgba(0,0,0,0.1);
-                box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
-                margin-top: 2rem;
-            }
-            .projects {
-                margin-right: 0;
-                padding: 2rem 1rem;
-            }
-        }
-        .comments-section .container {
-            max-width: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        .comments-section .section-title {
-            font-size: 1.5rem;
-            margin: 0 0 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--secondary-color);
-            color: var(--primary-color);
-        }
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 1.5rem;
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-        }
-        .form-group:hover {
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transform: translateY(-2px);
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #2c3e50;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            background: white;
-            color: #2c3e50;
-        }
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-        }
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-        .submit-btn {
-            width: 100%;
-            padding: 1rem;
-            border: none;
-            border-radius: 8px;
-            background: linear-gradient(45deg, #3498db, #2ecc71);
-            color: white;
-            font-weight: 500;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-        }
-        .submit-btn:active {
-            transform: translateY(0);
-        }
-        .submit-btn i {
-            font-size: 1.1rem;
-        }
-        /* Connection Status Styles */
-        .connection-status {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 0.9rem;
-            margin-right: 1rem;
-        }
-        .connection-status i {
-            font-size: 1rem;
-        }
-        .connection-status.good {
-            background: rgba(46, 204, 113, 0.2);
-            color: #2ecc71;
-        }
-        .connection-status.medium {
-            background: rgba(241, 196, 15, 0.2);
-            color: #f1c40f;
-        }
-        .connection-status.poor {
-            background: rgba(231, 76, 60, 0.2);
-            color: #e74c3c;
-        }
-        @media (max-width: 768px) {
-            .connection-status {
-                display: none;
-            }
-        }
-        /* Success and Error Message Styles */
-        .success-content, .error-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            animation: slideIn 0.3s ease;
-        }
-        .success-content i {
-            font-size: 3rem;
-            color: #28a745;
-            margin-bottom: 1rem;
-        }
-        .error-content i {
-            font-size: 3rem;
-            color: #dc3545;
-            margin-bottom: 1rem;
-        }
-        .success-content h3, .error-content h3 {
-            color: #333;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-        .success-content p, .error-content p {
-            color: #666;
-            margin-bottom: 1.5rem;
-            line-height: 1.5;
-        }
-        .close-btn {
-            background: linear-gradient(45deg, #007bff, #00ff88);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        .close-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
-        }
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-    </style>
-</head>
-<body>
-    <script>
-        // Downloadable project variables (can be set or read externally)
-        window.downloadItems = {
-            'sba-pro-master': {
-                url: 'https://drive.google.com/file/d/11ifK3HxZ0Z7hUm_Eiff8sTylXfv13MFq/view?usp=sharing',
-                projectId: 'sba-pro-master'
-            },
-            'ecollation': {
-                url: 'https://drive.google.com/file/d/1rVjmoflVdjxyq6TS2dWH6EIVj-pKUnkg/view?usp=drive_link',
-                projectId: 'ecollation'
-            },
-            'referee-connect': {
-                url: 'https://drive.google.com/file/d/10YhCeUQhhEW5kXkTwClA4cmoI80RKozY/view?usp=drive_link',
-                projectId: 'referee-connect'
-            },
-            'ibank': {
-                url: 'https://drive.google.com/file/d/1-CI5SFDHdjGBqJdAbZYLyoMti2CvP9fT/view?usp=sharing',
-                projectId: 'ibank'
-            },
-            'exam-analyzer': {
-                url: 'https://drive.google.com/file/d/1VzKU2g5_pAw_kTJeAOB4wxGIyzM9hP22/view?usp=sharing',
-                projectId: 'exam-analyzer'
-            }
-        };
-        // Set the href for all download buttons based on window.downloadItems
-        document.addEventListener('DOMContentLoaded', function() {
-            for (const key in window.downloadItems) {
-                const url = window.downloadItems[key].url;
-                const btn = document.querySelector(`a[onclick*="${key}"]`);
-                if (btn) btn.setAttribute('href', url);
-            }
-        });
-    </script>
-    <header>
-        <nav>
-            <div class="logo">Mykhil Creations</div>
-            <div class="visitor-counter">
-                <i class="fas fa-eye"></i>
-                <span>Total Visitors: <span id="header-visitor-count" class="visitor-counter-value">0</span></span>
-            </div>
-            <div class="menu-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <ul>
-                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="projects.html" class="active"><i class="fas fa-code"></i> Projects</a></li>
-                <li><a href="blog.html"><i class="fas fa-blog"></i> Blog</a></li>
-                <li><a href="games.html"><i class="fas fa-gamepad"></i> Games</a></li>
-                <li><a href="about.html"><i class="fas fa-user"></i> About</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section class="hero">
-            <div class="dot-pattern"></div>
-            <h1>Professional Software Solutions</h1>
-            <p>Enterprise-grade applications for education and sports management</p>
-        </section>
-        <section class="projects">
-            <div class="project-grid">
-                <!-- SBA Pro Master -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <h3>SBA Pro Master</h3>
-                        <span class="version">6.0.4</span>
-                    </div>
-                    <p class="project-description">Advanced School-Based Assessment management system designed for modern educational institutions.</p>
-                    <ul class="feature-list">
-                        <li>Comprehensive student assessment tracking</li>
-                        <li>Advanced reporting and analytics dashboard</li>
-                        <li>Multi-user collaboration features</li>
-                        <li>Automated grade calculation and distribution</li>
-                        <li>Secure data encryption and backup</li>
-                    </ul>
-                    <div class="project-stats">
-                        <span class="downloads"><i class="fas fa-download"></i> <span id="sba-pro-master-downloads">0</span> downloads</span>
-                        <span class="last-updated"><i class="fas fa-clock"></i> Updated: Nov 2025</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="javascript:void(0);" class="btn download-btn" onclick="trackDownload(event, window.downloadItems['sba-pro-master'].projectId)">
-                            <i class="fas fa-download"></i> Download SBA Pro Master
-                        </a>
-                        <a href="pricingpage.html" class="btn pricing-btn" title="View pricing for SBA Pro Master">
-                            <i class="fas fa-tags"></i> View Pricing
-                        </a>
-                    </div>
-                </div>
-                <!-- eCollation Center -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <h3>eCollation Center</h3>
-                        <span class="version">v2.0</span>
-                    </div>
-                    <p class="project-description">A comprehensive electronic voting and result collation system designed for secure, transparent, and efficient election management.</p>
-                    <ul class="feature-list">
-                        <li>Real-time Vote Counting & Collation</li>
-                        <li>Multi-level Result Verification</li>
-                        <li>Secure Biometric Authentication</li>
-                        <li>Result Analytics & Visualization</li>
-                        <li>Automated Report Generation</li>
-                    </ul>
-                    <div class="project-stats">
-                        <span class="downloads"><i class="fas fa-download"></i> <span id="ecollation-downloads">0</span> downloads</span>
-                        <span class="last-updated"><i class="fas fa-clock"></i> Updated: Dec 2024</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="javascript:void(0);" class="btn download-btn" onclick="trackDownload(event, window.downloadItems['ecollation'].projectId)">
-                            <i class="fas fa-download"></i> Download eCollation Center
-                        </a>
-                    </div>
-                </div>
-                <!-- Referee Connect -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <h3>Referee Connect</h3>
-                        <span class="version">v1.1.0.5</span>
-                    </div>
-                    <p class="project-description">Professional sports officiating and match management platform.</p>
-                    <ul class="feature-list">
-                        <li>Real-time match scoring and statistics</li>
-                        <li>Referee assignment and scheduling</li>
-                        <li>Digital match reporting system</li>
-                        <li>Performance analytics dashboard</li>
-                        <li>Tournament management tools</li>
-                    </ul>
-                    <div class="project-stats">
-                        <span class="downloads"><i class="fas fa-download"></i> <span id="referee-connect-downloads">0</span> downloads</span>
-                        <span class="last-updated"><i class="fas fa-clock"></i> Updated: Dec 2024</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="javascript:void(0);" class="btn download-btn" onclick="trackDownload(event, window.downloadItems['referee-connect'].projectId)">
-                            <i class="fas fa-download"></i> Download Referee Connect
-                        </a>
-                    </div>
-                </div>
-                <!-- iBank -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <h3>iBank</h3>
-                        <span class="version">v1.0</span>
-                    </div>
-                    <p class="project-description">A comprehensive banking software solution for managing customer accounts, transactions, and financial records.</p>
-                    <ul class="feature-list">
-                        <li>Customer Account Management</li>
-                        <li>Transaction Processing</li>
-                        <li>Account Statement Generation</li>
-                        <li>Financial Reports</li>
-                        <li>User Authentication and Security</li>
-                    </ul>
-                    <div class="project-stats">
-                        <span class="downloads"><i class="fas fa-download"></i> <span id="ibank-downloads">0</span> downloads</span>
-                        <span class="last-updated"><i class="fas fa-clock"></i> Updated: Dec 2024</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="javascript:void(0);" class="btn download-btn" onclick="trackDownload(event, window.downloadItems['ibank'].projectId)">
-                            <i class="fas fa-download"></i> Download iBank
-                        </a>
-                    </div>
-                </div>
-                <!-- Exam Analyzer -->
-                <div class="project-card">
-                    <div class="project-header">
-                        <h3>Exam Analyzer</h3>
-                        <span class="version">v1.0</span>
-                    </div>
-                    <p class="project-description">An advanced tool for analyzing and processing examination results, providing detailed insights and statistics.</p>
-                    <ul class="feature-list">
-                        <li>Result Analysis and Statistics</li>
-                        <li>Performance Tracking</li>
-                        <li>Grade Distribution Charts</li>
-                        <li>Subject-wise Analysis</li>
-                        <li>Report Generation</li>
-                    </ul>
-                    <div class="project-stats">
-                        <span class="downloads"><i class="fas fa-download"></i> <span id="exam-analyzer-downloads">0</span> downloads</span>
-                        <span class="last-updated"><i class="fas fa-clock"></i> Updated: Dec 2024</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="javascript:void(0);" class="btn download-btn" onclick="trackDownload(event, window.downloadItems['exam-analyzer'].projectId)">
-                            <i class="fas fa-download"></i> Download Exam Analyzer
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-    <!-- Comments and Reviews Section -->
-    <aside class="comments-section">
-        <div class="container">
-            <h2 class="section-title">Quick Feedback</h2>
-            <form id="commentForm" action="https://formspree.io/f/myzjdnja" method="POST">
-                <div class="form-group">
-                    <label for="name"><i class="fas fa-user"></i> Name</label>
-                    <input type="text" id="name" name="name" required placeholder="Enter your name">
-                </div>
-                <div class="form-group">
-                    <label for="email"><i class="fas fa-envelope"></i> Email</label>
-                    <input type="email" id="email" name="email" required placeholder="Enter your email">
-                </div>
-                <div class="form-group">
-                    <label for="subject"><i class="fas fa-tag"></i> Type</label>
-                    <select id="subject" name="subject" required>
-                        <option value="">Select feedback type</option>
-                        <option value="Comment">Ã°Å¸â€™Â¬ Comment</option>
-                        <option value="Review">Ã¢Â­Â Review</option>
-                        <option value="Bug Report">Ã°Å¸Ââ€º Bug Report</option>
-                        <option value="Suggestion">Ã°Å¸â€™Â¡ Suggestion</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="message"><i class="fas fa-comment"></i> Message</label>
-                    <textarea id="message" name="message" rows="4" required placeholder="Type your message here..."></textarea>
-                </div>
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-paper-plane"></i>
-                    Send Feedback
-                </button>
-            </form>
-        </div>
-    </aside>
-    <footer>
-        <p>&copy; 2024 Mykhil Creations. All rights reserved.</p>
-        <div class="footer-stats">
-            <div class="page-visitor-counter">
-                <i class="fas fa-chart-line"></i>
-                <span>Page Visits: <span id="page-visitor-count">0</span></span>
-            </div>
-            <div class="visitor-counter">
-                <i class="fas fa-eye"></i>
-                <span>Total Visitors: <span id="visitor-count" class="visitor-counter-value">0</span></span>
-            </div>
-            <div id="connection-status" class="footer-connection-status">
-                <i class="fas fa-wifi"></i>
-                <span id="connection-label">Checking connection...</span>
-            </div>
-        </div>
-    </footer>
-    <script src="js/connection-status.js"></script>
-    <script src="js/download-tracker-new.js"></script>
-    <script src="js/visitor-counter.js"></script>
-    <script src="js/mobile-menu.js"></script>
-    <script>
-        // Function to show SBA Pro Master under review message
-        function showSBAUnderReview(event, projectId) {
-            event.preventDefault();
-            // Create modal element
-            const modalDiv = document.createElement('div');
-            modalDiv.className = 'sba-review-modal';
-            modalDiv.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <i class="fas fa-tools"></i>
-                        <h3>SBA Pro Master - Under Review</h3>
-                    </div>
-                    <div class="modal-body">
-                        <p><strong>We're currently reviewing SBA Pro Master for some bugs and improvements.</strong></p>
-                        <p>Please try again in a few days. We're working hard to ensure you get the best possible experience.</p>
-                        <p>Thank you for your patience</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button onclick="this.parentElement.parentElement.parentElement.remove()" class="modal-close-btn">
-                            <i class="fas fa-times"></i> Close
-                        </button>
-                    </div>
-                </div>
-            `;
-            // Add styles
-            modalDiv.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.7);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-                animation: fadeIn 0.3s ease;
-            `;
-            // Add modal styles
-            const style = document.createElement('style');
-            style.textContent = `
-                .sba-review-modal .modal-content {
-                    background: white;
-                    border-radius: 15px;
-                    padding: 0;
-                    max-width: 500px;
-                    width: 90%;
-                    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-                    animation: slideIn 0.3s ease;
-                }
-                .sba-review-modal .modal-header {
-                    background: linear-gradient(45deg, #2193b0, #6dd5ed);
-                    color: white;
-                    padding: 20px;
-                    border-radius: 15px 15px 0 0;
-                    text-align: center;
-                }
-                .sba-review-modal .modal-header i {
-                    font-size: 2rem;
-                    margin-bottom: 10px;
-                    display: block;
-                }
-                .sba-review-modal .modal-header h3 {
-                    margin: 0;
-                    font-size: 1.5rem;
-                }
-                .sba-review-modal .modal-body {
-                    padding: 30px 20px;
-                    text-align: center;
-                    line-height: 1.6;
-                }
-                .sba-review-modal .modal-body p {
-                    margin: 10px 0;
-                    color: #333;
-                }
-                .sba-review-modal .modal-footer {
-                    padding: 20px;
-                    text-align: center;
-                    border-top: 1px solid #eee;
-                }
-                .sba-review-modal .modal-close-btn {
-                    background: #2193b0;
-                    color: white;
-                    border: none;
-                    padding: 12px 24px;
-                    border-radius: 25px;
-                    cursor: pointer;
-                    font-size: 1rem;
-                    transition: all 0.3s ease;
-                }
-                .sba-review-modal .modal-close-btn:hover {
-                    background: #1a7a8f;
-                    transform: translateY(-2px);
-                }
-                @keyframes slideIn {
-                    from { transform: translateY(-50px); opacity: 0; }
-                    to { transform: translateY(0); opacity: 1; }
-                }
-                @keyframes fadeIn {
-                    from { opacity: 0; }
-                    to { opacity: 1; }
-                }
-            `;
-            // Add styles to head
-            document.head.appendChild(style);
-            // Add to page
-            document.body.appendChild(modalDiv);
-            // Close on background click
-            modalDiv.addEventListener('click', function(e) {
-                if (e.target === modalDiv) {
-                    modalDiv.remove();
-                }
-            });
-            // Close on Escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && document.body.contains(modalDiv)) {
-                    modalDiv.remove();
-                }
-            });
-        }
-        // Handle Formspree form submission
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('commentForm');
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                // Get form data
-                const formData = new FormData(form);
-                const submitButton = form.querySelector('.submit-btn');
-                const originalText = submitButton.innerHTML;
-                // Show loading state
-                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-                submitButton.disabled = true;
-                // Submit to Formspree
-                fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(response => {
-                    if (response.ok) {
-                        // Show success message
-                        showSuccessMessage();
-                        // Clear the form
-                        form.reset();
-                    } else {
-                        throw new Error('Network response was not ok');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showErrorMessage();
-                })
-                .finally(() => {
-                    // Reset button
-                    submitButton.innerHTML = originalText;
-                    submitButton.disabled = false;
-                });
-            });
-        });
-        function showSuccessMessage() {
-            // Create success message element
-            const successDiv = document.createElement('div');
-            successDiv.className = 'success-message';
-            successDiv.innerHTML = `
-                <div class="success-content">
-                    <i class="fas fa-check-circle"></i>
-                    <h3>Message Sent Successfully</h3>
-                    <p>Thank you for your feedback. We'll get back to you soon.</p>
-                    <button onclick="this.parentElement.parentElement.remove()" class="close-btn">Close</button>
-                </div>
-            `;
-            // Add styles
-            successDiv.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-                animation: fadeIn 0.3s ease;
-            `;
-            // Add to page
-            document.body.appendChild(successDiv);
-            // Auto-remove after 5 seconds
-            setTimeout(() => {
-                if (successDiv.parentElement) {
-                    successDiv.remove();
-                }
-            }, 5000);
-        }
-        function showErrorMessage() {
-            // Create error message element
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'error-message';
-            errorDiv.innerHTML = `
-                <div class="error-content">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <h3>Message Not Sent</h3>
-                    <p>Sorry, there was an error sending your message. Please try again.</p>
-                    <button onclick="this.parentElement.parentElement.remove()" class="close-btn">Close</button>
-                </div>
-            `;
-            // Add styles
-            errorDiv.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-                animation: fadeIn 0.3s ease;
-            `;
-            // Add to page
-            document.body.appendChild(errorDiv);
-            // Auto-remove after 5 seconds
-            setTimeout(() => {
-                if (errorDiv.parentElement) {
-                    errorDiv.remove();
-                }
-            }, 5000);
-        }
-    </script>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> 798bde8 (Update sba-pro-master version 6.0.4)
