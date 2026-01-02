@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,12 +29,10 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
         }
-
         .pricing-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
         }
-
         .feature-list li {
             padding: 8px 0;
             display: flex;
@@ -44,8 +41,7 @@
 
         /* Modal Specific Styles */
         .modal {
-            display: none;
-            /* Hidden by default */
+            display: none; /* Hidden by default */
             position: fixed;
             z-index: 1000;
             left: 0;
@@ -53,37 +49,27 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: rgba(0,0,0,0.6);
             backdrop-filter: blur(5px);
             justify-content: center;
             align-items: center;
         }
-
         .modal-content {
             /* Fix: Limit height and enable scrolling */
-            max-height: 90vh;
-            /* Use viewport height to limit size */
-            overflow-y: auto;
-            /* Enable vertical scrolling if content exceeds max-height */
-
+            max-height: 90vh; /* Use viewport height to limit size */
+            overflow-y: auto; /* Enable vertical scrolling if content exceeds max-height */
+            
             max-width: 90%;
             transition: transform 0.3s ease-out, opacity 0.3s ease-out;
             transform: translateY(-20px);
             opacity: 0;
         }
-
         .modal.open .modal-content {
             transform: translateY(0);
             opacity: 1;
         }
-
-        .tab-btn.active {
-            border-bottom: 2px solid #0056b3;
-            color: #0056b3;
-        }
     </style>
 </head>
-
 <body class="bg-gray-50 font-sans p-4 sm:p-8">
 
     <div class="max-w-6xl mx-auto">
@@ -93,8 +79,7 @@
                 Flexible Pricing for Ghanaian Schools
             </h1>
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                Choose the plan that perfectly fits the size and needs of your institution. All prices are **annual**,
-                billed yearly in Ghana Cedis (GHS).
+                Choose the plan that perfectly fits the size and needs of your institution. All prices are **annual**, billed yearly in Ghana Cedis (GHS).
             </p>
         </header>
 
@@ -109,50 +94,29 @@
                     <span class="text-5xl font-extrabold text-accent" id="price-trial">GHS 0</span>
                     <span class="text-xl text-gray-500">for 1 week</span>
                 </div>
-                <button onclick="showPaymentModal('Trial', LICENSES.Trial, 'Trial License');"
-                    class="block w-full text-center py-3 px-6 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition duration-150">Start
-                    Free Trial</button>
+                <button onclick="showPaymentModal('Trial', LICENSES.Trial, 'Trial License');" class="block w-full text-center py-3 px-6 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition duration-150">Start Free Trial</button>
 
                 <ul class="feature-list mt-8 space-y-2 text-gray-700">
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2a3 3 0 00-5.356-1.857M17 20H7m0 0v-2a3 3 0 00-5.356-1.857M7 20h10M7 7v-2a3 3 0 013-3h4a3 3 0 013 3v2m-7 3h4">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2a3 3 0 00-5.356-1.857M17 20H7m0 0v-2a3 3 0 00-5.356-1.857M7 20h10M7 7v-2a3 3 0 013-3h4a3 3 0 013 3v2m-7 3h4"></path></svg>
                         <span>Max Students: <strong class="text-gray-900">10</strong></span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg>
                         <span>Max Classes: <strong class="text-gray-900">1</strong></span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                         <span>Core Reporting (Report Card/Viewer)</span>
                     </li>
                     <li class="flex items-center text-gray-400">
-                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 15v2m-2 4h4m0-4h2a1 1 0 001-1v-4a1 1 0 00-1-1h-2a1 1 0 00-1-1h-4a1 1 0 00-1 1v4a1 1 0 001 1h2a1 1 0 001-1zM4 6h16">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-2 4h4m0-4h2a1 1 0 001-1v-4a1 1 0 00-1-1h-2a1 1 0 00-1-1h-4a1 1 0 00-1 1v4a1 1 0 001 1h2a1 1 0 001-1zM4 6h16"></path></svg>
                         <span>Teacher/Grading Management (Locked)</span>
                     </li>
                 </ul>
             </div>
 
-            <!-- BASIC Plan Card (GHS 100) -->
+            <!-- BASIC Plan Card (GHS 99) -->
             <div class="pricing-card bg-white p-6 rounded-xl border-4 border-primary shadow-xl">
                 <div class="flex justify-between items-center mb-2">
                     <p class="text-lg font-semibold text-primary">License Type</p>
@@ -163,59 +127,33 @@
                     <span class="text-5xl font-extrabold text-primary" id="price-basic"></span>
                     <span class="text-xl text-gray-500">/ year</span>
                 </div>
-                <button onclick="showPaymentModal('Basic', LICENSES.Basic, 'Basic License');"
-                    class="block w-full text-center py-3 px-6 rounded-lg bg-primary text-white font-semibold hover:bg-blue-700 transition duration-150">Select
-                    Basic</button>
+                <button onclick="showPaymentModal('Basic', LICENSES.Basic, 'Basic License');" class="block w-full text-center py-3 px-6 rounded-lg bg-primary text-white font-semibold hover:bg-blue-700 transition duration-150">Select Basic</button>
 
                 <ul class="feature-list mt-8 space-y-2 text-gray-700">
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2a3 3 0 00-5.356-1.857M17 20H7m0 0v-2a3 3 0 00-5.356-1.857M7 20h10M7 7v-2a3 3 0 013-3h4a3 3 0 013 3v2m-7 3h4">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2a3 3 0 00-5.356-1.857M17 20H7m0 0v-2a3 3 0 00-5.356-1.857M7 20h10M7 7v-2a3 3 0 013-3h4a3 3 0 013 3v2m-7 3h4"></path></svg>
                         <span>Max Students: <strong class="text-gray-900">50</strong></span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg>
                         <span>Max Classes: <strong class="text-gray-900">5</strong></span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                         <span>Core Reporting (Report Card/Viewer)</span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                         <span class="text-gray-900">Includes **Grading View**</span>
                     </li>
                     <li class="flex items-center text-gray-400">
-                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 15v2m-2 4h4m0-4h2a1 1 0 001-1v-4a1 1 0 00-1-1h-2a1 1 0 00-1-1h-4a1 1 0 00-1 1v4a1 1 0 001 1h2a1 1 0 001-1zM4 6h16">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-2 4h4m0-4h2a1 1 0 001-1v-4a1 1 0 00-1-1h-2a1 1 0 00-1-1h-4a1 1 0 00-1 1v4a1 1 0 001 1h2a1 1 0 001-1zM4 6h16"></path></svg>
                         <span>Teacher Management (Locked)</span>
                     </li>
                 </ul>
             </div>
 
-            <!-- STANDARD Plan Card (GHS 200) -->
+            <!-- STANDARD Plan Card (GHS 199) -->
             <div class="pricing-card bg-white p-6 rounded-xl border border-gray-200">
                 <p class="text-lg font-semibold text-gray-500 mb-2">License Type</p>
                 <h2 class="text-3xl font-bold text-gray-900 mb-6">Standard</h2>
@@ -223,58 +161,33 @@
                     <span class="text-5xl font-extrabold text-accent" id="price-standard"></span>
                     <span class="text-xl text-gray-500">/ year</span>
                 </div>
-                <button onclick="showPaymentModal('Standard', LICENSES.Standard, 'Standard License');"
-                    class="block w-full text-center py-3 px-6 rounded-lg bg-accent text-white font-semibold hover:bg-teal-700 transition duration-150">Select
-                    Standard</button>
+                <button onclick="showPaymentModal('Standard', LICENSES.Standard, 'Standard License');" class="block w-full text-center py-3 px-6 rounded-lg bg-accent text-white font-semibold hover:bg-teal-700 transition duration-150">Select Standard</button>
 
                 <ul class="feature-list mt-8 space-y-2 text-gray-700">
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2a3 3 0 00-5.356-1.857M17 20H7m0 0v-2a3 3 0 00-5.356-1.857M7 20h10M7 7v-2a3 3 0 013-3h4a3 3 0 013 3v2m-7 3h4">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2a3 3 0 00-5.356-1.857M17 20H7m0 0v-2a3 3 0 00-5.356-1.857M7 20h10M7 7v-2a3 3 0 013-3h4a3 3 0 013 3v2m-7 3h4"></path></svg>
                         <span>Max Students: <strong class="text-gray-900">200</strong></span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg>
                         <span>Max Classes: <strong class="text-gray-900">10</strong></span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                         <span>Full Reporting & Grading Access</span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.001 12.001 0 0012 21a12.001 12.001 0 008.618-3.047z">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.001 12.001 0 0012 21a12.001 12.001 0 008.618-3.047z"></path></svg>
                         <span class="text-gray-900">Includes **Assessment Types** Management</span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                         <span class="text-gray-900">Includes **Teacher Management**</span>
                     </li>
                 </ul>
             </div>
 
-            <!-- PREMIUM Plan Card (GHS 350) -->
+            <!-- PREMIUM Plan Card (GHS 349) -->
             <div class="pricing-card bg-white p-6 rounded-xl border border-gray-200">
                 <p class="text-lg font-semibold text-gray-500 mb-2">License Type</p>
                 <h2 class="text-3xl font-bold text-gray-900 mb-6">Premium</h2>
@@ -282,48 +195,29 @@
                     <span class="text-5xl font-extrabold text-accent" id="price-premium"></span>
                     <span class="text-xl text-gray-500">/ year</span>
                 </div>
-                <button onclick="showPaymentModal('Premium', LICENSES.Premium, 'Premium License');"
-                    class="block w-full text-center py-3 px-6 rounded-lg bg-accent text-white font-semibold hover:bg-teal-700 transition duration-150">Select
-                    Premium</button>
+                <button onclick="showPaymentModal('Premium', LICENSES.Premium, 'Premium License');" class="block w-full text-center py-3 px-6 rounded-lg bg-accent text-white font-semibold hover:bg-teal-700 transition duration-150">Select Premium</button>
 
                 <ul class="feature-list mt-8 space-y-2 text-gray-700">
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2a3 3 0 00-5.356-1.857M17 20H7m0 0v-2a3 3 0 00-5.356-1.857M7 20h10M7 7v-2a3 3 0 013-3h4a3 3 0 013 3v2m-7 3h4">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2a3 3 0 00-5.356-1.857M17 20H7m0 0v-2a3 3 0 00-5.356-1.857M7 20h10M7 7v-2a3 3 0 013-3h4a3 3 0 013 3v2m-7 3h4"></path></svg>
                         <span>Max Students: <strong class="text-gray-900">500</strong></span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg>
                         <span>Max Classes: <strong class="text-gray-900">20</strong></span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                         <span class="text-gray-900">Includes ALL Standard Features</span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         <span class="text-gray-900">**Full Feature Set** Access (All Forms Allowed)</span>
                     </li>
                 </ul>
             </div>
 
-            <!-- PROFESSIONAL Plan Card (GHS 600) -->
+            <!-- PROFESSIONAL Plan Card (GHS 599) -->
             <div class="pricing-card bg-white p-6 rounded-xl border border-gray-200">
                 <p class="text-lg font-semibold text-gray-500 mb-2">License Type</p>
                 <h2 class="text-3xl font-bold text-gray-900 mb-6">Professional</h2>
@@ -331,49 +225,29 @@
                     <span class="text-5xl font-extrabold text-accent" id="price-professional"></span>
                     <span class="text-xl text-gray-500">/ year</span>
                 </div>
-                <button onclick="showPaymentModal('Professional', LICENSES.Professional, 'Professional License');"
-                    class="block w-full text-center py-3 px-6 rounded-lg bg-accent text-white font-semibold hover:bg-teal-700 transition duration-150">Select
-                    Professional</button>
+                <button onclick="showPaymentModal('Professional', LICENSES.Professional, 'Professional License');" class="block w-full text-center py-3 px-6 rounded-lg bg-accent text-white font-semibold hover:bg-teal-700 transition duration-150">Select Professional</button>
 
                 <ul class="feature-list mt-8 space-y-2 text-gray-700">
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2a3 3 0 00-5.356-1.857M17 20H7m0 0v-2a3 3 0 00-5.356-1.857M7 20h10M7 7v-2a3 3 0 013-3h4a3 3 0 013 3v2m-7 3h4">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2a3 3 0 00-5.356-1.857M17 20H7m0 0v-2a3 3 0 00-5.356-1.857M7 20h10M7 7v-2a3 3 0 013-3h4a3 3 0 013 3v2m-7 3h4"></path></svg>
                         <span>Max Students: <strong class="text-gray-900">1000</strong></span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg>
                         <span>Max Classes: <strong class="text-gray-900">50</strong></span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                         <span class="text-gray-900">Includes All Premium Features</span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                         <span class="text-gray-900">Ideal for **Medium Sized Institutions**</span>
                     </li>
                 </ul>
             </div>
 
-            <!-- ENTERPRISE Plan Card (GHS 900) -->
+            <!-- ENTERPRISE Plan Card (GHS 899) -->
             <div class="pricing-card bg-white p-6 rounded-xl border border-gray-200">
                 <p class="text-lg font-semibold text-gray-500 mb-2">License Type</p>
                 <h2 class="text-3xl font-bold text-gray-900 mb-6">Enterprise</h2>
@@ -381,43 +255,24 @@
                     <span class="text-5xl font-extrabold text-secondary" id="price-enterprise"></span>
                     <span class="text-xl text-gray-500">/ year</span>
                 </div>
-                <button onclick="showPaymentModal('Enterprise', LICENSES.Enterprise, 'Enterprise License');"
-                    class="block w-full text-center py-3 px-6 rounded-lg bg-secondary text-white font-semibold hover:bg-orange-700 transition duration-150">Select
-                    Enterprise</button>
+                <!-- This plan also opens the modal to show the process -->
+                <button onclick="showPaymentModal('Enterprise', LICENSES.Enterprise, 'Enterprise License');" class="block w-full text-center py-3 px-6 rounded-lg bg-secondary text-white font-semibold hover:bg-orange-700 transition duration-150">Select Enterprise</button>
 
                 <ul class="feature-list mt-8 space-y-2 text-gray-700">
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2a3 3 0 00-5.356-1.857M17 20H7m0 0v-2a3 3 0 00-5.356-1.857M7 20h10M7 7v-2a3 3 0 013-3h4a3 3 0 013 3v2m-7 3h4">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2a3 3 0 00-5.356-1.857M17 20H7m0 0v-2a3 3 0 00-5.356-1.857M7 20h10M7 7v-2a3 3 0 013-3h4a3 3 0 013 3v2m-7 3h4"></path></svg>
                         <span>Max Students: <strong class="text-gray-900">Unlimited*</strong></span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg>
                         <span>Max Classes: <strong class="text-gray-900">Unlimited*</strong></span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                         <span class="text-gray-900">All Professional Features</span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
                         <span class="text-gray-900">**Scale for Large Institutions**</span>
                     </li>
                 </ul>
@@ -431,90 +286,57 @@
                     <span class="text-5xl font-extrabold text-secondary" id="price-custom"></span>
                     <span class="text-xl text-gray-500">/ quote</span>
                 </div>
-                <button onclick="showPaymentModal('Custom', LICENSES.Custom, 'Custom Development/Full Feature');"
-                    class="block w-full text-center py-3 px-6 rounded-lg bg-secondary text-white font-semibold hover:bg-orange-700 transition duration-150">Request
-                    a Quote</button>
+                <!-- This plan also opens the modal to show the process -->
+                <button onclick="showPaymentModal('Custom', LICENSES.Custom, 'Custom Development/Full Feature');" class="block w-full text-center py-3 px-6 rounded-lg bg-secondary text-white font-semibold hover:bg-orange-700 transition duration-150">Request a Quote</button>
 
                 <ul class="feature-list mt-8 space-y-2 text-gray-300">
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-secondary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 4.354a4 4 0 110 5.292m0 5.292a4 4 0 110 5.292M12 11.206V19l3 2-3-2-3 2v-7.794">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 text-secondary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292m0 5.292a4 4 0 110 5.292M12 11.206V19l3 2-3-2-3 2v-7.794"></path></svg>
                         <span>Max Students: <strong class="text-white">Unlimited</strong></span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-secondary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16m-7 6h7"></path>
-                        </svg>
+                        <svg class="w-5 h-5 text-secondary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                         <span>Max Classes: <strong class="text-white">Unlimited</strong></span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-secondary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 text-secondary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                         <span class="text-white">ALL Features Unlocked</span>
                     </li>
                     <li class="flex items-center">
-                        <svg class="w-5 h-5 text-secondary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-1.343 3-3s-1.343-3-3-3m0 6a3 3 0 100-6m-9 9h9">
-                            </path>
-                        </svg>
+                        <svg class="w-5 h-5 text-secondary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-1.343 3-3s-1.343-3-3-3m0 6a3 3 0 100-6m-9 9h9"></path></svg>
                         <span class="text-white">Includes **Dedicated Support** & Custom Development</span>
                     </li>
                 </ul>
             </div>
 
+
         </div>
 
         <!-- Note on Pricing -->
         <footer class="mt-16 text-center text-sm text-gray-500">
-            * Unlimited students/classes are subject to fair use policy and institutional size limits agreed upon during
-            purchase. Pricing is for institutional use, billed **annually** in Ghana Cedis (GHS).
+            * Unlimited students/classes are subject to fair use policy and institutional size limits agreed upon during purchase. Pricing is for institutional use, billed **annually** in Ghana Cedis (GHS).
         </footer>
     </div>
 
 
     <!-- Payment Instruction Modal -->
     <div id="paymentModal" class="modal">
-        <div class="modal-content bg-white p-6 sm:p-10 rounded-xl shadow-2xl w-full lg:max-w-2xl">
+        <div class="modal-content bg-white p-6 sm:p-10 rounded-xl shadow-2xl w-full lg:max-w-xl">
             <div class="flex justify-between items-start border-b pb-4 mb-6">
                 <h3 class="text-2xl font-bold text-gray-900">
                     <span id="modalLicenseType">License</span> Activation Steps
                 </h3>
                 <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 transition duration-150">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                        </path>
-                    </svg>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
 
-            <!-- App Selection Tab -->
-            <div class="flex space-x-4 mb-6 border-b">
-                <button onclick="setAppType('offline')" id="tab-offline"
-                    class="tab-btn pb-2 font-semibold text-gray-500 hover:text-primary transition-colors active">Offline
-                    Desktop App</button>
-                <button onclick="setAppType('online')" id="tab-online"
-                    class="tab-btn pb-2 font-semibold text-gray-500 hover:text-primary transition-colors">Online Web
-                    App</button>
-            </div>
-
-            <!-- 1. Payment Details Section -->
+            <!-- Payment Details Section -->
             <div id="paymentDetailsSection" class="bg-blue-50 border-l-4 border-primary p-4 rounded-lg mb-8">
                 <h4 class="text-xl font-semibold text-primary mb-3">1. Make Your Payment</h4>
-                <p class="text-gray-700 mb-4">Please make a Mobile Money (MoMo) payment of the required amount using the
-                    details below. For the reference, use your **License Type**.</p>
-
+                <p class="text-gray-700 mb-4">Please make a Mobile Money (MoMo) payment of the required amount using the details below. For the payment reference, use your selected **License Type**.</p>
+                
+                <!-- Payment Amount & Reference -->
                 <div class="bg-white p-4 rounded-lg shadow-sm mb-4">
                     <div class="mb-2">
                         <span class="text-sm font-medium text-gray-500 block">AMOUNT DUE:</span>
@@ -526,6 +348,7 @@
                     </div>
                 </div>
 
+                <!-- MoMo Numbers -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="bg-white p-3 rounded-lg border">
                         <p class="text-sm font-medium text-gray-700">MoMo Recipient 1:</p>
@@ -540,50 +363,22 @@
                 </div>
             </div>
 
-            <!-- 2. Activation Steps Section -->
+            <!-- Activation Steps Section -->
             <div class="mb-8">
-                <h4 class="text-xl font-semibold text-gray-900 mb-3" id="activationStepHeader">2. Activate Your License
-                </h4>
-
-                <!-- Offline App Steps -->
-                <div id="steps-offline">
-                    <ol class="list-decimal list-inside space-y-3 text-gray-700">
-                        <li>
-                            <strong class="font-semibold">Download the App:</strong> Get the latest version from <a
-                                href="https://mykhil.github.io" target="_blank"
-                                class="text-primary hover:underline font-semibold">https://mykhil.github.io</a>.
-                        </li>
-                        <li>
-                            <strong class="font-semibold">Generate Token:</strong> Open the app, go to **Management
-                            tools**, and generate your unique license token.
-                        </li>
-                        <li>
-                            <strong class="font-semibold">Send Token:</strong> Send the token to the developer via
-                            **WhatsApp** to the number below.
-                        </li>
-                    </ol>
-                </div>
-
-                <!-- Online App Steps -->
-                <div id="steps-online" class="hidden">
-                    <ol class="list-decimal list-inside space-y-3 text-gray-700">
-                        <li>
-                            <strong class="font-semibold">Login:</strong> Open the Online App and log in to your school
-                            dashboard.
-                        </li>
-                        <li>
-                            <strong class="font-semibold">Open Subscription:</strong> Click the <span
-                                class="bg-blue-600 text-white px-2 py-0.5 rounded text-xs font-bold">Pay /
-                                Subscription</span> button found on the Welcome Screen or Registration Pending screen.
-                        </li>
-                        <li>
-                            <strong class="font-semibold">Fill & Send:</strong> Select your tier, enter your
-                            **Transaction ID**, and click **Send Request via Email**.
-                        </li>
-                    </ol>
-                </div>
+                <h4 class="text-xl font-semibold text-gray-900 mb-3" id="activationStepHeader">2. Get Your License Token</h4>
+                <ol class="list-decimal list-inside space-y-3 text-gray-700" id="activationStepsList">
+                    <li>
+                        <strong class="font-semibold">Download the App:</strong> If you haven't already, download the latest version of the app from <a href="https://mykhil.github.io" target="_blank" class="text-primary hover:underline font-semibold">https://mykhil.github.io</a>.
+                    </li>
+                    <li>
+                        <strong class="font-semibold">Generate Token:</strong> Open the app, navigate to the **Management tools** section, and follow the in-app instructions to generate your unique license token.
+                    </li>
+                    <li>
+                        <strong class="font-semibold">Send Token:</strong> Send the generated token to the developer via **WhatsApp** to the contact number below.
+                    </li>
+                </ol>
             </div>
-
+            
             <!-- Contact Section -->
             <div class="bg-gray-100 p-4 rounded-lg text-center">
                 <p class="text-lg font-semibold text-gray-800 mb-1">For enquiries or to send your token, contact:</p>
@@ -591,8 +386,7 @@
             </div>
 
             <div class="mt-6 text-center">
-                <button onclick="closeModal()"
-                    class="py-3 px-8 bg-primary text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-150 shadow-md">
+                <button onclick="closeModal()" class="py-3 px-8 bg-primary text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-150 shadow-md">
                     Got it, Close Instructions
                 </button>
             </div>
@@ -601,6 +395,7 @@
 
 
     <script>
+        // Define all license prices in a single object for easy management
         const LICENSES = {
             Trial: 0,
             Basic: 100,
@@ -611,32 +406,21 @@
             Custom: 'Quote'
         };
 
+        // Get the modal elements
         const modal = document.getElementById('paymentModal');
         const modalLicenseType = document.getElementById('modalLicenseType');
         const modalAmount = document.getElementById('modalAmount');
         const modalReference = document.getElementById('modalReference');
         const paymentDetailsSection = document.getElementById('paymentDetailsSection');
         const activationStepHeader = document.getElementById('activationStepHeader');
+        const activationStepsList = document.getElementById('activationStepsList');
+        
+        // Store the default steps HTML globally for paid/trial plans
+        // We must do this after the DOM is fully loaded, or when the script runs if it's placed at the end of the body.
+        let defaultActivationStepsHtml = '';
 
-        const stepsOffline = document.getElementById('steps-offline');
-        const stepsOnline = document.getElementById('steps-online');
-        const tabOffline = document.getElementById('tab-offline');
-        const tabOnline = document.getElementById('tab-online');
 
-        function setAppType(type) {
-            if (type === 'offline') {
-                stepsOffline.classList.remove('hidden');
-                stepsOnline.classList.add('hidden');
-                tabOffline.classList.add('active');
-                tabOnline.classList.remove('active');
-            } else {
-                stepsOffline.classList.add('hidden');
-                stepsOnline.classList.remove('hidden');
-                tabOffline.classList.remove('active');
-                tabOnline.classList.add('active');
-            }
-        }
-
+        // Function to initialize the prices on the cards
         function initializePrices() {
             document.getElementById('price-basic').textContent = `GHS ${LICENSES.Basic}`;
             document.getElementById('price-standard').textContent = `GHS ${LICENSES.Standard}`;
@@ -644,50 +428,105 @@
             document.getElementById('price-professional').textContent = `GHS ${LICENSES.Professional}`;
             document.getElementById('price-enterprise').textContent = `GHS ${LICENSES.Enterprise}`;
             document.getElementById('price-custom').textContent = LICENSES.Custom;
+
+            // Store default steps after all elements are guaranteed to be present
+            defaultActivationStepsHtml = activationStepsList.innerHTML;
         }
 
+        // Run initialization function when the page loads
         document.addEventListener('DOMContentLoaded', initializePrices);
+        
 
+        /**
+         * Opens the payment modal with details for the selected plan.
+         * @param {string} planName - The name of the license (e.g., 'Basic').
+         * @param {number|string} price - The annual price in GHS or 'Quote'.
+         * @param {string} reference - The reference text for the MoMo transfer.
+         */
         function showPaymentModal(planName, price, reference) {
+            // Update modal content common to all plans
             modalLicenseType.textContent = planName;
             modalReference.textContent = reference;
 
+            // Ensure the list is reset to default before applying plan-specific changes for paid/trial modes
+            activationStepsList.innerHTML = defaultActivationStepsHtml;
+
+            // Handle Trial (GHS 0) and Custom (Quote) differently
             if (price === 0) {
+                // TRIAL MODE: Show Activation only, hide payment instructions
                 paymentDetailsSection.style.display = 'none';
-                activationStepHeader.textContent = '1. License Activation';
-                modalAmount.textContent = `GHS ${price}`;
-            } else if (price === 'Quote') {
-                paymentDetailsSection.style.display = 'none';
-                modalAmount.parentElement.querySelector('span').textContent = 'FEE:';
-                modalAmount.textContent = 'Contact for Quote';
-                modalAmount.classList.remove('text-red-600');
-                modalAmount.classList.add('text-gray-800');
-                activationStepHeader.textContent = '1. Get Your Quote';
-            } else {
-                paymentDetailsSection.style.display = 'block';
-                modalAmount.parentElement.querySelector('span').textContent = 'AMOUNT DUE:';
+                activationStepHeader.textContent = '1. Get Your Trial Token';
+                
+                // Ensure price display is correct for safety (even though section is hidden)
                 modalAmount.textContent = `GHS ${price}`;
                 modalAmount.classList.remove('text-gray-800');
                 modalAmount.classList.add('text-red-600');
-                activationStepHeader.textContent = '2. License Activation';
+
+            } else if (price === 'Quote') {
+                // CUSTOM/FULL MODE: Hide payment details and show contact info
+                paymentDetailsSection.style.display = 'none'; 
+                
+                // Update header and primary display elements to reflect 'Quote' request
+                modalAmount.parentElement.querySelector('span').textContent = 'FEE:';
+                modalAmount.textContent = 'Contact for Quote';
+                modalAmount.classList.remove('text-red-600'); 
+                modalAmount.classList.add('text-gray-800');
+                
+                // Update the activation step header/content to be about contacting for the quote
+                activationStepHeader.textContent = '1. Get Your Quote'; 
+                
+                // Update instructions for the "Request a Quote" mode
+                activationStepsList.innerHTML = `
+                    <li>
+                        <strong class="font-semibold">Contact Us Immediately:</strong> Reach out via **WhatsApp** or phone call to the contact number below to discuss your institution's specific needs and pricing for the Custom license.
+                    </li>
+                    <li>
+                        <strong class="font-semibold">Custom Quotation:</strong> We will provide a tailored quote and estimated implementation timeline based on your specific requirements.
+                    </li>
+                    <li>
+                        <strong class="font-semibold">Next Steps:</strong> Once the quote is accepted, we'll guide you through the payment, app download, and license token generation process.
+                    </li>
+                `;
+            }
+            else {
+                // PAID MODES: Show full payment instructions
+                paymentDetailsSection.style.display = 'block';
+                modalAmount.parentElement.querySelector('span').textContent = 'AMOUNT DUE:';
+                modalAmount.textContent = `GHS ${price}`;
+                // Apply red text style for actual amount
+                modalAmount.classList.remove('text-gray-800');
+                modalAmount.classList.add('text-red-600');
+                activationStepHeader.textContent = '2. Get Your License Token';
             }
 
+            // Show the modal with transition effect
             modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('open'), 10);
+            // Use setTimeout to ensure the display property change is processed before applying the transition classes
+            setTimeout(() => {
+                modal.classList.add('open');
+            }, 10);
+            
+            // Prevent scrolling on the body while modal is open
             document.body.style.overflow = 'hidden';
-            setAppType('offline'); // Default to offline on open
         }
 
+        /**
+         * Closes the payment modal.
+         */
         function closeModal() {
             modal.classList.remove('open');
+            // Hide the modal after the transition finishes (300ms defined in CSS)
             setTimeout(() => {
                 modal.style.display = 'none';
                 document.body.style.overflow = '';
             }, 300);
         }
 
+        // Close modal when clicking outside of the content area
         modal.addEventListener('click', (event) => {
-            if (event.target === modal) closeModal();
+            if (event.target === modal) {
+                closeModal();
+            }
         });
     </script>
 </body>
